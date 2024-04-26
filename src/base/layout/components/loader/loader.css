@@ -1,0 +1,62 @@
+.kk-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100% !important;
+}
+.kk-loader-100 {
+  height: 100%;
+}
+.kk-loader-100vh {
+  height: 100vh !important;
+}
+#arrow-bottom path {
+  animation-delay: 0.5s;
+}
+#arrow-side path {
+  animation-delay: 1s;
+}
+@-webkit-keyframes stroke-draw {
+  from {
+    stroke-dashoffset: 800;
+    fill-opacity: 0;
+  }
+  65% {
+    fill-opacity: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+    fill-opacity: 1;
+  }
+}
+@keyframes stroke-draw {
+  from {
+    stroke-dashoffset: 800;
+    fill-opacity: 0;
+  }
+  65% {
+    fill-opacity: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+    fill-opacity: 1;
+  }
+}
+.kk-loader-svg {
+  width: 15vh;
+  height: auto;
+  -webkit-animation: stroke-draw 3s cubic-bezier(0.785, 0.135, 0.15, 0.86) 2.3s
+    forwards infinite;
+  animation: stroke-draw 3s cubic-bezier(0.785, 0.135, 0.15, 0.86) 2.3s forwards
+    infinite;
+}
+.kk-loader-svg .kk-loader-path {
+  stroke: #d92f1d;
+  fill: #d92f1d;
+  fill-opacity: 0;
+  stroke-width: 0.5;
+  stroke-dasharray: 800;
+  stroke-dashoffset: 800;
+  -webkit-animation: stroke-draw 3s ease-in-out 0s forwards infinite;
+  animation: stroke-draw 3s ease-in-out 0s forwards infinite;
+}
