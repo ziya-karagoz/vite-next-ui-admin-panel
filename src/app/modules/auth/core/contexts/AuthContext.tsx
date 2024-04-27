@@ -13,7 +13,7 @@ import {
 import { ICurrentUser, ILogoutOptions } from "../models/auth.interfaces";
 import { fetchCurrentUser } from "../api/auth.requests";
 import { swal } from "@base/components/common/swal/SwalAlert";
-import { LayoutSplashScreen } from "@base/layout/BaseSplashScreen";
+import { LayoutSplashScreen } from "@base/layout/components/BaseSplashScreen";
   
   type AuthContextProps = {
     auth: string | undefined;

@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router";
-import Dashboard from "./dashboard/Dashboard";
+import { Home } from "./home/Home";
 
 const DashboardPage = () => {
   return (
@@ -8,8 +8,7 @@ const DashboardPage = () => {
         path="/"
         element={
           <>
-
-            <Dashboard />
+            <Home />
           </>
         }
       ></Route>
