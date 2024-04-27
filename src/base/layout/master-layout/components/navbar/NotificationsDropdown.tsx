@@ -1,5 +1,6 @@
-import { NotificationIcon } from "@base/components/icons/navbar/notificationicon";
+import { Icon } from "@iconify/react/dist/iconify.js";
 import {
+  Badge,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -10,10 +11,17 @@ import {
 
 export const NotificationsDropdown = () => {
   return (
-    <Dropdown placement="bottom-end">
+    <Dropdown backdrop="blur" placement="bottom-end">
       <DropdownTrigger>
         <NavbarItem>
-          <NotificationIcon />
+          <Badge size="sm" variant="solid" color="danger" content="3" placement="top-left" className="mr-2 cursor-pointer">
+          <Icon
+                icon="bi:bell-fill"
+                width="1.2rem"
+                height="1.2rem"
+                className="text-gray-400 cursor-pointer"
+              />
+          </Badge>
         </NavbarItem>
       </DropdownTrigger>
       <DropdownMenu className="w-80" aria-label="Avatar Actions">

@@ -6,18 +6,27 @@ import {
   DropdownTrigger,
   NavbarItem,
 } from "@nextui-org/react";
-import { DarkModeSwitch } from "./darkmodeswitch";
+import { DarkModeSwitch } from "./DarkModeSwitch";
+import { useAuth } from "@app/modules/auth/core/contexts/AuthContext";
 
 export const UserDropdown = () => {
+  const { currentUser } = useAuth();
   return (
-    <Dropdown>
+    <Dropdown backdrop="blur">
       <NavbarItem>
         <DropdownTrigger>
           <Avatar
             as="button"
-            color="secondary"
+            color="success"
+            // name should be currentUser?.first_name's first letter + currentUser?.last_name's first letter
+            name={
+              currentUser?.first_name.charAt(0) ??
+              "" + currentUser?.last_name.charAt(0) ??
+              ""
+            }
+            showFallback
             size="md"
-            src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+            src={currentUser?.image}
           />
         </DropdownTrigger>
       </NavbarItem>
@@ -30,7 +39,7 @@ export const UserDropdown = () => {
           className="flex flex-col justify-start w-full items-start"
         >
           <p>Signed in as</p>
-          <p>zoey@example.com</p>
+          <p>{currentUser?.email}</p>
         </DropdownItem>
         <DropdownItem key="settings">My Settings</DropdownItem>
         <DropdownItem key="team_settings">Team Settings</DropdownItem>

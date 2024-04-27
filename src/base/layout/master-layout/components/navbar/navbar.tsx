@@ -1,12 +1,9 @@
-import { Input, Link, Navbar, NavbarContent } from "@nextui-org/react";
+import { Input, Kbd, Link, Navbar, NavbarContent } from "@nextui-org/react";
 import React from "react";
-import { BurguerButton } from "./burguer-button";
-import { NotificationsDropdown } from "./notifications-dropdown";
-import { UserDropdown } from "./user-dropdown";
-import { GithubIcon } from "@base/components/icons/navbar/github-icon";
-import { SupportIcon } from "@base/components/icons/navbar/support-icon";
-import { FeedbackIcon } from "@base/components/icons/navbar/feedback-icon";
-import { SearchIcon } from "@base/components/icons/searchicon";
+import { BurguerButton } from "./BurgerButton";
+import { NotificationsDropdown } from "./NotificationsDropdown";
+import { UserDropdown } from "./UserDropdown";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 interface Props {
   children: React.ReactNode;
@@ -27,7 +24,7 @@ export const NavbarWrapper = ({ children }: Props) => {
         </NavbarContent>
         <NavbarContent className="w-full max-md:hidden">
           <Input
-            startContent={<SearchIcon />}
+            startContent={<Icon width="1.2rem" height="1.2rem" className="text-gray-400 " icon="gravity-ui:magnifier" />}
             isClearable
             className="w-full"
             classNames={{
@@ -42,21 +39,21 @@ export const NavbarWrapper = ({ children }: Props) => {
           className="w-fit data-[justify=end]:flex-grow-0"
         >
           <div className="flex items-center gap-2 max-md:hidden">
-            <FeedbackIcon />
+          <Icon width="1.2rem" height="1.2rem" className="text-gray-400 " icon="formkit:megaphone" />
             <span>Feedback?</span>
           </div>
 
           <NotificationsDropdown />
 
           <div className="max-md:hidden">
-            <SupportIcon />
+          <Icon width="1.2rem" height="1.2rem" className="text-gray-400 " icon="mage:message-question-mark-round" />
           </div>
 
           <Link
-            href="https://github.com/Siumauricio/nextui-dashboard-template"
+            href="https://github.com/ziya-karagoz/vite-next-ui-admin-panel"
             target={"_blank"}
           >
-            <GithubIcon />
+            <Icon icon="bi:github" width="1.2rem" height="1.2rem" className="text-gray-400 "/>
           </Link>
           <NavbarContent>
             <UserDropdown />

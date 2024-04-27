@@ -8,23 +8,6 @@ export const SidebarWrapper = tv({
       true: "translate-x-0 ml-0 [display:inherit]",
     },
   },
-  // ""
-  //   "@md": {
-  //     marginLeft: "0",
-  //     display: "flex",
-  //     position: "static",
-  //     height: "100vh",
-  //     transform: "translateX(0)",
-  //   },
-  //   variants: {
-  //     collapsed: {
-  //       true: {
-  //         display: "inherit",
-  //         marginLeft: "0 ",
-  //         transform: "translateX(0)",
-  //       },
-  //     },
-  //   },
 });
 export const Overlay = tv({
   base: "bg-[rgb(15_23_42/0.3)] fixed inset-0 z-[201] opacity-80 transition-opacity md:hidden md:z-auto md:opacity-100",

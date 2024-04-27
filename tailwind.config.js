@@ -11,27 +11,28 @@ export default {
     extend: {},
   },
   darkMode: "class",
-  plugins: [nextui({
-    themes: {
-      dark: {
-        colors: {
-          primary: {
-            DEFAULT: "#e6210f",
-            foreground: "#000000",
-          },
-          focus: "#b81a0c",
-        },
-      },
-      light: {
-        colors: {
-          primary: {
-            DEFAULT: "#e6210f",
-            foreground: "#000000",
-          },
-          focus: "#b81a0c",
-        },
-      }
-    },
-  })]
+  plugins: [nextui()]
 }
 
+// {
+//   themes: {
+//     dark: {
+//       colors: {
+//         primary: {
+//           DEFAULT: "#e6210f",
+//           foreground: "#000000",
+//         },
+//         focus: "#b81a0c",
+//       },
+//     },
+//     light: {
+//       colors: {
+//         primary: {
+//           DEFAULT: "#e6210f",
+//           foreground: "#000000",
+//         },
+//         focus: "#b81a0c",
+//       },
+//     }
+//   },
+// }

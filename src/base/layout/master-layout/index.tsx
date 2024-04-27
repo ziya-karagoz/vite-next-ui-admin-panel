@@ -3,9 +3,8 @@ import React from "react";
 import { useAuth } from "@app/modules/auth/core/contexts/AuthContext";
 import { SidebarContext } from "@base/layout/contexts/LayoutContext";
 import { useLockedBody } from "@base/layout/hooks/useBodyLock";
-import { SidebarWrapper } from "./components/sidebar/sidebar";
-import { NavbarWrapper } from "./components/navbar/navbar";
-import { WithChildren } from "@base/helpers/components/WithChildren";
+import { SidebarWrapper } from "./components/sidebar/Sidebar";
+import { NavbarWrapper } from "./components/navbar/Navbar";
 
 /**
  * @author ziyakaragoz
@@ -15,7 +14,7 @@ import { WithChildren } from "@base/helpers/components/WithChildren";
  * componentin ustundeki componentlerde react-intl metodlari kullanilamaz.
  */
 
-const MasterLayout: React.FC<WithChildren> = ({ children }) => {
+const MasterLayout: React.FC = () => {
   const { currentUser } = useAuth();
 
   const [sidebarOpen, setSidebarOpen] = React.useState(false);

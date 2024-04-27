@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { Accordion, AccordionItem } from "@nextui-org/react";
-import clsx from "clsx";
-import { ChevronUpIcon } from "@base/components/icons/sidebar/chevron-up-icon";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 interface Props {
   icon: React.ReactNode;
@@ -10,13 +9,12 @@ interface Props {
 }
 
 export const CollapseItems = ({ icon, items, title }: Props) => {
-  const [open, setOpen] = useState(false);
 
   return (
     <div className="flex gap-4 h-full items-center cursor-pointer">
       <Accordion className="px-0">
         <AccordionItem
-          indicator={<ChevronUpIcon />}
+          indicator={<Icon icon="mdi:chevron-up" width="1.2rem" height="1.2rem" className="text-gray-400 dark:text-gray-200" />}
           classNames={{
             indicator: "data-[open=true]:-rotate-180",
             trigger:

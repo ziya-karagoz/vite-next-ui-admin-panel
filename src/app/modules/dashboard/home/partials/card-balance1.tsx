@@ -1,4 +1,4 @@
-import { Community } from "@base/components/icons/community";
+import { Icon } from "@iconify/react/dist/iconify.js";
 import { Card, CardBody } from "@nextui-org/react";
 import React from "react";
 
@@ -7,7 +7,7 @@ export const CardBalance1 = () => {
     <Card className="xl:max-w-sm bg-primary rounded-xl shadow-md px-3 w-full">
       <CardBody className="py-5 overflow-hidden">
         <div className="flex gap-2.5">
-          <Community />
+        <Icon icon="akar-icons:people-group" width="1.2rem" height="1.2rem" className="text-gray-400 dark:text-gray-200"/>
           <div className="flex flex-col">
             <span className="text-white">Auto Insurance</span>
             <span className="text-white text-xs">1311 Cars</span>
