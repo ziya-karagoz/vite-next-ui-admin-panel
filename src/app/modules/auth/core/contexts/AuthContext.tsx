@@ -10,10 +10,10 @@ import {
   } from "react";
   import * as authHelper from "@app/modules/auth/core/functions/auth.functions";
   import { WithChildren } from "@base/helpers/components/WithChildren";
-  import { LayoutSplashScreen } from "@base/layout/contexts/BaseSplasyScreen";
 import { ICurrentUser, ILogoutOptions } from "../models/auth.interfaces";
 import { fetchCurrentUser } from "../api/auth.requests";
 import { swal } from "@base/components/common/swal/SwalAlert";
+import { LayoutSplashScreen } from "@base/layout/BaseSplashScreen";
   
   type AuthContextProps = {
     auth: string | undefined;
