@@ -10,7 +10,7 @@ import { DarkModeSwitch } from "./DarkModeSwitch";
 import { useAuth } from "@app/modules/auth/core/contexts/AuthContext";
 
 export const UserDropdown = () => {
-  const { currentUser } = useAuth();
+  const { currentUser, logout } = useAuth();
   return (
     <Dropdown backdrop="blur">
       <NavbarItem>
@@ -47,7 +47,16 @@ export const UserDropdown = () => {
         <DropdownItem key="system">System</DropdownItem>
         <DropdownItem key="configurations">Configurations</DropdownItem>
         <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
-        <DropdownItem key="logout" color="danger" className="text-danger ">
+        <DropdownItem
+          onClick={() =>
+            logout({
+              alert: true,
+            })
+          }
+          key="logout"
+          color="danger"
+          className="text-danger "
+        >
           Log Out
         </DropdownItem>
         <DropdownItem key="switch">

@@ -1,3 +1,4 @@
+import AppLogo from "@app/core/components/AppLogo";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import {
   Dropdown,
@@ -18,8 +19,8 @@ export const CompaniesDropdown = () => {
   const [company, setCompany] = useState<Company>({
     name: "Splintern Co.",
     location: "Beşiktaş, TR",
-    logo: <Icon icon="nonicons:react-16" width="1.2rem" height="1.2rem" className="text-gray-400 dark:text-gray-200"/>,
-  });
+    logo: <AppLogo className="w-5 h-5" />,
+      });
   return (
     <Dropdown
       classNames={{
@@ -55,7 +56,7 @@ export const CompaniesDropdown = () => {
         <DropdownSection title="Companies">
           <DropdownItem
             key="1"
-            startContent={<Icon icon="nonicons:react-16" width="1.2rem" height="1.2rem" className="text-gray-400 dark:text-gray-200"/>}
+            startContent={<AppLogo className="w-5 h-5" />}
             description="Beşiktaş, TR"
             classNames={{
               base: "py-4",
