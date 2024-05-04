@@ -20,7 +20,7 @@ export const CompaniesDropdown = () => {
     name: "Splintern Co.",
     location: "Beşiktaş, TR",
     logo: <AppLogo className="w-5 h-5" />,
-      });
+  });
   return (
     <Dropdown
       classNames={{
@@ -38,16 +38,31 @@ export const CompaniesDropdown = () => {
               {company.location}
             </span>
           </div>
-          <Icon icon="flowbite:caret-down-solid" width="1.2rem" height="1.2rem" className="text-gray-500"/>
+          <Icon
+            icon="flowbite:caret-down-solid"
+            width="1.2rem"
+            height="1.2rem"
+            className="text-gray-500"
+          />
         </div>
       </DropdownTrigger>
       <DropdownMenu
         onAction={(e) => {
+          
           if (e === "1") {
             setCompany({
-              name: "Facebook",
-              location: "San Fransico, CA",
-              logo: <Icon icon="nonicons:react-16" width="1.2rem" height="1.2rem" className="text-gray-400 dark:text-gray-200"/>,
+              name: "Splintern Co.",
+              location: "Beşiktaş, TR",
+              logo: <AppLogo className="w-5 h-5" />,
+            });
+          }
+          if (e === "2") {
+            setCompany({
+              name: "Splintern Co.",
+              location: "Los Angeles, US",
+              logo: (
+                <AppLogo className="w-5 h-5" />
+              ),
             });
           }
         }}
@@ -58,6 +73,17 @@ export const CompaniesDropdown = () => {
             key="1"
             startContent={<AppLogo className="w-5 h-5" />}
             description="Beşiktaş, TR"
+            classNames={{
+              base: "py-4",
+              title: "text-base font-semibold",
+            }}
+          >
+            Splintern Co.
+          </DropdownItem>
+          <DropdownItem
+            key="2"
+            startContent={<AppLogo className="w-5 h-5" />}
+            description="Los Angeles, US"
             classNames={{
               base: "py-4",
               title: "text-base font-semibold",

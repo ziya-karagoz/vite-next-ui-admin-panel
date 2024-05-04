@@ -54,7 +54,7 @@
   stroke: #d92f1d;
   fill: #d92f1d;
   fill-opacity: 0;
-  stroke-width: 0.5;
+  strokeWidth: 0.5;
   stroke-dasharray: 800;
   stroke-dashoffset: 800;
   -webkit-animation: stroke-draw 3s ease-in-out 0s forwards infinite;

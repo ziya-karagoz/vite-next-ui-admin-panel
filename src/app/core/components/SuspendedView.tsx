@@ -5,11 +5,11 @@ import TopBarProgress from "react-topbar-progress-indicator";
 const SuspensedView: React.FC<WithChildren> = ({ children }) => {
     TopBarProgress.config({
         barColors: {
-            "0": "#e6210f",
+            "0": "#0550AE",
         },
         barThickness: 2,
         shadowBlur: 5,
-        shadowColor: "#e6210f",
+        shadowColor: "#0550AE",
     });
     return <Suspense fallback={<TopBarProgress />}>{children}</Suspense>;
 };

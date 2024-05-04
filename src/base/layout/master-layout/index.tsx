@@ -24,19 +24,22 @@ const MasterLayout: React.FC = () => {
     setLocked(!sidebarOpen);
   };
 
+  const memoizedValue = React.useMemo(
+    () => ({
+      collapsed: sidebarOpen,
+      setCollapsed: handleToggleSidebar,
+    }),
+    [sidebarOpen, handleToggleSidebar]
+  );
+
   if (!currentUser) return <Outlet />;
   return (
-    <SidebarContext.Provider
-      value={{
-        collapsed: sidebarOpen,
-        setCollapsed: handleToggleSidebar,
-      }}
-    >
+    <SidebarContext.Provider value={memoizedValue}>
       <section className="flex">
         <SidebarWrapper />
         <NavbarWrapper>
           <div className="p-8">
-          <Outlet />
+            <Outlet />
           </div>
         </NavbarWrapper>
       </section>

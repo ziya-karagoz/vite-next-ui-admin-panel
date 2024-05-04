@@ -4,16 +4,21 @@ import { CollapseItems } from "./CollapseItems";
 import { useSidebarContext } from "@base/layout/contexts/LayoutContext";
 import { SidebarItem } from "./SidebarItem";
 import { SidebarMenu } from "./SidebarMenu";
-import { Icon } from "@iconify/react/dist/iconify.js";
+import {
+  sidebarData,
+} from "./sidebar.data";
 
 export const SidebarWrapper = () => {
-  const pathname = window.location.pathname;
   const { collapsed, setCollapsed } = useSidebarContext();
 
   return (
     <aside className="h-screen z-[20] sticky top-0">
       {collapsed ? (
-        <div className={Sidebar.Overlay()} onClick={setCollapsed} />
+        <button
+          className={Sidebar.Overlay()}
+          tabIndex={0}
+          onClick={setCollapsed}
+        />
       ) : null}
       <div
         className={Sidebar({
@@ -25,30 +30,57 @@ export const SidebarWrapper = () => {
         </div>
         <div className="flex flex-col justify-between h-full">
           <div className={Sidebar.Body()}>
-            <SidebarItem
-              title="Home"
-              icon={<Icon icon="ic:round-dashboard" width="1.2rem" height="1.2rem" className="text-gray-400 dark:text-gray-200"/>}
-              isActive={pathname === "/"}
-              href="/"
-            />
-            <SidebarMenu title="Main Menu">
-              <SidebarItem
-                isActive={pathname === "/accounts"}
-                title="Accounts"
-                icon={<Icon icon="mdi:accounts" width="1.2rem" height="1.2rem" className="text-gray-400 dark:text-gray-200"/>}
-                href="accounts"
-              />
-
-              <CollapseItems
-                icon={<Icon icon="ic:baseline-account-balance-wallet" width="1.2rem" height="1.2rem" className="text-gray-400 dark:text-gray-200"/>}
-                items={["Banks Accounts", "Credit Cards", "Loans"]}
-                title="Balances"
-              />
-            </SidebarMenu>
+            {sidebarData.map(
+              (item) => {
+                if (item.type === "single") {
+                  return (
+                    <SidebarItem
+                      key={item.id}
+                      title={item.title}
+                      icon={item.icon}
+                      to={item.to}
+                    />
+                  );
+                } else if (item.type === "collapse") {
+                  return (
+                    <CollapseItems
+                      key={item.id}
+                      icon={item.icon}
+                      items={item.items}
+                      title={item.title}
+                    />
+                  );
+                } else {
+                  return (
+                    <SidebarMenu key={item.id} title={item.title}>
+                      {item?.items?.map((subItem) => {
+                        if (subItem.type === "single") {
+                          return (
+                            <SidebarItem
+                              key={subItem.id}
+                              title={subItem.title}
+                              icon={subItem.icon}
+                              to={subItem.to}
+                            />
+                          );
+                        } else if (subItem.type === "collapse") {
+                          return (
+                            <CollapseItems
+                              key={subItem.id}
+                              icon={subItem.icon}
+                              items={subItem.items}
+                              title={subItem.title}
+                            />
+                          );
+                        }
+                      })}
+                    </SidebarMenu>
+                  );
+                }
+              }
+            )}
           </div>
-          <div className={Sidebar.Footer()}>
-
-          </div>
+          <div className={Sidebar.Footer()}></div>
         </div>
       </div>
     </aside>

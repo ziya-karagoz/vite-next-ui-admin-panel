@@ -18,11 +18,28 @@
 .kk-sidebar:hover::-webkit-scrollbar-thumb {
   visibility: visible;
 }
+a.active {
 
-.active {
-  @apply border-l-2;
-  @apply border-red-500;
-  @apply text-red-500;
+  @apply text-white;
+  @apply border-none;
+  @apply bg-primary-500;
+  @apply hover:bg-primary-600;
+  @apply rounded-lg;
+}
+
+a.active svg {
+  @apply text-white;
+}
+
+.collapse-navlink.active {
+  @apply text-primary-500;
+  @apply hover:text-primary-700;
+  @apply bg-white;
+  @apply hover:bg-white;
+  @apply dark:bg-black;
+  @apply dark:hover:bg-black;
+  @apply rounded-lg;
+
 }
 
 .fb-tab.active {
@@ -34,7 +51,7 @@
   @apply hover:text-red-500;
   @apply text-red-500;
 }
-.fb-tab.active svg{;
+.fb-tab.active svg{
   @apply text-red-500
 }
 
@@ -102,9 +119,6 @@
   border-bottom-left-radius: 0.375rem;
 
 }
-
-
-
 
 .confirm-button-class {
   background-color: red !important;

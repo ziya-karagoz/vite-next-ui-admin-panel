@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import React from "react";
 
 type Props = {
@@ -8,34 +7,48 @@ type Props = {
 const AppLogo: React.FC<Props> = ({ className }) => {
   return (
     <svg
-      width="100"
-      height="100"
-      viewBox="0 0 100 100"
+      width="316"
+      height="315"
+      viewBox="0 0 316 315"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={` ${className}`}
+      className={className}
     >
-      <circle
-        cx="50"
-        cy="50"
-        r="47"
-        fill="none"
-        className="stroke-default-800 dark:stroke-slate-50"
-        stroke-width="6"
+      <rect width="315.294" height="314.018" rx="51" className="fill-current text-white dark:text-black" />
+      <rect
+        x="17"
+        y="50.3569"
+        width="50.0024"
+        height="349.77"
+        rx="25.0012"
+        transform="rotate(-45 17 50.3569)"
+        className="fill-current text-primary-500 dark:text-primary-400"
       />
-      <circle
-        cx="50"
-        cy="17.6768"
-        r="15.6768"
-        fill="none"
-        className="stroke-default-800 dark:stroke-slate-50"
-        stroke-width="4"
+      <rect
+        x="17.2109"
+        y="151.568"
+        width="50.0024"
+        height="206.636"
+        rx="25.0012"
+        transform="rotate(-45 17.2109 151.568)"
+        className="fill-current text-primary-500 dark:text-primary-400"
+      />
+      <rect
+        x="15"
+        y="251.471"
+        width="50.0024"
+        height="67.2414"
+        rx="25.0012"
+        transform="rotate(-45 15 251.471)"
+        className="fill-current text-primary-500 dark:text-primary-400"
       />
       <path
-        d="M58.596 26.7677C58.596 30.9042 55.0282 34.3536 50.505 34.3536C45.9819 34.3536 42.4141 30.9042 42.4141 26.7677C42.4141 22.6313 45.9819 19.1819 50.505 19.1819C55.0282 19.1819 58.596 22.6313 58.596 26.7677Z"
-        fill="none"
-        className="stroke-default-800 dark:stroke-slate-50"
-        stroke-width="2"
+        d="M247.058 32.8028C256.842 23.0183 272.706 23.0183 282.49 32.8028C292.275 42.5874 292.275 58.4512 282.49 68.2357L209.346 141.38L191.629 123.664C181.845 113.879 181.845 98.0154 191.629 88.2309L247.058 32.8028Z"
+        className="fill-current text-primary-500 dark:text-primary-400"
+      />
+      <path
+        d="M282.578 144.144C292.362 153.929 292.362 169.793 282.578 179.577C272.793 189.362 256.929 189.362 247.145 179.577L191.717 124.149C181.932 114.365 181.932 98.5008 191.717 88.7163C201.501 78.9318 217.365 78.9318 227.149 88.7163L282.578 144.144Z"
+        className="fill-current text-primary-500 dark:text-primary-400"
       />
     </svg>
   );
