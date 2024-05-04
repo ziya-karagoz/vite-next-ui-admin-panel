@@ -22,7 +22,17 @@ export default {
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      keyframes: {
+        wiggle: {
+          '0%, 100%': { transform: 'rotate(-6deg)' },
+          '50%': { transform: 'rotate(6deg)' },
+        }
+      },
+      animation: {
+        wiggle: 'wiggle 800ms ease-in-out infinite',
+      },
+    },
   },
   darkMode: "class",
   plugins: [

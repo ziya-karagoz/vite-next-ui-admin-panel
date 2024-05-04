@@ -45,14 +45,14 @@ a.active svg {
 .fb-tab.active {
   @apply border-b-2;
   @apply border-l-0;
-  @apply border-red-500;
-  @apply text-red-500;
-  @apply hover:border-red-500;
-  @apply hover:text-red-500;
-  @apply text-red-500;
+  @apply border-primary-500;
+  @apply text-primary-500;
+  @apply hover:border-primary-500;
+  @apply hover:text-primary-500;
+  @apply text-primary-500;
 }
 .fb-tab.active svg{
-  @apply text-red-500
+  @apply text-primary-500
 }
 
 .fb-breadcrumb .active {
@@ -67,7 +67,7 @@ a.active svg {
 
 .nav-icon.active{
   @apply border-l-0;
-  @apply bg-red-500;
+  @apply bg-primary-500;
   @apply text-white;
 }
 .nav-icon.active svg{
@@ -95,12 +95,12 @@ a.active svg {
 }
 
 .fancy-scrollbar::-webkit-scrollbar-thumb {
-  @apply bg-red-100;
+  @apply bg-primary-100;
   @apply rounded-full;
 }
 
 .fancy-scrollbar::-webkit-scrollbar-thumb:hover {
-    @apply bg-red-300;
+    @apply bg-primary-300;
     @apply rounded-full;
 }
 
@@ -144,14 +144,14 @@ a.active svg {
 }
 
 .swal2-actions .swal2-confirm {
-  @apply bg-red-500;
+  @apply bg-primary-500;
   @apply text-white;
   @apply border-none;
-  @apply hover:bg-red-600;
+  @apply hover:bg-primary-600;
   @apply rounded-lg;
-  @apply focus:outline-red-100;
+  @apply focus:outline-primary-100;
   @apply focus:ring-2;
-  @apply focus:ring-red-100;
+  @apply focus:ring-primary-100;
   @apply border-none;
 }
 
