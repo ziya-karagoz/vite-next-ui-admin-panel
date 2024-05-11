@@ -1,5 +1,6 @@
 import {
     Button,
+    Input,
     Pagination,
     Select,
     SelectItem,
@@ -13,10 +14,16 @@ import {
 } from "@nextui-org/react";
 import React from "react";
 import { findValueByKey, generateUrl } from "./helper/helper";
-import { IColumn, TableMeta } from "./types/dynamo-table.types";
+import {
+    IColumn,
+    TableMeta,
+    TableSearchColumn,
+} from "./types/dynamo-table.types";
 import { FetchStatus } from "@base/enums/api.enum";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { takes } from "./data/data";
+import { useDebounce } from "@uidotdev/usehooks";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 type DynamoTableProps = {
     title: string;
@@ -24,6 +31,7 @@ type DynamoTableProps = {
     rows: any[]; // vague type
     loadStatus: FetchStatus;
     meta: TableMeta;
+    searchColumns?: TableSearchColumn[];
 };
 
 const DynamoTable: React.FC<DynamoTableProps> = ({
@@ -32,11 +40,13 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
     rows,
     loadStatus,
     meta,
+    searchColumns = [],
 }) => {
     const { pathname } = useLocation();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-
+    const [search, setSearch] = React.useState<string>("");
+    const debouncedSearch = useDebounce(search, 500);
     const bottomContent = React.useMemo(() => {
         function handlePrevious(
             meta: { currentPage: number },
@@ -78,7 +88,9 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
             navigate(path);
         }
 
-        function handleTakeChange(event: React.ChangeEvent<HTMLSelectElement>): void {
+        function handleTakeChange(
+            event: React.ChangeEvent<HTMLSelectElement>
+        ): void {
             const updates = {
                 take: event.target.value,
                 skip: "1",
@@ -90,7 +102,7 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
         return (
             <div className="py-2 px-2 flex justify-between items-center">
                 <Select
-                aria-label="Select"
+                    aria-label="Select"
                     defaultSelectedKeys={[5]}
                     className="max-w-20"
                     onChange={handleTakeChange}
@@ -151,11 +163,30 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
         );
     }, [meta]);
 
+
+
     return (
         <Table
             selectionBehavior="replace"
             aria-label={title}
             bottomContent={bottomContent}
+            topContent={
+                <div className="flex justify-between items-center gap-4 flex-wrap">
+                    <h2 className="text-xl font-bold mb-2">{title}</h2>
+                    <Input
+                        className="max-w-xs"
+                        type="text"
+                        isClearable
+                        placeholder="you@example.com"
+                        startContent={
+                            <Icon icon="uil:search" width="1.2rem" height="1.2rem" />
+                        }
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        onClear={() => setSearch("")}
+                    />
+                </div>
+            }
         >
             <TableHeader columns={columns}>
                 {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}

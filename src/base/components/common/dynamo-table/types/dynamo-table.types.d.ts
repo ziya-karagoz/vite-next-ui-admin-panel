@@ -20,3 +20,8 @@ export interface IColumn {
   label: string;
   type?: EColumnType;
 }
+
+export interface TableSearchColumn {
+  key: string;
+  type: "string" | "number";
+}

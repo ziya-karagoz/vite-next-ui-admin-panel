@@ -54,7 +54,7 @@ const AdminList = () => {
   if (fetchStatus === FetchStatus.IDLE) return <Loader isComponent />;
 
   return (
-    adminListResponse && <DynamoTable title="Yöneticiler" meta={adminListResponse?.meta} columns={columns} rows={adminListResponse.items} loadStatus={fetchStatus}/>
+    adminListResponse && <DynamoTable  title="Yöneticiler" meta={adminListResponse?.meta} columns={columns} rows={adminListResponse.items} loadStatus={fetchStatus}/>
   );
 };
 
