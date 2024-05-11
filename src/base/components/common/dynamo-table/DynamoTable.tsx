@@ -33,6 +33,7 @@ type DynamoTableProps = {
     loadStatus: FetchStatus;
     meta: TableMeta;
     searchColumns?: TableSearchColumn[];
+    filterPath: string;
 };
 
 const DynamoTable: React.FC<DynamoTableProps> = ({
@@ -42,15 +43,16 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
     loadStatus,
     meta,
     searchColumns = [],
+    filterPath,
 }) => {
     const { pathname } = useLocation();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
 
     const [filterChain, setFilterChain] = React.useState<any[]>(
-        JSON.parse(searchParams.get("filter")!)
+        JSON.parse(searchParams.get("filter")!) ?? []
     );
-    const [search, setSearch] = React.useState<string>(filterChain.find((filter) => filter.id === "global_search")?.value ?? "");
+    const [search, setSearch] = React.useState<string>(filterChain?.find((filter) => filter?.id === "global_search")?.value ?? "");
 
     const debouncedSearch = useDebounce(search, 500);
     const bottomContent = React.useMemo(() => {
@@ -231,6 +233,7 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                         <div className="flex justify-start items-center gap-1">
                             {column.filterType !== undefined ? (
                                 <FilterDropdown
+                                filterPath={filterPath}
                                     column={column}
                                     filterChain={filterChain}
                                     setFilterChain={setFilterChain}

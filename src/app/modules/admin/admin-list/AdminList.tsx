@@ -47,11 +47,12 @@ const AdminList = () => {
     {
       key: "last_name",
       label: "SURNAME",
+      filterType: EFilterType.DATE,
     },
     {
       key: "email",
-      label: "email",
-      filterType: EFilterType.SELECT,
+      label: "EMAIL",
+      filterType: EFilterType.NUMBER,
     },
   ];
 
@@ -60,6 +61,7 @@ const AdminList = () => {
   return (
     adminListResponse && (
       <DynamoTable
+        filterPath="admin"
         title="Yöneticiler"
         meta={adminListResponse?.meta}
         columns={columns}

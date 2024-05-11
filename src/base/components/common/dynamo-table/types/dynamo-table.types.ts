@@ -32,3 +32,15 @@ export interface TableSearchColumn {
   id: string;
   type: "string" | "number";
 }
+
+export type IColumnFilterParams = {
+  path: string;
+  skip?: number;
+  take?: number;
+  group?: string;
+};
+
+export interface IFilterResponse {
+  data: { key: any }[];
+  totalCount: number;
+}

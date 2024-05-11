@@ -26,6 +26,7 @@
     "react-dom": "^18.2.0",
     "react-helmet-async": "^2.0.4",
     "react-hot-toast": "^2.4.1",
+    "react-infinite-scroll-component": "^6.1.0",
     "react-intl": "^6.6.5",
     "react-quill": "^2.0.0",
     "react-redux": "^9.1.1",
