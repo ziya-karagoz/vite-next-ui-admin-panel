@@ -16,10 +16,10 @@ export const sidebarData: (ISidebarItem | ICollapseItems | ISidebarMenu)[] = [
         type: "menu",
         items: [
             {
-                id: "accounts",
+                id: "admin",
                 icon: <Icon icon="mdi:accounts" width="1.2rem" height="1.2rem" className="text-gray-400 dark:text-gray-200"/>,
-                title: "Accounts",
-                to: "/accounts",
+                title: "Admins",
+                to: "/yoneticiler",
                 type: "single",
             } as ISidebarItem,
             {
