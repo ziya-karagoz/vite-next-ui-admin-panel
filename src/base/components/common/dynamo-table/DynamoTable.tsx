@@ -24,6 +24,7 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { takes } from "./data/data";
 import { useDebounce } from "@uidotdev/usehooks";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import FilterDropdown from "./components/FilterDropdown";
 
 type DynamoTableProps = {
     title: string;
@@ -45,7 +46,12 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
     const { pathname } = useLocation();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    const [search, setSearch] = React.useState<string>("");
+
+    const [filterChain, setFilterChain] = React.useState<any[]>(
+        JSON.parse(searchParams.get("filter")!)
+    );
+    const [search, setSearch] = React.useState<string>(filterChain.find((filter) => filter.id === "global_search")?.value ?? "");
+
     const debouncedSearch = useDebounce(search, 500);
     const bottomContent = React.useMemo(() => {
         function handlePrevious(
@@ -164,6 +170,37 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
     }, [meta]);
 
 
+    React.useEffect(() => {
+        const globalSearchFilter = {
+            id: "global_search",
+            type: "SEARCH",
+            value: debouncedSearch,
+            columns: searchColumns,
+        };
+        if (debouncedSearch) {
+            if (filterChain.some((filter) => filter.id === "global_search")) {
+                setFilterChain((prev) =>
+                    prev.map((filter) =>
+                        filter.id === "global_search" ? globalSearchFilter : filter
+                    )
+                );
+            } else {
+                setFilterChain((prev) => [...prev, globalSearchFilter]);
+            }
+        } else {
+            setFilterChain((prev) =>
+                prev.filter((filter) => filter.id !== "global_search")
+            );
+        }
+    }, [debouncedSearch]);
+
+    React.useEffect(() => {
+        const updates = {
+            filter: JSON.stringify(filterChain),
+        };
+        const path = generateUrl(pathname, searchParams, updates);
+        navigate(path);
+    }, [filterChain]);
 
     return (
         <Table
@@ -189,7 +226,20 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
             }
         >
             <TableHeader columns={columns}>
-                {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
+                {(column) => (
+                    <TableColumn key={column.key}>
+                        <div className="flex justify-start items-center gap-1">
+                            {column.filterType !== undefined ? (
+                                <FilterDropdown
+                                    column={column}
+                                    filterChain={filterChain}
+                                    setFilterChain={setFilterChain}
+                                />
+                            ) : null}
+                            <span>{column.label}</span>
+                        </div>
+                    </TableColumn>
+                )}
             </TableHeader>
             <TableBody
                 loadingState={loadStatus === FetchStatus.LOADING ? "loading" : "idle"}

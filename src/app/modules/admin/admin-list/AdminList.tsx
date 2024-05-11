@@ -7,6 +7,10 @@ import { PageableResponseModel } from "@app/core/models/app.interfaces";
 
 import DynamoTable from "@base/components/common/dynamo-table/DynamoTable";
 import { useSearchParams } from "react-router-dom";
+import {
+  EFilterType,
+  IColumn,
+} from "@base/components/common/dynamo-table/types/dynamo-table.types";
 
 const AdminList = () => {
   const [adminListResponse, setAdminListResponse] = React.useState<
@@ -24,7 +28,7 @@ const AdminList = () => {
 
   React.useEffect(() => {
     setFetchStatus(FetchStatus.LOADING);
-    fetchAdmins({skip, take, sort, filter})
+    fetchAdmins({ skip, take, sort, filter })
       .then((res) => {
         setFetchStatus(FetchStatus.SUCCEEDED);
         setAdminListResponse(res);
@@ -34,12 +38,11 @@ const AdminList = () => {
       });
   }, [skip, take, sort, filter]);
 
- 
-
-  const columns = [
+  const columns: IColumn[] = [
     {
       key: "first_name",
       label: "NAME",
+      filterType: EFilterType.SELECT,
     },
     {
       key: "last_name",
@@ -48,13 +51,26 @@ const AdminList = () => {
     {
       key: "email",
       label: "email",
+      filterType: EFilterType.SELECT,
     },
   ];
 
   if (fetchStatus === FetchStatus.IDLE) return <Loader isComponent />;
 
   return (
-    adminListResponse && <DynamoTable  title="Yöneticiler" meta={adminListResponse?.meta} columns={columns} rows={adminListResponse.items} loadStatus={fetchStatus}/>
+    adminListResponse && (
+      <DynamoTable
+        title="Yöneticiler"
+        meta={adminListResponse?.meta}
+        columns={columns}
+        rows={adminListResponse.items}
+        loadStatus={fetchStatus}
+        searchColumns={[
+          { id: "first_name", type: "string" },
+          { id: "last_name", type: "string" },
+        ]}
+      />
+    )
   );
 };
 

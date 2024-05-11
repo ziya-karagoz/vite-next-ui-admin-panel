@@ -15,13 +15,20 @@ export enum EColumnType {
   OPERATIONS,
 }
 
+export enum EFilterType {
+  SELECT,
+  NUMBER,
+  DATE,
+}
+
 export interface IColumn {
   key: string;
   label: string;
   type?: EColumnType;
+  filterType?: EFilterType | undefined;
 }
 
 export interface TableSearchColumn {
-  key: string;
+  id: string;
   type: "string" | "number";
 }
