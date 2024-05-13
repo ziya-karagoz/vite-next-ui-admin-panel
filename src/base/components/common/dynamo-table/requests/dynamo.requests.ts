@@ -6,7 +6,7 @@ const baseUrl = import.meta.env.VITE_API_URL;
 
 export function fetchColumnFilter(
   params: IColumnFilterParams
-): Promise<IFilterResponse[]> {
+): Promise<IFilterResponse> {
   return new Promise((resolve, reject) => {
     api
       .get(`${baseUrl}/api/backoffice/${params.path}`, {

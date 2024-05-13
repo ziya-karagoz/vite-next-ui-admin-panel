@@ -7,18 +7,18 @@ export interface TableMeta {
 }
 
 export enum EColumnType {
-  IMAGE,
-  PROFILE,
-  POINT,
-  BADGE,
-  DATE,
-  OPERATIONS,
+  IMAGE = "IMAGE",
+  PROFILE = "PROFILE",
+  POINT = "POINT",
+  BADGE = "BADGE",
+  DATE = "DATE",
+  OPERATIONS = "OPERATIONS",
 }
 
 export enum EFilterType {
-  SELECT,
-  NUMBER,
-  DATE,
+  SELECT = "SELECT",
+  NUMBER = "NUMBER",
+  DATE = "DATE",
 }
 
 export interface IColumn {
@@ -44,3 +44,34 @@ export interface IFilterResponse {
   data: { key: any }[];
   totalCount: number;
 }
+
+
+export type ISearchFilter = {
+  id: string;
+  type: "SEARCH";
+  value: string;
+  columns: TableSearchColumn[];
+}
+
+export interface ISelectFilter {
+  id: string;
+  type: "SELECT";
+  operation: "EQUAL" | "NOT_EQUAL";
+  selecteds: (string | number)[]
+}
+
+export interface INumberFilter {
+  id: string;
+  type: "NUMBER";
+  min: number;
+  max: number;
+}
+
+export interface IDateFilter {
+  id: string;
+  type: "DATE";
+  min: number;
+  max: number;
+}
+
+export type  IFilterChain = (ISearchFilter | ISelectFilter | INumberFilter | IDateFilter)[]

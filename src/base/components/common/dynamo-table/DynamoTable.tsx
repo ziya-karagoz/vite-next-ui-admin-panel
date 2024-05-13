@@ -11,11 +11,14 @@ import {
     TableColumn,
     TableHeader,
     TableRow,
+    Tooltip,
 } from "@nextui-org/react";
 import React from "react";
 import { findValueByKey, generateUrl } from "./helper/helper";
 import {
     IColumn,
+    IFilterChain,
+    ISearchFilter,
     TableMeta,
     TableSearchColumn,
 } from "./types/dynamo-table.types";
@@ -25,6 +28,7 @@ import { takes } from "./data/data";
 import { useDebounce } from "@uidotdev/usehooks";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import FilterDropdown from "./components/FilterDropdown";
+import clsx from "clsx";
 
 type DynamoTableProps = {
     title: string;
@@ -49,10 +53,10 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
 
-    const [filterChain, setFilterChain] = React.useState<any[]>(
+    const [filterChain, setFilterChain] = React.useState<IFilterChain>(
         JSON.parse(searchParams.get("filter")!) ?? []
     );
-    const [search, setSearch] = React.useState<string>(filterChain?.find((filter) => filter?.id === "global_search")?.value ?? "");
+    const [search, setSearch] = React.useState<string>((filterChain?.find((filter) => filter?.id === "global_search") as ISearchFilter)?.value ?? "");
 
     const debouncedSearch = useDebounce(search, 500);
     const bottomContent = React.useMemo(() => {
@@ -178,7 +182,7 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
             type: "SEARCH",
             value: debouncedSearch,
             columns: searchColumns,
-        };
+        } as ISearchFilter;
         if (debouncedSearch) {
             if (filterChain.some((filter) => filter.id === "global_search")) {
                 setFilterChain((prev) =>
@@ -212,6 +216,7 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
             topContent={
                 <div className="flex justify-between items-center gap-4 flex-wrap">
                     <h2 className="text-xl font-bold mb-2">{title}</h2>
+                    <div className="flex justify-end items-center gap-1">
                     <Input
                         className="max-w-xs"
                         type="text"
@@ -224,6 +229,17 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                         onChange={(e) => setSearch(e.target.value)}
                         onClear={() => setSearch("")}
                     />
+                   <Tooltip content="Clear Filters">
+                   <Button
+                        size="sm"
+                        color="default"
+                        isIconOnly
+                        onClick={() => setFilterChain([])}
+                        >
+                        <Icon icon="octicon:filter-remove-24" width="1.2rem" height="1.2rem" />
+                        </Button>
+                   </Tooltip>
+                    </div>
                 </div>
             }
         >
@@ -239,7 +255,9 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                                     setFilterChain={setFilterChain}
                                 />
                             ) : null}
-                            <span>{column.label}</span>
+                            <span className={clsx("cursor-pointer",{
+                        "text-primary-500": filterChain.some((filter) => filter.id === column.key),
+                    })}>{column.label}</span>
                         </div>
                     </TableColumn>
                 )}

@@ -40,20 +40,11 @@ const AdminList = () => {
 
   const columns: IColumn[] = [
     {
-      key: "first_name",
+      key: "name",
       label: "NAME",
       filterType: EFilterType.SELECT,
     },
-    {
-      key: "last_name",
-      label: "SURNAME",
-      filterType: EFilterType.DATE,
-    },
-    {
-      key: "email",
-      label: "EMAIL",
-      filterType: EFilterType.NUMBER,
-    },
+    
   ];
 
   if (fetchStatus === FetchStatus.IDLE) return <Loader isComponent />;
@@ -61,7 +52,7 @@ const AdminList = () => {
   return (
     adminListResponse && (
       <DynamoTable
-        filterPath="admin"
+        filterPath="bank"
         title="Yöneticiler"
         meta={adminListResponse?.meta}
         columns={columns}
