@@ -22,7 +22,7 @@ const AdminList = () => {
 
   const [searchParams] = useSearchParams();
   const skip = parseInt(searchParams.get("skip") ?? "1");
-  const take = parseInt(searchParams.get("take") ?? "2");
+  const take = parseInt(searchParams.get("take") ?? "10");
   const sort = searchParams.get("sort") ?? "";
   const filter = searchParams.get("filter") ?? "[]";
 
@@ -59,8 +59,7 @@ const AdminList = () => {
         rows={adminListResponse.items}
         loadStatus={fetchStatus}
         searchColumns={[
-          { id: "first_name", type: "string" },
-          { id: "last_name", type: "string" },
+          { id: "name", type: "string" },
         ]}
       />
     )

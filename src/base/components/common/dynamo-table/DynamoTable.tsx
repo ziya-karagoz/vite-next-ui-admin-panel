@@ -236,7 +236,7 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                         isIconOnly
                         onClick={() => setFilterChain([])}
                         >
-                        <Icon icon="octicon:filter-remove-24" width="1.2rem" height="1.2rem" />
+                       <Icon icon="tabler:filter-x" width="1.2rem" height="1.2rem" />
                         </Button>
                    </Tooltip>
                     </div>
