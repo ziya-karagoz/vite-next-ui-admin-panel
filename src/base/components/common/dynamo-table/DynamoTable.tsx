@@ -29,6 +29,7 @@ import { useDebounce } from "@uidotdev/usehooks";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import FilterDropdown from "./components/FilterDropdown";
 import clsx from "clsx";
+import SortDropdown from "./components/SortDropdown";
 
 type DynamoTableProps = {
     title: string;
@@ -56,7 +57,13 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
     const [filterChain, setFilterChain] = React.useState<IFilterChain>(
         JSON.parse(searchParams.get("filter")!) ?? []
     );
-    const [search, setSearch] = React.useState<string>((filterChain?.find((filter) => filter?.id === "global_search") as ISearchFilter)?.value ?? "");
+    const [search, setSearch] = React.useState<string>(
+        (
+            filterChain?.find(
+                (filter) => filter?.id === "global_search"
+            ) as ISearchFilter
+        )?.value ?? ""
+    );
 
     const debouncedSearch = useDebounce(search, 500);
     const bottomContent = React.useMemo(() => {
@@ -175,7 +182,6 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
         );
     }, [meta]);
 
-
     React.useEffect(() => {
         const globalSearchFilter = {
             id: "global_search",
@@ -217,28 +223,30 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                 <div className="flex justify-between items-center gap-4 flex-wrap">
                     <h2 className="text-xl font-bold mb-2">{title}</h2>
                     <div className="flex justify-end items-center gap-1">
-                    <Input
-                        className="max-w-xs"
-                        type="text"
-                        isClearable
-                        placeholder="you@example.com"
-                        startContent={
-                            <Icon icon="uil:search" width="1.2rem" height="1.2rem" />
-                        }
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        onClear={() => setSearch("")}
-                    />
-                   <Tooltip content="Clear Filters">
-                   <Button
-                        size="sm"
-                        color="default"
-                        isIconOnly
-                        onClick={() => setFilterChain([])}
-                        >
-                       <Icon icon="tabler:filter-x" width="1.2rem" height="1.2rem" />
-                        </Button>
-                   </Tooltip>
+                        <Input
+                            className="max-w-xs"
+                            type="text"
+                            isClearable
+                            placeholder="you@example.com"
+                            startContent={
+                                <Icon icon="uil:search" width="1.2rem" height="1.2rem" />
+                            }
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            onClear={() => setSearch("")}
+                        />
+                        <Tooltip content="Clear All Filters">
+                            <Button
+                                size="sm"
+                                color="default"
+                                isIconOnly
+                                onClick={() => {
+                                    navigate(pathname);
+                                }}
+                            >
+                                <Icon icon="tabler:filter-x" width="1.2rem" height="1.2rem" />
+                            </Button>
+                        </Tooltip>
                     </div>
                 </div>
             }
@@ -249,15 +257,13 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                         <div className="flex justify-start items-center gap-1">
                             {column.filterType !== undefined ? (
                                 <FilterDropdown
-                                filterPath={filterPath}
+                                    filterPath={filterPath}
                                     column={column}
                                     filterChain={filterChain}
                                     setFilterChain={setFilterChain}
                                 />
                             ) : null}
-                            <span className={clsx("cursor-pointer",{
-                        "text-primary-500": filterChain.some((filter) => filter.id === column.key),
-                    })}>{column.label}</span>
+                            <SortDropdown column={column} filterChain={filterChain} />
                         </div>
                     </TableColumn>
                 )}
