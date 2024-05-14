@@ -53,7 +53,8 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const [sort, setSort] = React.useState<string | undefined>(
-        columns.find((column) => column.key === searchParams.get("sort"))?.key ?? undefined
+        columns.find((column) => column.key === searchParams.get("sort"))?.key ??
+        undefined
     );
     const [filterChain, setFilterChain] = React.useState<IFilterChain>(
         JSON.parse(searchParams.get("filter")!) ?? []
@@ -91,7 +92,6 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
             const updates = {
                 take: event.target.value,
                 skip: "1",
-                sort: searchParams.get("sort") ?? "",
             };
             const path = generateUrl(pathname, searchParams, updates);
             navigate(path);
@@ -204,8 +204,7 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                                 onClick={() => {
                                     setFilterChain([]);
                                     setSort(undefined);
-                                   navigate(pathname);
-
+                                    navigate(pathname);
                                 }}
                             >
                                 <Icon icon="tabler:filter-x" width="1.2rem" height="1.2rem" />
@@ -227,7 +226,12 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                                     setFilterChain={setFilterChain}
                                 />
                             ) : null}
-                            <SortDropdown column={column} filterChain={filterChain} sort={sort} setSort={setSort}/>
+                            <SortDropdown
+                                column={column}
+                                filterChain={filterChain}
+                                sort={sort}
+                                setSort={setSort}
+                            />
                         </div>
                     </TableColumn>
                 )}

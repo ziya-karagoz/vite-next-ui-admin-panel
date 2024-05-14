@@ -11,6 +11,7 @@ import {
   EFilterType,
   IColumn,
 } from "@base/components/common/dynamo-table/types/dynamo-table.types";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 const AdminList = () => {
   const [adminListResponse, setAdminListResponse] = React.useState<
@@ -27,7 +28,6 @@ const AdminList = () => {
   const filter = searchParams.get("filter") ?? "[]";
 
   React.useEffect(() => {
-
     setFetchStatus(FetchStatus.LOADING);
     fetchAdmins({ skip, take, sort, filter })
       .then((res) => {
@@ -44,6 +44,9 @@ const AdminList = () => {
       key: "id",
       label: "ID",
       filterType: EFilterType.NUMBER,
+      filterConfig: {
+        numberFilterAdornment: "₺",
+      },
     },
     {
       key: "first_name",
@@ -55,13 +58,17 @@ const AdminList = () => {
       label: "SURNAME",
       filterType: EFilterType.SELECT,
     },
+    {
+      key: "account_status",
+      label: "ACCOUNT STATUS",
+      filterType: EFilterType.STATIC_SELECT,
+    },
 
     {
       key: "created_at",
       label: "CREATED AT",
       filterType: EFilterType.DATE,
     },
-    
   ];
 
   if (fetchStatus === FetchStatus.IDLE) return <Loader isComponent />;
@@ -76,7 +83,8 @@ const AdminList = () => {
         rows={adminListResponse.items}
         loadStatus={fetchStatus}
         searchColumns={[
-          { id: "name", type: "string" },
+          { id: "first_name", type: "string" },
+          { id: "last_name", type: "string" },
         ]}
       />
     )

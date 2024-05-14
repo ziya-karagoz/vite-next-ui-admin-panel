@@ -37,7 +37,8 @@ function NumberFilter({
                 type="number"
                 label="Minimum"
                 size="sm"
-                value={localFilter.min?.toString()}
+                startContent={column.filterConfig?.numberFilterAdornment}
+                value={localFilter.min?.toString() ?? ""}
                 onChange={(e) => {
                     setLocalFilter(
                         (prev) =>
@@ -52,7 +53,8 @@ function NumberFilter({
                 type="number"
                 label="Maximum"
                 size="sm"
-                value={localFilter.max?.toString()}
+                startContent={column.filterConfig?.numberFilterAdornment}
+                value={localFilter.max?.toString() ?? ""}
                 onChange={(e) => {
                     setLocalFilter(
                         (prev) =>

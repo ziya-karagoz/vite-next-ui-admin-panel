@@ -17,6 +17,7 @@ export enum EColumnType {
 
 export enum EFilterType {
   SELECT = "SELECT",
+  STATIC_SELECT = "STATIC_SELECT",
   NUMBER = "NUMBER",
   DATE = "DATE",
 }
@@ -25,7 +26,11 @@ export interface IColumn {
   key: string;
   label: string;
   type?: EColumnType;
-  filterType?: EFilterType | undefined;
+  filterType?: EFilterType;
+  filterConfig?: {
+    numberFilterAdornment?: React.ReactNode;
+  };
+  filterOptions?: IStataticSelectFilterItem[];
 }
 
 export interface TableSearchColumn {
@@ -51,6 +56,12 @@ export type ISearchFilter = {
   type: "SEARCH";
   value: string;
   columns: TableSearchColumn[];
+}
+
+export interface IStataticSelectFilterItem {
+  value: any;
+  name: string;
+  label: string;
 }
 
 export interface ISelectFilter {
