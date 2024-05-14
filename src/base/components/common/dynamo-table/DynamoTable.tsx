@@ -53,7 +53,9 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
     const { pathname } = useLocation();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-
+    const [sort, setSort] = React.useState<string | undefined>(
+        columns.find((column) => column.key === searchParams.get("sort"))?.key ?? undefined
+    );
     const [filterChain, setFilterChain] = React.useState<IFilterChain>(
         JSON.parse(searchParams.get("filter")!) ?? []
     );
@@ -66,53 +68,31 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
     );
 
     const debouncedSearch = useDebounce(search, 500);
+
+    const handlePageChange = (page: number) => {
+        const updates = {
+            skip: page.toString(),
+        };
+        const path = generateUrl(pathname, searchParams, updates);
+        navigate(path);
+    };
+
     const bottomContent = React.useMemo(() => {
-        function handlePrevious(
-            meta: { currentPage: number },
-            pathname: string,
-            searchParams: URLSearchParams,
-            navigate: (path: string) => void
-        ): void {
+        function handlePrevious() {
             if (meta.currentPage === 1) return;
-
-            const updates = {
-                skip: Math.max(meta.currentPage - 1, 1).toString(),
-            };
-
-            const path = generateUrl(pathname, searchParams, updates);
-            navigate(path);
+            handlePageChange(meta.currentPage - 1);
         }
 
-        function handlePageChange(page: number): void {
-            const updates = {
-                skip: page.toString(),
-            };
-            const path = generateUrl(pathname, searchParams, updates);
-            navigate(path);
-        }
-
-        // Example usage in handleNext
-        function handleNext(
-            meta: { currentPage: number; totalPages: number },
-            pathname: string,
-            searchParams: URLSearchParams,
-            navigate: (path: string) => void
-        ): void {
+        function handleNext() {
             if (meta.currentPage === meta.totalPages) return;
-            const updates = {
-                skip: (meta.currentPage + 1).toString(), // Increment page number
-            };
-
-            const path = generateUrl(pathname, searchParams, updates);
-            navigate(path);
+            handlePageChange(meta.currentPage + 1);
         }
 
-        function handleTakeChange(
-            event: React.ChangeEvent<HTMLSelectElement>
-        ): void {
+        function handleTakeChange(event: React.ChangeEvent<HTMLSelectElement>) {
             const updates = {
                 take: event.target.value,
                 skip: "1",
+                sort: searchParams.get("sort") ?? "",
             };
             const path = generateUrl(pathname, searchParams, updates);
             navigate(path);
@@ -122,7 +102,7 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
             <div className="py-2 px-2 flex justify-between items-center">
                 <Select
                     aria-label="Select"
-                    defaultSelectedKeys={[5]}
+                    defaultSelectedKeys={[meta.itemsPerPage.toString()]}
                     className="max-w-20"
                     onChange={handleTakeChange}
                 >
@@ -146,16 +126,7 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                         isDisabled={meta.currentPage === 1}
                         size="sm"
                         variant="flat"
-                        onPress={() =>
-                            handlePrevious(
-                                {
-                                    currentPage: meta.currentPage,
-                                },
-                                pathname,
-                                searchParams,
-                                navigate
-                            )
-                        }
+                        onPress={handlePrevious}
                     >
                         Previous
                     </Button>
@@ -163,17 +134,7 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                         isDisabled={meta.totalPages === meta.currentPage}
                         size="sm"
                         variant="flat"
-                        onPress={() =>
-                            handleNext(
-                                {
-                                    currentPage: meta.currentPage,
-                                    totalPages: meta.totalPages,
-                                },
-                                pathname,
-                                searchParams,
-                                navigate
-                            )
-                        }
+                        onPress={handleNext}
                     >
                         Next
                     </Button>
@@ -209,10 +170,11 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
     React.useEffect(() => {
         const updates = {
             filter: JSON.stringify(filterChain),
+            sort: sort,
         };
         const path = generateUrl(pathname, searchParams, updates);
         navigate(path);
-    }, [filterChain]);
+    }, [filterChain, sort]);
 
     return (
         <Table
@@ -263,7 +225,7 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                                     setFilterChain={setFilterChain}
                                 />
                             ) : null}
-                            <SortDropdown column={column} filterChain={filterChain} />
+                            <SortDropdown column={column} filterChain={filterChain} sort={sort} setSort={setSort}/>
                         </div>
                     </TableColumn>
                 )}

@@ -14,42 +14,29 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 type SortDropdownProps = {
     column: IColumn;
     filterChain: IFilterChain;
+    sort: string | undefined;
+    setSort: React.Dispatch<React.SetStateAction<string | undefined>>;
 };
 
-function SortDropdown({ column, filterChain }: Readonly<SortDropdownProps>) {
+function SortDropdown({ column, filterChain, sort, setSort }: Readonly<SortDropdownProps>) {
 
     
-    const { pathname } = useLocation();
     const [searchParams] = useSearchParams();
-    const navigate = useNavigate();
     
    
     const sortAscending = () => {
         // Logic to sort ascending
-        const updates = {
-            sort: `${column.key},asc`,
-        };
-
-        const path = generateUrl(pathname, searchParams, updates);
-        navigate(path);
+        setSort(`${column.key},asc`);
     };
 
     const sortDescending = () => {
         // Logic to sort descending
-        const updates = {
-            sort: `${column.key},desc`,
-        };
-        const path = generateUrl(pathname, searchParams, updates);
-        navigate(path);
+        setSort(`${column.key},desc`);
     };
 
     const sortDefault = () => {
         // Logic to sort default
-        const updates = {
-            sort: undefined,
-        };
-        const path = generateUrl(pathname, searchParams, updates);
-        navigate(path);
+        setSort(undefined);
     };
 
     return (
@@ -65,8 +52,8 @@ function SortDropdown({ column, filterChain }: Readonly<SortDropdownProps>) {
                     >
                         {column.label}
                     </span>
-                    {searchParams.get("sort")?.includes(column.key) ? (
-                        searchParams.get("sort")?.includes(",asc") ? (
+                    {sort?.includes(column.key) ? (
+                        sort?.includes(",asc") ? (
                             <Icon icon="bx:sort-a-z" width="1.2rem" height="1.2rem" />
                         ) : (
                             <Icon icon="bx:sort-z-a" width="1.2rem" height="1.2rem" />
@@ -77,7 +64,6 @@ function SortDropdown({ column, filterChain }: Readonly<SortDropdownProps>) {
             <DropdownMenu variant="faded" aria-label="Dropdown menu with description">
                 <DropdownItem
                     key="new"
-                    shortcut="⇧ A"
                     startContent={
                         <Icon icon="bx:sort-a-z" width="1.2rem" height="1.2rem" />
                     }
@@ -87,7 +73,6 @@ function SortDropdown({ column, filterChain }: Readonly<SortDropdownProps>) {
                 </DropdownItem>
                 <DropdownItem
                     key="copy"
-                    shortcut="⇧ D"
                     startContent={
                         <Icon icon="bx:sort-z-a" width="1.2rem" height="1.2rem" />
                     }
@@ -97,8 +82,6 @@ function SortDropdown({ column, filterChain }: Readonly<SortDropdownProps>) {
                 </DropdownItem>
                 <DropdownItem
                     key="edit"
-                    shortcut="⇧E"
-                    showDivider
                     startContent={
                         <Icon icon="bxs:sort-alt" width="1.2rem" height="1.2rem" />
                     }

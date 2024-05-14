@@ -23,10 +23,11 @@ const AdminList = () => {
   const [searchParams] = useSearchParams();
   const skip = parseInt(searchParams.get("skip") ?? "1");
   const take = parseInt(searchParams.get("take") ?? "10");
-  const sort = searchParams.get("sort") ?? "";
+  const sort = searchParams.get("sort") ?? undefined;
   const filter = searchParams.get("filter") ?? "[]";
 
   React.useEffect(() => {
+
     setFetchStatus(FetchStatus.LOADING);
     fetchAdmins({ skip, take, sort, filter })
       .then((res) => {
@@ -40,8 +41,13 @@ const AdminList = () => {
 
   const columns: IColumn[] = [
     {
-      key: "name",
+      key: "first_name",
       label: "NAME",
+      filterType: EFilterType.SELECT,
+    },
+    {
+      key: "last_name",
+      label: "SURNAME",
       filterType: EFilterType.SELECT,
     },
     
@@ -52,7 +58,7 @@ const AdminList = () => {
   return (
     adminListResponse && (
       <DynamoTable
-        filterPath="bank"
+        filterPath="admin"
         title="Yöneticiler"
         meta={adminListResponse?.meta}
         columns={columns}
