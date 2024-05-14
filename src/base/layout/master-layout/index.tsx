@@ -3,8 +3,8 @@ import React from "react";
 import { useAuth } from "@app/modules/auth/core/contexts/AuthContext";
 import { SidebarContext } from "@base/layout/contexts/LayoutContext";
 import { useLockedBody } from "@base/layout/hooks/useBodyLock";
-import { SidebarWrapper } from "./components/sidebar/Sidebar";
-import { NavbarWrapper } from "./components/navbar/Navbar";
+import { SidebarWrapper } from "./components/sidebar/sidebar";
+import { NavbarWrapper } from "./components/navbar/navbar";
 
 /**
  * @author ziyakaragoz
