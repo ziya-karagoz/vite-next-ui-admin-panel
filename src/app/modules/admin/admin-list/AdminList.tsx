@@ -50,6 +50,12 @@ const AdminList = () => {
       label: "SURNAME",
       filterType: EFilterType.SELECT,
     },
+
+    {
+      key: "created_at",
+      label: "CREATED AT",
+      filterType: EFilterType.DATE,
+    },
     
   ];
 

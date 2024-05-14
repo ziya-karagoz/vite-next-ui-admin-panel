@@ -70,8 +70,8 @@ export interface INumberFilter {
 export interface IDateFilter {
   id: string;
   type: "DATE";
-  min: number;
-  max: number;
+  min: string;
+  max: string;
 }
 
 export type  IFilterChain = (ISearchFilter | ISelectFilter | INumberFilter | IDateFilter)[]

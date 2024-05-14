@@ -8,8 +8,7 @@ import {
 import clsx from "clsx";
 import React from "react";
 import { IColumn, IFilterChain } from "../types/dynamo-table.types";
-import { generateUrl } from "../helper/helper";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 type SortDropdownProps = {
     column: IColumn;
@@ -19,10 +18,7 @@ type SortDropdownProps = {
 };
 
 function SortDropdown({ column, filterChain, sort, setSort }: Readonly<SortDropdownProps>) {
-
-    
-    const [searchParams] = useSearchParams();
-    
+    const [searchParams]    = useSearchParams();
    
     const sortAscending = () => {
         // Logic to sort ascending
@@ -38,6 +34,10 @@ function SortDropdown({ column, filterChain, sort, setSort }: Readonly<SortDropd
         // Logic to sort default
         setSort(undefined);
     };
+
+    React.useEffect(() => {
+        console.log("FILTER CHAIN:::", filterChain)
+    }, [filterChain])
 
     return (
         <Dropdown>

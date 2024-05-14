@@ -28,7 +28,6 @@ import { takes } from "./data/data";
 import { useDebounce } from "@uidotdev/usehooks";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import FilterDropdown from "./components/FilterDropdown";
-import clsx from "clsx";
 import SortDropdown from "./components/SortDropdown";
 
 type DynamoTableProps = {
@@ -203,6 +202,7 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                                 color="default"
                                 isIconOnly
                                 onClick={() => {
+                                    setFilterChain([]);
                                     navigate(pathname);
                                 }}
                             >
