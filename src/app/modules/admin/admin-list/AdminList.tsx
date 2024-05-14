@@ -41,6 +41,11 @@ const AdminList = () => {
 
   const columns: IColumn[] = [
     {
+      key: "id",
+      label: "ID",
+      filterType: EFilterType.NUMBER,
+    },
+    {
       key: "first_name",
       label: "NAME",
       filterType: EFilterType.SELECT,

@@ -203,7 +203,9 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                                 isIconOnly
                                 onClick={() => {
                                     setFilterChain([]);
-                                    navigate(pathname);
+                                    setSort(undefined);
+                                   navigate(pathname);
+
                                 }}
                             >
                                 <Icon icon="tabler:filter-x" width="1.2rem" height="1.2rem" />

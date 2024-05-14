@@ -18,7 +18,6 @@ import { parseDate } from "@internationalized/date";
 type DateFilterProps = {
     column: IColumn;
     filterChain: IFilterChain;
-    isOpen: boolean;
     setFilterChain: React.Dispatch<React.SetStateAction<IFilterChain>>;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -27,7 +26,6 @@ function DateFilter({
     column,
     filterChain,
     setFilterChain,
-    isOpen,
     setIsOpen,
 }: Readonly<DateFilterProps>) {
 
@@ -39,8 +37,6 @@ function DateFilter({
             type: EFilterType.DATE,
         }
     );
-
-
 
     return (
         <div className="flex flex-col p-2 gap-4">

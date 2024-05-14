@@ -19,6 +19,7 @@ import React from "react";
 import SelectFilter from "./filters/SelectFilter";
 import clsx from "clsx";
 import DateFilter from "./filters/DateFilter";
+import NumberFilter from "./filters/NumberFilter";
 
 type FilterDropdownProps = {
     column: IColumn;
@@ -33,35 +34,8 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
     filterPath,
     setFilterChain,
 }) => {
-   
 
     const [isOpen, setIsOpen] = React.useState(false);
-   
-
-
-
-
-    const renderDateFilter = React.useMemo(() => {
-        return (
-            <div className="flex flex-col p-2 gap-4">
-            <h4 className="text-small font-bold">{column.label} Filtrele</h4>
-            <Input type="number" label="Minimum" size="sm" />
-            <Input type="number" label="Maximum" size="sm" />
-            <Divider />
-            <ButtonGroup className="justify-start">
-                <Button size="sm" color="primary" className="w-full">
-                    Apply
-                </Button>
-                <Button size="sm" className="w-full">
-                    Clear
-                </Button>
-            </ButtonGroup>
-        </div>
-            
-        );
-    }, []);
-
-   
 
     return (
         <Popover
@@ -87,9 +61,9 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
                         case EFilterType.SELECT:
                             return <SelectFilter column={column} filterChain={filterChain} setFilterChain={setFilterChain} filterPath={filterPath} isOpen={isOpen} setIsOpen={setIsOpen}/>;
                         case EFilterType.DATE:
-                            return <DateFilter column={column} filterChain={filterChain} setFilterChain={setFilterChain}  isOpen={isOpen} setIsOpen={setIsOpen}/>;
+                            return <DateFilter column={column} filterChain={filterChain} setFilterChain={setFilterChain} setIsOpen={setIsOpen}/>;
                             case EFilterType.NUMBER:
-                            return renderDateFilter;
+                            return <NumberFilter column={column} filterChain={filterChain} setFilterChain={setFilterChain} setIsOpen={setIsOpen}/>;
                         default:
                             return null;
                     }

@@ -63,15 +63,15 @@ export interface ISelectFilter {
 export interface INumberFilter {
   id: string;
   type: "NUMBER";
-  min: number;
-  max: number;
+  min?: number;
+  max?: number;
 }
 
 export interface IDateFilter {
   id: string;
   type: "DATE";
-  min: string;
-  max: string;
+  min?: string;
+  max?: string;
 }
 
 export type  IFilterChain = (ISearchFilter | ISelectFilter | INumberFilter | IDateFilter)[]
