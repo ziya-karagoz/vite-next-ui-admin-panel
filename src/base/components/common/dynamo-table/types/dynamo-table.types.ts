@@ -23,7 +23,7 @@ export enum EFilterType {
 }
 
 export interface IColumn {
-  key: string;
+  key?: string;
   label: string;
   type?: EColumnType;
   filterType?: EFilterType;

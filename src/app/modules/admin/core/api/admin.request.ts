@@ -9,7 +9,7 @@ import {
 import { PageableResponseModel } from "@app/core/models/app.interfaces";
 
 const API_URL = import.meta.env.VITE_API_URL;
-const PREFIX = "admin";
+const PREFIX = "customer";
 
 // Get Pageable Admins
 export function fetchAdmins({

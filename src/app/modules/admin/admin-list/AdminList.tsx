@@ -12,7 +12,6 @@ import {
   EFilterType,
   IColumn,
 } from "@base/components/common/dynamo-table/types/dynamo-table.types";
-import { Icon } from "@iconify/react/dist/iconify.js";
 
 const AdminList = () => {
   const [adminListResponse, setAdminListResponse] = React.useState<
@@ -41,6 +40,10 @@ const AdminList = () => {
   }, [skip, take, sort, filter]);
 
   const columns: IColumn[] = [
+    {
+      type: EColumnType.OPERATIONS,
+      label: "İşlemler",
+    },
     {
       key: "image",
       label: "",
@@ -99,7 +102,7 @@ const AdminList = () => {
   return (
     adminListResponse && (
       <DynamoTable
-        filterPath="admin"
+        filterPath="customer"
         title="Yöneticiler"
         meta={adminListResponse?.meta}
         columns={columns}
