@@ -8,6 +8,7 @@ import { PageableResponseModel } from "@app/core/models/app.interfaces";
 import DynamoTable from "@base/components/common/dynamo-table/DynamoTable";
 import { useSearchParams } from "react-router-dom";
 import {
+  EColumnType,
   EFilterType,
   IColumn,
 } from "@base/components/common/dynamo-table/types/dynamo-table.types";
@@ -41,12 +42,9 @@ const AdminList = () => {
 
   const columns: IColumn[] = [
     {
-      key: "id",
-      label: "ID",
-      filterType: EFilterType.NUMBER,
-      filterConfig: {
-        numberFilterAdornment: "₺",
-      },
+      key: "image",
+      label: "",
+      type: EColumnType.PROFILE,
     },
     {
       key: "first_name",
@@ -61,6 +59,31 @@ const AdminList = () => {
     {
       key: "account_status",
       label: "ACCOUNT STATUS",
+      type: EColumnType.CHIP,
+      filterOptions: [
+        {
+          value: true,
+          name: "active",
+          label: "Active",
+        },
+        {
+          value: false,
+          name: "passive",
+          label: "Inactive",
+        },
+      ],
+      columnConfig: {
+        chip: {
+          color: {
+            true: "success",
+            false: "danger",
+          },
+          text: {
+            true: "Active",
+            false: "Inactive",
+          },
+        },
+      },
       filterType: EFilterType.STATIC_SELECT,
     },
 

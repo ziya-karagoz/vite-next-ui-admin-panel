@@ -9,7 +9,7 @@ export interface TableMeta {
 export enum EColumnType {
   IMAGE = "IMAGE",
   PROFILE = "PROFILE",
-  POINT = "POINT",
+  CHIP = "CHIP",
   BADGE = "BADGE",
   DATE = "DATE",
   OPERATIONS = "OPERATIONS",
@@ -31,6 +31,12 @@ export interface IColumn {
     numberFilterAdornment?: React.ReactNode;
   };
   filterOptions?: IStataticSelectFilterItem[];
+  columnConfig?: {
+    chip: {
+      color: { [key: string]: "default" | "primary" | "secondary" | "success" | "warning" | "danger" | undefined };
+      text: { [key: string]: string };
+    };
+  }
 }
 
 export interface TableSearchColumn {

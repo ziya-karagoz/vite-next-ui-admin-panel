@@ -1,5 +1,7 @@
 import {
+    Avatar,
     Button,
+    Chip,
     Input,
     Pagination,
     Select,
@@ -16,6 +18,7 @@ import {
 import React from "react";
 import { findValueByKey, generateUrl } from "./helper/helper";
 import {
+    EColumnType,
     IColumn,
     IFilterChain,
     ISearchFilter,
@@ -174,7 +177,6 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
         const path = generateUrl(pathname, searchParams, updates);
         navigate(path);
     }, [filterChain, sort]);
-
     return (
         <Table
             selectionBehavior="replace"
@@ -243,11 +245,36 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
             >
                 {(item) => (
                     <TableRow key={item.key}>
-                        {(columnKey) => (
-                            <TableCell key={columnKey}>
-                                {findValueByKey(item, String(columnKey))}
-                            </TableCell>
-                        )}
+                        {(columnKey) => {
+                            let column = columns.find(
+                                (column) => column.key === columnKey
+                            );
+                            let value = findValueByKey(item, String(columnKey));
+                            switch (column?.type) {
+                                case EColumnType.PROFILE:
+                                    return (
+                                        <TableCell key={columnKey}>
+                                            <Avatar
+                                                src={value}
+                                            />
+                                        </TableCell>
+                                    );
+                                case EColumnType.CHIP:
+                                    return (
+                                        <TableCell key={columnKey}>
+                                            <Chip color={column.columnConfig?.chip.color[value]} variant="dot">
+                                                {column.columnConfig?.chip.text[value]}
+                                            </Chip>
+                                        </TableCell>
+                                    );
+                                default:
+                                    return (
+                                        <TableCell key={columnKey}>
+                                            {value}
+                                        </TableCell>
+                                    );
+                            }
+                        }}
                     </TableRow>
                 )}
             </TableBody>
