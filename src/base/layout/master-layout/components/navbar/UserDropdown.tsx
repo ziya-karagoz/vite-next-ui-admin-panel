@@ -7,7 +7,7 @@ import {
   NavbarItem,
 } from "@nextui-org/react"
 import { useAuth } from "@app/modules/auth/core/contexts/AuthContext";
-import { DarkModeSwitch } from "./darkmodeswitch";
+import { DarkModeSwitch } from "./DarkModeSwitch";
 
 export const UserDropdown = () => {
   const { currentUser, logout } = useAuth();
