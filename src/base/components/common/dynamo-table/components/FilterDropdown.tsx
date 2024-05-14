@@ -1,11 +1,5 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
 import {
-    Button,
-    ButtonGroup,
-    Checkbox,
-    DateRangePicker,
-    Divider,
-    Input,
     Popover,
     PopoverContent,
     PopoverTrigger,
@@ -20,6 +14,7 @@ import SelectFilter from "./filters/SelectFilter";
 import clsx from "clsx";
 import DateFilter from "./filters/DateFilter";
 import NumberFilter from "./filters/NumberFilter";
+import StaticSelectFilter from "./filters/StaticSelectFilter";
 
 type FilterDropdownProps = {
     column: IColumn;
@@ -64,7 +59,10 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
                             return <DateFilter column={column} filterChain={filterChain} setFilterChain={setFilterChain} setIsOpen={setIsOpen}/>;
                             case EFilterType.NUMBER:
                             return <NumberFilter column={column} filterChain={filterChain} setFilterChain={setFilterChain} setIsOpen={setIsOpen}/>;
-                        default:
+                        case EFilterType.STATIC_SELECT:
+                            return <StaticSelectFilter column={column} filterChain={filterChain} setFilterChain={setFilterChain} setIsOpen={setIsOpen}/>;
+                            
+                            default:
                             return null;
                     }
                 }}
