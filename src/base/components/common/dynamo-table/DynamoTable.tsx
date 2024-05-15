@@ -4,9 +4,13 @@ import {
     Chip,
     Input,
     Pagination,
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
     Select,
     SelectItem,
     Spinner,
+    Switch,
     Table,
     TableBody,
     TableCell,
@@ -33,9 +37,7 @@ import { useDebounce } from "@uidotdev/usehooks";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import FilterDropdown from "./components/FilterDropdown";
 import SortDropdown from "./components/SortDropdown";
-import {
-    hasPermission,
-} from "@base/helpers/permissions/permission.helper";
+import { hasPermission } from "@base/helpers/permissions/permission.helper";
 
 type DynamoTableProps = {
     title: string;
@@ -59,9 +61,15 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
     const { pathname } = useLocation();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
+
+    const [localColumns, setLocalColumns] = React.useState<IColumn[]>(columns);
+
+    // Store the initial order of columns
+    const initialOrderRef = React.useRef<IColumn[]>(columns);
+
     const [sort, setSort] = React.useState<string | undefined>(
-        columns.find((column) => column.key === searchParams.get("sort"))?.key ??
-        undefined
+        localColumns.find((column) => column.key === searchParams.get("sort"))
+            ?.key ?? undefined
     );
     const [filterChain, setFilterChain] = React.useState<IFilterChain>(
         JSON.parse(searchParams.get("filter")!) ?? []
@@ -204,6 +212,26 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
             </div>
         );
     };
+
+    const handleColumnVisibilityChange = (value: boolean, column: IColumn) => {
+        if (localColumns.length === 1 && !value) return;
+
+        if (value) {
+            const originalIndex = initialOrderRef.current.findIndex(
+                (col) => col.key === column.key
+            );
+            setLocalColumns((prev) => {
+                const newColumns = [...prev];
+                newColumns.splice(originalIndex, 0, column);
+                return newColumns;
+            });
+        } else {
+            setLocalColumns((prev) =>
+                prev.filter((localColumn) => localColumn.key !== column.key)
+            );
+        }
+    };
+
     return (
         <Table
             selectionBehavior="replace"
@@ -217,7 +245,7 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                             className="max-w-xs"
                             type="text"
                             isClearable
-                            placeholder="you@example.com"
+                            placeholder="Search..."
                             startContent={
                                 <Icon icon="uil:search" width="1.2rem" height="1.2rem" />
                             }
@@ -239,11 +267,43 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                                 <Icon icon="tabler:filter-x" width="1.2rem" height="1.2rem" />
                             </Button>
                         </Tooltip>
+
+                        <Popover placement="bottom">
+                            <PopoverTrigger>
+                                <Button size="sm" color="default" isIconOnly>
+                                    <Icon
+                                        icon="heroicons:bars-3-bottom-right-16-solid"
+                                        width="1.2rem"
+                                        height="1.2rem"
+                                    />
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent>
+                                <div className="px-1 py-2">
+                                    <div className="text-small font-bold mb-2">Columns Visibility</div>
+                                    <div className="flex flex-col gap-1">
+                                        {columns.map((column) => (
+                                            <Switch
+                                                defaultSelected
+                                                size="sm"
+                                                isSelected={localColumns.some(
+                                                    (localColumn) => localColumn.key === column.key
+                                                )}
+                                                onValueChange={(value) => handleColumnVisibilityChange(value, column)}
+                                                key={column.key ?? column.label}
+                                            >
+                                                {column.label.length ? column.label : column.type}
+                                            </Switch>
+                                        ))}
+                                    </div>
+                                </div>
+                            </PopoverContent>
+                        </Popover>
                     </div>
                 </div>
             }
         >
-            <TableHeader columns={columns}>
+            <TableHeader columns={localColumns}>
                 {(column) => (
                     <TableColumn key={column.key ?? column.label}>
                         <div className="flex justify-start items-center gap-1">
@@ -272,7 +332,7 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
             >
                 {(item) => (
                     <TableRow key={item.id || item.key}>
-                        {columns.map((column) => {
+                        {localColumns.map((column) => {
                             if (column.type === EColumnType.OPERATIONS && column.operations) {
                                 return (
                                     <TableCell key={column.label}>

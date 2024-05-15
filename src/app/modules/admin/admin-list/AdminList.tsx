@@ -145,8 +145,7 @@ const AdminList = () => {
         rows={adminListResponse.items}
         loadStatus={fetchStatus}
         searchColumns={[
-          { id: "first_name", type: "string" },
-          { id: "last_name", type: "string" },
+          { id: "company_name", type: "string" },
         ]}
       />
     )
