@@ -354,11 +354,13 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                                         </TableCell>
                                     );
                                 case EColumnType.CHIP:
+
                                     return (
                                         <TableCell key={column.key ?? column.label}>
                                             <Chip
                                                 color={column.columnConfig?.chip.color[value]}
-                                                variant="dot"
+                                                variant={column.columnConfig?.chip.variant}
+                                                size={column.columnConfig?.chip.size}
                                             >
                                                 {column.columnConfig?.chip.text[value]}
                                             </Chip>

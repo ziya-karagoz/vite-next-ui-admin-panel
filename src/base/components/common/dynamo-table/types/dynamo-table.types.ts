@@ -56,6 +56,8 @@ export interface IColumn {
   filterOptions?: IStataticSelectFilterItem[];
   columnConfig?: {
     chip: {
+      variant?: "flat" | "shadow" | "dot" | "solid" | "bordered" | "light" | "faded";
+      size?: "lg" | "sm" | "md";
       color: { [key: string]: "default" | "primary" | "secondary" | "success" | "warning" | "danger" | undefined };
       text: { [key: string]: string };
     };

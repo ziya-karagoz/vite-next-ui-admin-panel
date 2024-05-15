@@ -113,6 +113,8 @@ const AdminList = () => {
       ],
       columnConfig: {
         chip: {
+          variant: "dot",
+          size: "sm",
           color: {
             true: "success",
             false: "danger",
@@ -120,6 +122,38 @@ const AdminList = () => {
           text: {
             true: "Active",
             false: "Inactive",
+          },
+        },
+      },
+      filterType: EFilterType.STATIC_SELECT,
+    },
+    {
+      key: "type",
+      label: "ACCOUNT STATUS",
+      type: EColumnType.CHIP,
+      filterOptions: [
+        {
+          value: "individual",
+          name: "individual",
+          label: "Individual",
+        },
+        {
+          value: "corporate",
+          name: "corporate",
+          label: "Corporate",
+        },
+      ],
+      columnConfig: {
+        chip: {
+          variant: "solid",
+          size: "sm",
+          color: {
+            individual: "warning",
+            corporate: "primary",
+          },
+          text: {
+            individual: "Individual",
+            corporate: "Corporate",
           },
         },
       },
