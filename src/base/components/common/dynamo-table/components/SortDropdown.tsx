@@ -42,13 +42,13 @@ function SortDropdown({ column, filterChain, sort, setSort }: Readonly<SortDropd
         ) : (
         <Dropdown>
             <DropdownTrigger>
-                <div className="flex justify-center items-center gap-1">
-                    <span
-                        className={clsx("cursor-pointer", {
+                <div className= {clsx("flex justify-center items-center gap-1", {
                             "text-primary-500": filterChain.some(
                                 (filter) => filter.id === column.key
                             ),
-                        })}
+                        })}>
+                    <span
+                        className="cursor-pointer"
                     >
                         {column.label}
                     </span>

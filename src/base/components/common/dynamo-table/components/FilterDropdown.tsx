@@ -32,9 +32,7 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
 
     const [isOpen, setIsOpen] = React.useState(false);
 
-    React.useEffect(() => {
-        console.log("FILTER -> FilterChain", filterChain)
-    }, [filterChain])
+
 
     return (
         <Popover

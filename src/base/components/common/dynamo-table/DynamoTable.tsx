@@ -8,6 +8,7 @@ import {
     PopoverContent,
     PopoverTrigger,
     Select,
+    Selection,
     SelectItem,
     Spinner,
     Switch,
@@ -48,6 +49,7 @@ type DynamoTableProps = {
     meta: TableMeta;
     searchColumns?: TableSearchColumn[];
     filterPath: string;
+    headerContent?: React.ReactNode;
 };
 
 const DynamoTable: React.FC<DynamoTableProps> = ({
@@ -58,6 +60,7 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
     meta,
     searchColumns = [],
     filterPath,
+    headerContent,
 }) => {
     const { pathname } = useLocation();
     const navigate = useNavigate();
@@ -236,12 +239,14 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
     return (
         <Table
             selectionBehavior="replace"
+            selectionMode="none"
             aria-label={title}
             bottomContent={bottomContent}
             topContent={
                 <div className="flex justify-between items-center gap-4 flex-wrap">
                     <h2 className="text-xl font-bold mb-2">{title}</h2>
                     <div className="flex justify-end items-center gap-1">
+                        <div className="mr-8">{headerContent}</div>
                         <Input
                             className="max-w-xs"
                             type="text"

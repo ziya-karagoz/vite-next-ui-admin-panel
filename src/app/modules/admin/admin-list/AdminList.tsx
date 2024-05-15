@@ -15,6 +15,7 @@ import {
 } from "@base/components/common/dynamo-table/types/dynamo-table.types";
 import { ERole } from "@base/enums/role.enum";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { Button } from "@nextui-org/react";
 
 const AdminList = () => {
   const [adminListResponse, setAdminListResponse] = React.useState<
@@ -91,7 +92,7 @@ const AdminList = () => {
     },
     {
       key: "company_name",
-      label: "Comapny",
+      label: "Company",
       filterType: EFilterType.SELECT,
       customCell: (row) => (
         <div>
@@ -136,7 +137,7 @@ const AdminList = () => {
     },
     {
       key: "type",
-      label: "ACCOUNT STATUS",
+      label: "TYPE",
       type: EColumnType.CHIP,
       filterOptions: [
         {
