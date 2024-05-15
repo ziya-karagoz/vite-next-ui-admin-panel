@@ -38,6 +38,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import FilterDropdown from "./components/FilterDropdown";
 import SortDropdown from "./components/SortDropdown";
 import { hasPermission } from "@base/helpers/permissions/permission.helper";
+import moment from "moment";
 
 type DynamoTableProps = {
     title: string;
@@ -306,6 +307,12 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                     </div>
                 </div>
             }
+            classNames={
+                {
+                    
+                    wrapper: "fancy-scrollbar ",
+                }
+            }
         >
             <TableHeader columns={localColumns}>
                 {localColumns.map((column) => (
@@ -346,24 +353,32 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                             }
 
                             let value = findValueByKey(item, String(column.key));
+                            if (column.customCell) {
+                                value = column.customCell(item);
+                            }
                             switch (column?.type) {
-                                case EColumnType.PROFILE:
-                                    return (
-                                        <TableCell key={column.key ?? column.label}>
-                                            <Avatar src={value} />
-                                        </TableCell>
-                                    );
                                 case EColumnType.CHIP:
-
                                     return (
                                         <TableCell key={column.key ?? column.label}>
                                             <Chip
-                                                color={column.columnConfig?.chip.color[value]}
-                                                variant={column.columnConfig?.chip.variant}
-                                                size={column.columnConfig?.chip.size}
+                                                color={column.config?.chip?.color[value]}
+                                                variant={column.config?.chip?.variant}
+                                                size={column.config?.chip?.size}
                                             >
-                                                {column.columnConfig?.chip.text[value]}
+                                                {column.config?.chip?.text[value]}
                                             </Chip>
+                                        </TableCell>
+                                    );
+                                case EColumnType.DATE:
+                                    return (
+                                        <TableCell key={column.key ?? column.label}>
+                                            {moment(value).format(column.config?.date?.format)}
+                                        </TableCell>
+                                    );
+                                case EColumnType.IMAGE:
+                                    return (
+                                        <TableCell key={column.key ?? column.label}>
+                                            <Avatar radius={column.config?.avatar?.radius} src={value} alt={column.label} />
                                         </TableCell>
                                     );
                                 default:

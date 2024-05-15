@@ -93,6 +93,7 @@ a.active svg {
 .fancy-scrollbar::-webkit-scrollbar-track {
   @apply bg-gray-200;
   @apply dark:bg-gray-800;
+  @apply rounded-full;
 }
 
 .fancy-scrollbar::-webkit-scrollbar-thumb {

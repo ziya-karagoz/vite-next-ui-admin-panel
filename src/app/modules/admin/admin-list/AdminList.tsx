@@ -87,12 +87,19 @@ const AdminList = () => {
     {
       key: "image",
       label: "",
-      type: EColumnType.PROFILE,
+      type: EColumnType.IMAGE,
     },
     {
       key: "company_name",
       label: "Comapny",
       filterType: EFilterType.SELECT,
+      customCell: (row) => (
+        <div>
+          {row.company_name}
+          <br />
+          {row.email}
+        </div>
+      ),
     },
    
     {
@@ -111,7 +118,7 @@ const AdminList = () => {
           label: "Inactive",
         },
       ],
-      columnConfig: {
+      config: {
         chip: {
           variant: "dot",
           size: "sm",
@@ -143,7 +150,7 @@ const AdminList = () => {
           label: "Corporate",
         },
       ],
-      columnConfig: {
+      config: {
         chip: {
           variant: "solid",
           size: "sm",
@@ -164,6 +171,12 @@ const AdminList = () => {
       key: "created_at",
       label: "CREATED AT",
       filterType: EFilterType.DATE,
+      config: {
+        date: {
+          format: 'DD MMM YYYY, HH:mm',
+        }
+      },
+      type: EColumnType.DATE,
     },
   ];
 

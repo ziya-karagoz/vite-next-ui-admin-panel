@@ -12,9 +12,9 @@ export enum EColumnType {
   IMAGE = "IMAGE",
   PROFILE = "PROFILE",
   CHIP = "CHIP",
-  BADGE = "BADGE",
   DATE = "DATE",
   OPERATIONS = "OPERATIONS",
+  CUSTOM = "CUSTOM",
 }
 
 export enum EFilterType {
@@ -54,13 +54,20 @@ export interface IColumn {
     numberFilterAdornment?: React.ReactNode;
   };
   filterOptions?: IStataticSelectFilterItem[];
-  columnConfig?: {
-    chip: {
+  customCell?: (row: any) => React.ReactNode;
+  config?: {
+    chip?: {
       variant?: "flat" | "shadow" | "dot" | "solid" | "bordered" | "light" | "faded";
       size?: "lg" | "sm" | "md";
       color: { [key: string]: "default" | "primary" | "secondary" | "success" | "warning" | "danger" | undefined };
       text: { [key: string]: string };
     };
+    date?: {
+      format?: string;
+    };
+    avatar?:{
+      radius: "md" | "none" | "sm" | "lg" | "full";
+    }
   }
 }
 
