@@ -11,7 +11,10 @@ import {
   EColumnType,
   EFilterType,
   IColumn,
+  IConditionLogic,
 } from "@base/components/common/dynamo-table/types/dynamo-table.types";
+import { ERole } from "@base/enums/role.enum";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 const AdminList = () => {
   const [adminListResponse, setAdminListResponse] = React.useState<
@@ -42,7 +45,44 @@ const AdminList = () => {
   const columns: IColumn[] = [
     {
       type: EColumnType.OPERATIONS,
-      label: "İşlemler",
+      label: "Operations",
+      operations: [
+        {
+          name: "edit",
+          icon:  <Icon icon="fluent:edit-48-filled" />,
+          text: "Düzenle",
+          handle: ()=>{console.log("edit")},
+          role: ERole.AdminUpdate,
+          conditions: [
+            {
+              key: "account_status",
+              value: true,
+              logic: IConditionLogic.EQUAL,
+            }
+          ]
+        },
+        {
+          name: "delete",
+          icon:  <Icon icon="ic:round-delete" />,
+          text: "Sil",
+          handle: ()=>{console.log("delete")},
+          role: ERole.AdminDelete,
+        },
+        {
+          name: "adminSettings",
+          icon: <Icon icon="tabler:lock-filled" />,
+          text: "Yönetici Ayarları",
+          handle: ()=>{console.log("adminSettings")},
+          role: ERole.AdminUpdate,
+        },
+        {
+          name: "password",
+          icon: <Icon icon="bx:bxs-lock-alt" />,
+          text: "Şifre Güncelle",
+          handle: ()=>{console.log("password")},
+          role: ERole.AdminUpdate,
+        },
+      ],
     },
     {
       key: "image",
@@ -50,15 +90,11 @@ const AdminList = () => {
       type: EColumnType.PROFILE,
     },
     {
-      key: "first_name",
-      label: "NAME",
+      key: "company_name",
+      label: "Comapny",
       filterType: EFilterType.SELECT,
     },
-    {
-      key: "last_name",
-      label: "SURNAME",
-      filterType: EFilterType.SELECT,
-    },
+   
     {
       key: "account_status",
       label: "ACCOUNT STATUS",

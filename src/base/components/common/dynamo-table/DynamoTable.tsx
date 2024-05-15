@@ -16,11 +16,12 @@ import {
     Tooltip,
 } from "@nextui-org/react";
 import React from "react";
-import { findValueByKey, generateUrl } from "./helper/helper";
+import { checkConditions, findValueByKey, generateUrl } from "./helper/helper";
 import {
     EColumnType,
     IColumn,
     IFilterChain,
+    IOperation,
     ISearchFilter,
     TableMeta,
     TableSearchColumn,
@@ -32,6 +33,9 @@ import { useDebounce } from "@uidotdev/usehooks";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import FilterDropdown from "./components/FilterDropdown";
 import SortDropdown from "./components/SortDropdown";
+import {
+    hasPermission,
+} from "@base/helpers/permissions/permission.helper";
 
 type DynamoTableProps = {
     title: string;
@@ -177,6 +181,29 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
         const path = generateUrl(pathname, searchParams, updates);
         navigate(path);
     }, [filterChain, sort]);
+
+    const renderOperations = (operations: IOperation[], row: any) => {
+        return (
+            <div className="flex gap-2">
+                {operations.map(
+                    (operation) =>
+                        hasPermission(operation.role as string) &&
+                        checkConditions(operation.conditions || [], row) && (
+                            <Tooltip content={operation.text} key={operation.name}>
+                                <Button
+                                    size="sm"
+                                    color="default"
+                                    isIconOnly
+                                    onClick={() => operation.handle(row.id, row)}
+                                >
+                                    {operation.icon}
+                                </Button>
+                            </Tooltip>
+                        )
+                )}
+            </div>
+        );
+    };
     return (
         <Table
             selectionBehavior="replace"
@@ -218,7 +245,7 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
         >
             <TableHeader columns={columns}>
                 {(column) => (
-                    <TableColumn key={column.key}>
+                    <TableColumn key={column.key ?? column.label}>
                         <div className="flex justify-start items-center gap-1">
                             {column.filterType !== undefined ? (
                                 <FilterDropdown
@@ -244,37 +271,43 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                 items={rows}
             >
                 {(item) => (
-                    <TableRow key={item.key}>
-                        {(columnKey) => {
-                            let column = columns.find(
-                                (column) => column.key === columnKey
-                            );
-                            let value = findValueByKey(item, String(columnKey));
+                    <TableRow key={item.id || item.key}>
+                        {columns.map((column) => {
+                            if (column.type === EColumnType.OPERATIONS && column.operations) {
+                                return (
+                                    <TableCell key={column.label}>
+                                        {renderOperations(column.operations, item)}
+                                    </TableCell>
+                                );
+                            }
+
+                            let value = findValueByKey(item, String(column.key));
                             switch (column?.type) {
                                 case EColumnType.PROFILE:
                                     return (
-                                        <TableCell key={columnKey}>
-                                            <Avatar
-                                                src={value}
-                                            />
+                                        <TableCell key={column.key ?? column.label}>
+                                            <Avatar src={value} />
                                         </TableCell>
                                     );
                                 case EColumnType.CHIP:
                                     return (
-                                        <TableCell key={columnKey}>
-                                            <Chip color={column.columnConfig?.chip.color[value]} variant="dot">
+                                        <TableCell key={column.key ?? column.label}>
+                                            <Chip
+                                                color={column.columnConfig?.chip.color[value]}
+                                                variant="dot"
+                                            >
                                                 {column.columnConfig?.chip.text[value]}
                                             </Chip>
                                         </TableCell>
                                     );
                                 default:
                                     return (
-                                        <TableCell key={columnKey}>
+                                        <TableCell key={column.key ?? column.label}>
                                             {value}
                                         </TableCell>
                                     );
                             }
-                        }}
+                        })}
                     </TableRow>
                 )}
             </TableBody>

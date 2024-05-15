@@ -1,3 +1,5 @@
+import { ERole } from "@base/enums/role.enum";
+
 export interface TableMeta {
   totalItems: number;
   itemCount: number;
@@ -22,11 +24,32 @@ export enum EFilterType {
   DATE = "DATE",
 }
 
+export enum IConditionLogic {
+  EQUAL = "EQUAL",
+  NOT_EQUAL = "NOT_EQUAL",
+  GREATER_THAN = "GREATER_THAN",
+  LESS_THAN = "LESS_THAN",
+  GREATER_THAN_OR_EQUAL = "GREATER_THAN_OR_EQUAL",
+  LESS_THAN_OR_EQUAL = "LESS_THAN_OR_EQUAL",
+  IN = "IN",
+  NOT_IN = "NOT_IN",
+}
+
+export interface IOperation {
+  name: string;
+  icon: React.ReactNode;
+  text: string;
+  handle: (id: any, row: any) => void;
+  role: ERole;
+  conditions?: { key: string; value?: any; logic: IConditionLogic }[];
+}
+
 export interface IColumn {
   key?: string;
   label: string;
   type?: EColumnType;
   filterType?: EFilterType;
+  operations?: IOperation[];
   filterConfig?: {
     numberFilterAdornment?: React.ReactNode;
   };
