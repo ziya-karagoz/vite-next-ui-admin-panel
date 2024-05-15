@@ -310,7 +310,7 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
             classNames={
                 {
                     
-                    wrapper: "fancy-scrollbar ",
+                    wrapper: "fancy-scrollbar",
                 }
             }
         >
