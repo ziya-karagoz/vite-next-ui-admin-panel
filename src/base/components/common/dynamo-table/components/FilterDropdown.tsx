@@ -32,6 +32,10 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
 
     const [isOpen, setIsOpen] = React.useState(false);
 
+    React.useEffect(() => {
+        console.log("FILTER -> FilterChain", filterChain)
+    }, [filterChain])
+
     return (
         <Popover
             placement="bottom"
@@ -61,7 +65,6 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
                             return <NumberFilter column={column} filterChain={filterChain} setFilterChain={setFilterChain} setIsOpen={setIsOpen}/>;
                         case EFilterType.STATIC_SELECT:
                             return <StaticSelectFilter column={column} filterChain={filterChain} setFilterChain={setFilterChain} setIsOpen={setIsOpen}/>;
-                            
                             default:
                             return null;
                     }

@@ -280,7 +280,9 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                             </PopoverTrigger>
                             <PopoverContent>
                                 <div className="px-1 py-2">
-                                    <div className="text-small font-bold mb-2">Columns Visibility</div>
+                                    <div className="text-small font-bold mb-2">
+                                        Columns Visibility
+                                    </div>
                                     <div className="flex flex-col gap-1">
                                         {columns.map((column) => (
                                             <Switch
@@ -289,7 +291,9 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                                                 isSelected={localColumns.some(
                                                     (localColumn) => localColumn.key === column.key
                                                 )}
-                                                onValueChange={(value) => handleColumnVisibilityChange(value, column)}
+                                                onValueChange={(value) =>
+                                                    handleColumnVisibilityChange(value, column)
+                                                }
                                                 key={column.key ?? column.label}
                                             >
                                                 {column.label.length ? column.label : column.type}
@@ -304,7 +308,7 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
             }
         >
             <TableHeader columns={localColumns}>
-                {(column) => (
+                {localColumns.map((column) => (
                     <TableColumn key={column.key ?? column.label}>
                         <div className="flex justify-start items-center gap-1">
                             {column.filterType !== undefined ? (
@@ -323,7 +327,7 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                             />
                         </div>
                     </TableColumn>
-                )}
+                ))}
             </TableHeader>
             <TableBody
                 loadingState={loadStatus === FetchStatus.LOADING ? "loading" : "idle"}
