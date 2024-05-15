@@ -35,6 +35,11 @@ function SortDropdown({ column, filterChain, sort, setSort }: Readonly<SortDropd
 
 
     return (
+        column.key === undefined ? (
+            <div className="flex justify-center items-center gap-1 cursor-default">
+                <span>{column.label}</span>
+            </div>
+        ) : (
         <Dropdown>
             <DropdownTrigger>
                 <div className="flex justify-center items-center gap-1">
@@ -47,7 +52,7 @@ function SortDropdown({ column, filterChain, sort, setSort }: Readonly<SortDropd
                     >
                         {column.label}
                     </span>
-                    {sort?.includes(column.key) ? (
+                    {sort?.includes(column?.key) ? (
                         sort?.includes(",asc") ? (
                             <Icon icon="bx:sort-a-z" width="1.2rem" height="1.2rem" />
                         ) : (
@@ -86,6 +91,7 @@ function SortDropdown({ column, filterChain, sort, setSort }: Readonly<SortDropd
                 </DropdownItem>
             </DropdownMenu>
         </Dropdown>
+        )
     );
 }
 
