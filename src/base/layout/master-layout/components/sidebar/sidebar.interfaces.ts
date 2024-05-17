@@ -17,12 +17,12 @@ export interface ICollapseItem {
 export interface ISidebarMenu {
     id: string;
     title: string;
-    items: (ISidebarItem | ICollapseItems)[];
+    items: (ISidebarItem | ICollapseItem)[];
     type: "menu";
     
 }
 
-export interface ICollapseItems {
+export interface ICollapseItem {
     id: string;
     icon: React.ReactNode;
     title: string;
