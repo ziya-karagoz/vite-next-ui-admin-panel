@@ -16,15 +16,22 @@ import {
     ISidebarItem,
     ISidebarMenu,
 } from "../sidebar/sidebar.interfaces";
-
+import { useLocalStorage } from "@uidotdev/usehooks";
+const RECENT_SEARCHES_CONFIG_KEY = import.meta.env
+    .VITE_RECENT_SEARCH_CONFIG_KEY as string;
 function RouteSearcher() {
     const [searchKeyword, setSearchKeyword] = React.useState<string>("");
-
-    const [searchedResults, setSearchedResults] = React.useState<
+    const [recentSearches, setRecentSearches] = useLocalStorage<
         (ISidebarItem | ICollapseItem | ISidebarMenu)[]
-    >([]);
+    >(RECENT_SEARCHES_CONFIG_KEY, []);
+
+    const [searchedResults, setSearchedResults] =
+        React.useState<(ISidebarItem | ICollapseItem | ISidebarMenu)[]>(
+            recentSearches
+        );
 
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
     React.useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
             if (event.ctrlKey && event.key === "k") {
@@ -42,7 +49,6 @@ function RouteSearcher() {
     }, []);
 
     const searchSidebarData = (keyword: string) => {
-        console.log("keyword", keyword);
         return sidebarData.filter((item) => {
             if (item.type === "single") {
                 return item.title.toLowerCase().includes(keyword.toLowerCase());
@@ -72,6 +78,41 @@ function RouteSearcher() {
         const results = searchSidebarData(value);
         setSearchedResults(results);
     };
+
+    const handleItemClick = (
+        item: ISidebarItem | ICollapseItem | ISidebarMenu
+    ) => {
+        setRecentSearches((prevRecentSearches) => {
+            const updatedRecentSearches = [...prevRecentSearches];
+            const existingIndex = updatedRecentSearches.findIndex(
+                (searchItem) => searchItem.id === item.id
+            );
+
+            if (existingIndex !== -1) {
+                updatedRecentSearches.splice(existingIndex, 1);
+            }
+
+            if (!item?.type) {
+                let temp: ISidebarItem = item;
+                updatedRecentSearches.unshift({
+                    id: temp.id,
+                    title: temp.title,
+                    to: temp.to,
+                    type: "single",
+                } as ISidebarItem);
+            } else {
+                updatedRecentSearches.unshift(item);
+            }
+
+            // Limit recent searches to the latest 10 items
+            if (updatedRecentSearches.length > 7) {
+                updatedRecentSearches.pop();
+            }
+
+            return updatedRecentSearches;
+        });
+    };
+
     return (
         <React.Fragment>
             <Button
@@ -102,11 +143,11 @@ function RouteSearcher() {
                 <ModalContent>
                     {() => (
                         <ModalBody className="px-0">
-                            <Command label="Command Menu" loop >
+                            <Command label="Command Menu" loop>
                                 <div className="flex items-center w-full px-4 border-b border-default-400/50 dark:border-default-100">
                                     <Icon icon="ep:search" width="1.2rem" height="1.2rem" />
                                     <Command.Input
-                                    placeholder="Quick search..."
+                                        placeholder="Quick search..."
                                         value={searchKeyword}
                                         onValueChange={handleInputChange}
                                         autoFocus
@@ -133,31 +174,35 @@ function RouteSearcher() {
                                     <Command.Empty className="h-36 flex justify-center items-center">
                                         No results found.
                                     </Command.Empty>
-
+                                    {recentSearches.length > 0 && searchedResults.length > 0 && (
+                                        <Command.Separator className="text-default-500 mb-2">
+                                            Recent
+                                        </Command.Separator>
+                                    )}
                                     {searchedResults.map((item) => {
                                         if (item.type === "single") {
                                             return (
                                                 <Command.Item className="mb-2" key={item.id}>
-                                                        <Button
-                                                            as={Link}
-                                                            href={item.to}
-                                                            className="w-full py-8 justify-between"
-                                                            color="primary"
-                                                            variant="bordered"
-                                                            startContent={
-                                                                <div className="flex justify-start items-center gap-2">
-                                                                    {item.icon}
-                                                                    <span>{item.title}</span>
-                                                                </div>
-                                                            }
-                                                            endContent={
-                                                                <Icon
-                                                                    icon="mingcute:right-line"
-                                                                    width="1.2rem"
-                                                                    height="1.2rem"
-                                                                />
-                                                            }
-                                                        />
+                                                    <Button
+                                                        as={Link}
+                                                        href={item.to}
+                                                        className="w-full py-8 justify-between"
+                                                        color="primary"
+                                                        variant="bordered"
+                                                        startContent={
+                                                            <div className="flex justify-start items-center gap-2">
+                                                                <span>{item.title}</span>
+                                                            </div>
+                                                        }
+                                                        endContent={
+                                                            <Icon
+                                                                icon="mingcute:right-line"
+                                                                width="1.2rem"
+                                                                height="1.2rem"
+                                                            />
+                                                        }
+                                                        onClick={() => handleItemClick(item)}
+                                                    />
                                                 </Command.Item>
                                             );
                                         } else if (item.type === "menu") {
@@ -165,26 +210,26 @@ function RouteSearcher() {
                                                 if (subItem.type === "single") {
                                                     return (
                                                         <Command.Item className="mb-2" key={subItem.id}>
-                                                                <Button
-                                                                    as = {Link}
-                                                                    href={subItem.to}
-                                                                    className="w-full py-8 justify-between"
-                                                                    color="primary"
-                                                                    variant="bordered"
-                                                                    startContent={
-                                                                        <div className="flex justify-start items-center gap-2">
-                                                                            {subItem.icon}
-                                                                            <span>{subItem.title}</span>
-                                                                        </div>
-                                                                    }
-                                                                    endContent={
-                                                                        <Icon
-                                                                            icon="mingcute:right-line"
-                                                                            width="1.2rem"
-                                                                            height="1.2rem"
-                                                                        />
-                                                                    }
-                                                                />
+                                                            <Button
+                                                                as={Link}
+                                                                href={subItem.to}
+                                                                className="w-full py-8 justify-between"
+                                                                color="primary"
+                                                                variant="bordered"
+                                                                startContent={
+                                                                    <div className="flex justify-start items-center gap-2">
+                                                                        <span>{subItem.title}</span>
+                                                                    </div>
+                                                                }
+                                                                endContent={
+                                                                    <Icon
+                                                                        icon="mingcute:right-line"
+                                                                        width="1.2rem"
+                                                                        height="1.2rem"
+                                                                    />
+                                                                }
+                                                                onClick={() => handleItemClick(subItem)}
+                                                            />
                                                         </Command.Item>
                                                     );
                                                 } else if (subItem.type === "collapse") {
@@ -194,25 +239,26 @@ function RouteSearcher() {
                                                                 className="mb-2"
                                                                 key={collapseItem.id}
                                                             >
-                                                                    <Button
-                                                                        as={Link}
-                                                                        href={collapseItem.to}
-                                                                        className="w-full py-8 justify-between"
-                                                                        color="primary"
-                                                                        variant="bordered"
-                                                                        startContent={
-                                                                            <div className="flex justify-start items-center gap-2">
-                                                                                <span>{collapseItem.title}</span>
-                                                                            </div>
-                                                                        }
-                                                                        endContent={
-                                                                            <Icon
-                                                                                icon="mingcute:right-line"
-                                                                                width="1.2rem"
-                                                                                height="1.2rem"
-                                                                            />
-                                                                        }
-                                                                    />
+                                                                <Button
+                                                                    as={Link}
+                                                                    href={collapseItem.to}
+                                                                    className="w-full py-8 justify-between"
+                                                                    color="primary"
+                                                                    variant="bordered"
+                                                                    startContent={
+                                                                        <div className="flex justify-start items-center gap-2">
+                                                                            <span>{collapseItem.title}</span>
+                                                                        </div>
+                                                                    }
+                                                                    endContent={
+                                                                        <Icon
+                                                                            icon="mingcute:right-line"
+                                                                            width="1.2rem"
+                                                                            height="1.2rem"
+                                                                        />
+                                                                    }
+                                                                    onClick={() => handleItemClick(collapseItem)}
+                                                                />
                                                             </Command.Item>
                                                         );
                                                     });
