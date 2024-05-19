@@ -144,6 +144,9 @@ a.active svg {
   @apply h-3;
 }
 .swal2-popup.swal2-modal{
+  @apply dark:bg-default-50;
+  @apply dark:text-default-700;
+  @apply bg-white;
   @apply rounded-lg;
 }
 
@@ -161,9 +164,9 @@ a.active svg {
 
 
 .swal2-actions .swal2-cancel {
-  @apply bg-gray-100;
-  @apply text-gray-700;
+  @apply bg-default-200;
+  @apply text-default-700;
   @apply rounded-lg;
-  @apply focus:outline-gray-500;
+  @apply focus:outline-default-500;
   @apply border-none;
 }
