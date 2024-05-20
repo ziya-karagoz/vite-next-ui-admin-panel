@@ -132,4 +132,11 @@ export const sidebarData: (ISidebarItem | ICollapseItem | ISidebarMenu)[] = [
             } as ISidebarItem,
         ]
     } as ISidebarMenu,
+    {
+        id: "file-manager",
+        title: "File Manager",
+        type: "single",
+        icon: <Icon icon="solar:file-outline" width="1.2rem" height="1.2rem" className="text-gray-400 dark:text-gray-200"/>,
+        to: "/dosya-yoneticisi",
+    } as ISidebarItem,
 ];

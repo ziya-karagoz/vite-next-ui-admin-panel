@@ -36,6 +36,7 @@ const Login = () => {
     rememberMe,
   }: ILoginRequest) => {
     const { accessToken } = await login(email, password).catch((error) => {
+      formik.resetForm();
       swal.fire({
         title: "Hata",
         text:
@@ -193,6 +194,7 @@ const Login = () => {
                 variant="solid"
                 className="w-full"
                 color="primary"
+                isLoading={formik.isSubmitting}
               >
                 Sign into your account
               </Button>
@@ -203,7 +205,7 @@ const Login = () => {
       <section className="hidden md:block md:w-4/12">
         <img
           className="object-contain md:object-scale-down"
-          src="/icons/illustrations/1.svg"
+          src="/icons/illustrations/sapiens.svg"
           alt="login"
         />
       </section>

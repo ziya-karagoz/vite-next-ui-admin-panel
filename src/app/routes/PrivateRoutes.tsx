@@ -8,7 +8,8 @@ const PrivateRoutes = () => {
     () => import("@app/modules/dashboard/DashboardPage")
   );
   const AdminPage = React.lazy(() => import("@app/modules/admin/AdminsPage"));
-
+  const FileManagerPage = React.lazy(
+    () => import("@app/modules/file-manager/FileManagerPage"));
   return (
     <Routes>
       <Route path="auth/*" element={<Navigate to="/" />} />
@@ -25,6 +26,14 @@ const PrivateRoutes = () => {
         element={
           <SuspensedView>
             <AdminPage />
+          </SuspensedView>
+        }
+      />
+      <Route
+        path="dosya-yoneticisi/*"
+        element={
+          <SuspensedView>
+            <FileManagerPage />
           </SuspensedView>
         }
       />

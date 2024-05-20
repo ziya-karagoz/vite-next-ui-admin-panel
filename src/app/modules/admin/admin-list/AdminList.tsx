@@ -181,7 +181,7 @@ const AdminList = () => {
     },
   ];
 
-  if (fetchStatus === FetchStatus.IDLE) return <Loader isComponent />;
+  if (fetchStatus !== FetchStatus.SUCCEEDED) return <Loader isComponent />;
 
   return (
     adminListResponse && (

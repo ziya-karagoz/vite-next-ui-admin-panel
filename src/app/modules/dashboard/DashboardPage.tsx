@@ -7,9 +7,7 @@ const DashboardPage = () => {
       <Route
         path="/"
         element={
-          <>
-            <Home />
-          </>
+          <Home />
         }
       ></Route>
     </Routes>
