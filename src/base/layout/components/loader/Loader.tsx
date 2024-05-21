@@ -1,16 +1,10 @@
 import clsx from "clsx";
 import "./loader.css";
 
-type LoaderProps = {
-  isComponent?: boolean;
-};
-export default function Loader({ isComponent }: LoaderProps) {
+export default function Loader() {
   return (
     <div
-      className={clsx({
-        "min-h-[calc(70vh-4rem)] flex items-center justify-center ":
-          true,
-      })}
+      className="min-h-[calc(70vh-4rem)] flex items-center justify-center "
     >
       <div className="st-container">
         <div className="st-slice"></div>
