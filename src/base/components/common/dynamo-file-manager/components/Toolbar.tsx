@@ -10,63 +10,73 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 function Toolbar() {
   const { addDirectory, uploadFile, refreshFiles } = useFiles();
-  const { isOpen: directoryModalOpen, onOpenChange: onDirectoryModalOpenChange, onClose, onOpen: onDirectoryModalOpen } = useDisclosure();
+  const {
+    isOpen: directoryModalOpen,
+    onOpenChange: onDirectoryModalOpenChange,
+    onOpen: onDirectoryModalOpen,
+  } = useDisclosure();
   const [directoryName, setDirectoryName] = React.useState<string>("");
   const uploadInputRef = React.useRef<HTMLInputElement>(null);
   return (
-    <nav>
-      {addDirectory && (
-        <React.Fragment>
-          <Button onPress={onDirectoryModalOpen}>New Directory</Button>
-          <Modal isOpen={directoryModalOpen} onOpenChange={onDirectoryModalOpenChange}>
-            <ModalContent>
-              {(onClose) => (
-                <>
-                  <ModalHeader className="flex flex-col gap-1">
-                    New Directory
-                  </ModalHeader>
-                  <ModalBody>
-                    <Input
-                      type="text"
-                      label="Directory Name"
-                      value={directoryName}
-                      onChange={(e) => setDirectoryName(e.target.value)}
-                    />
-                  </ModalBody>
-                  <ModalFooter>
-                  <Button variant="solid" onPress={onClose}>
-                      Cancel
-                    </Button>
-                    <Button
-                    color="primary"
-                      onPress={() => {
-                        addDirectory(directoryName);
-                        onClose();
-                      }}
-                    >
-                      Create
-                    </Button>
-                    
-                  </ModalFooter>
-                </>
-              )}
-            </ModalContent>
-          </Modal>
-        </React.Fragment>
-      )}
-      {
-        uploadFile && (
+    <React.Fragment>
+        <div className="flex items-center justify-start gap-2">
+        {addDirectory && (
           <React.Fragment>
-
-            <Button onPress={() => {
-              if (uploadInputRef.current) {
-                uploadInputRef.current.click();
-              }
-            
-            }}>Upload File</Button>
+            <Button onPress={onDirectoryModalOpen}>New Directory</Button>
+            <Modal
+              isOpen={directoryModalOpen}
+              onOpenChange={onDirectoryModalOpenChange}
+            >
+              <ModalContent>
+                {(onClose) => (
+                  <>
+                    <ModalHeader className="flex flex-col gap-1">
+                      New Directory
+                    </ModalHeader>
+                    <ModalBody>
+                      <Input
+                        type="text"
+                        label="Directory Name"
+                        value={directoryName}
+                        onChange={(e) => setDirectoryName(e.target.value)}
+                      />
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button variant="solid" onPress={onClose}>
+                        Cancel
+                      </Button>
+                      <Button
+                        color="primary"
+                        onPress={() => {
+                          addDirectory(directoryName);
+                          onClose();
+                        }}
+                      >
+                        Create
+                      </Button>
+                    </ModalFooter>
+                  </>
+                )}
+              </ModalContent>
+            </Modal>
+          </React.Fragment>
+        )}
+        {uploadFile && (
+          <React.Fragment>
+            <Button
+              onPress={() => {
+                if (uploadInputRef.current) {
+                  uploadInputRef.current.click();
+                }
+              }}
+            >
+              <Icon icon="tdesign:file-add" width="1.2rem" height="1.2rem" />
+              Upload File
+            </Button>
             <input
               type="file"
               className="hidden"
@@ -78,19 +88,12 @@ function Toolbar() {
                 }
               }}
             />
-            
-
-          
           </React.Fragment>
-        )
-      }
-      {
-        refreshFiles && (
-          <Button onPress={refreshFiles}>Refresh</Button>
-        )
-      }
-    </nav>
-  );
+        )}
+        </div>
+        {refreshFiles && <Button isIconOnly onPress={refreshFiles}><Icon icon="lucide:refresh-ccw" width="1.2rem" height="1.2rem" /></Button>}
+        </React.Fragment>
+      );
 }
 
 export default Toolbar;

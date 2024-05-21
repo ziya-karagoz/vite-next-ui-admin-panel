@@ -1,3 +1,4 @@
+import { Card, CardBody, CardHeader } from "@nextui-org/react";
 import Sidebar from "./components/Sidebar";
 import Toolbar from "./components/Toolbar";
 import { DynamoFileManagerProvider } from "./contexts/DynamoFileManagerContext";
@@ -31,10 +32,15 @@ function DynamoFileManager({
                 refreshFiles,
             }}
         >
-            <Toolbar />
-            <div className="">
-                <Sidebar />
-            </div>
+            <Card>
+                <CardHeader className="flex justify-between gap-2">
+                    <Toolbar />
+                </CardHeader>
+                <CardBody className="flex flex-row justify-between gap-2">
+                    <Sidebar />
+                    <div>Asil content</div>
+                </CardBody>
+            </Card>
         </DynamoFileManagerProvider>
     );
 }

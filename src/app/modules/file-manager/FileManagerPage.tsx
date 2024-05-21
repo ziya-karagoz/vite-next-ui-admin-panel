@@ -46,12 +46,6 @@ const FileManagerPage = () => {
                     url: "",
                   },
                   {
-                    name: "anasayfaslider.png",
-                    isDirectory: false,
-                    size: 661998,
-                    url: "https://konutkonfor-backend.dev.inity.com.tr/api/openoffice/cdn/konutkonfor-dev?filePath=konutkonfor/anasayfaslider.png",
-                  },
-                  {
                     name: "asdasdasdasd",
                     isDirectory: true,
                     items: [],
@@ -228,9 +222,22 @@ const FileManagerPage = () => {
                         size: 58598,
                         url: "https://konutkonfor-backend.dev.inity.com.tr/api/openoffice/cdn/konutkonfor-dev?filePath=konutkonfor/musteriler/empty.jpg",
                       },
+                      {
+                        name: "test",
+                        isDirectory: true,
+                        items: [],
+                        size: 0,
+                        url: "",
+                      },
                     ],
                     size: 0,
                     url: "",
+                  },
+                  {
+                    name: "q.png",
+                    isDirectory: false,
+                    size: 661998,
+                    url: "https://konutkonfor-backend.dev.inity.com.tr/api/openoffice/cdn/konutkonfor-dev?filePath=konutkonfor/q.png",
                   },
                   {
                     name: "slider.jpeg",

@@ -3,6 +3,8 @@ import React, { createContext, useContext, ReactNode } from "react";
 import { DynamoFileData } from "../types/dynamo-file-manager.types";
 
 interface DynamoFileManagerProps {
+    selectedDirectory: DynamoFileData;
+        setSelectedDirectory: React.Dispatch<React.SetStateAction<DynamoFileData>>;
     files: DynamoFileData[];
     addDirectory?: (folder_path: string) => void;
     uploadFile?: (pathname: string, file: File) => void;
@@ -18,6 +20,8 @@ const DynamoFileManager = createContext<DynamoFileManagerProps | undefined>(
 interface DynamoFileManagerProviderProps {
     children: ReactNode;
     values: {
+        selectedDirectory?: DynamoFileData;
+        setSelectedDirectory?: React.Dispatch<React.SetStateAction<DynamoFileData>>;
         files: DynamoFileData[];
         addDirectory?: (folder_path: string) => void;
         uploadFile?: (pathname: string, file: File) => void;
@@ -30,8 +34,12 @@ interface DynamoFileManagerProviderProps {
 export const DynamoFileManagerProvider: React.FC<
     DynamoFileManagerProviderProps
 > = ({ children, values }) => {
+    const [selectedDirectory, setSelectedDirectory] = React.useState<DynamoFileData>(values.files[0]);
+
     const contextValues = React.useMemo(
         () => ({
+            selectedDirectory,
+            setSelectedDirectory,
             files: values.files,
             addDirectory: values.addDirectory,
             uploadFile: values.uploadFile,
@@ -40,6 +48,8 @@ export const DynamoFileManagerProvider: React.FC<
             refreshFiles: values.refreshFiles,
         }),
         [
+            selectedDirectory,
+            setSelectedDirectory,
             values.files,
             values.addDirectory,
             values.uploadFile,
