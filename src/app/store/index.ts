@@ -1,9 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
-import fileBrowserSlice from "./file-browser/fileBrowserSlice";
 
 export const store = configureStore({
   reducer: {
-    fileBrowser: fileBrowserSlice.reducer,
   },
 });
 

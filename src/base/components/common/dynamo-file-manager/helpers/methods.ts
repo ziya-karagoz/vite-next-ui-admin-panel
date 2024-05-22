@@ -30,16 +30,16 @@ export function findParentDirectory(
   return search(files, directory);
 }
 
-export function getFileType(fileName: string | undefined): string {
-  if (!fileName) return "";
+export function getFileType(filename: string | undefined): string {
+  if (!filename) return "";
   // Split the file name by dots
-  const parts = fileName.split(".");
+  const parts = filename.split(".");
   // Return the last part, which is the file extension
   return (parts.length > 1 ? parts[parts.length - 1] : "").toLowerCase();
 }
 
-export function getIconForFile(fileName: string | undefined): string {
-  const fileType = getFileType(fileName);
+export function getIconForFile(filename: string | undefined): string {
+  const fileType = getFileType(filename);
   switch (fileType) {
     case "svg":
       return "teenyicons:svg-outline";

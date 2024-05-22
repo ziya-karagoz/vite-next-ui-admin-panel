@@ -16,7 +16,7 @@ import FileManagerLoader from "../Loader";
 import {
   createFolderThunk,
   deleteFilesThunk,
-  getFilesThunk,
+  fetchFilesThunk,
   renameFilesThunk,
   uploadFilesThunk,
 } from "../../../../store/file-browser/thunks";
@@ -75,7 +75,7 @@ function FileBrowserModal({ setSelectedFileUrl, handleClose, show }: Props) {
 
   useEffect(() => {
     if (show)
-      dispatch(getFilesThunk());
+      dispatch(fetchFilesThunk());
   }, [dispatch, refresh, onLoad, show]);
 
   return (

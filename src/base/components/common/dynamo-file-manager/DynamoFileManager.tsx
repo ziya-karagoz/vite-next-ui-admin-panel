@@ -15,17 +15,16 @@ type Props = {
     addDirectory?: (folder_path: string) => void;
     uploadFile?: (pathname: string, file: File) => void;
     renameFile?: (oldName: string, newName: string) => void;
-    deleteFile?: (fileName: string) => void;
-    getFiles: () => Promise<DynamoFileData[]>;
+    deleteFile?: (filename: string) => void;
+    fetchFiles: () => Promise<DynamoFileData[]>;
     pickUrl?: (url: string) => void;
 };
 
 function WrappedDynamoFileManager() {
-    const { filesFetchStatus, files } = useFiles();
-    console.log(files);
+    const { filesFetchStatus } = useFiles();
     return (
         <Card>
-            {filesFetchStatus === FetchStatus.LOADING || !files.length ? (
+            {filesFetchStatus !== FetchStatus.SUCCEEDED  ? (
                 <Loader />
             ) : (
                 <React.Fragment>
@@ -47,7 +46,7 @@ function DynamoFileManager({
     deleteFile,
     renameFile,
     uploadFile,
-    getFiles,
+    fetchFiles,
     pickUrl,
 }: Readonly<Props>) {
     return (
@@ -57,7 +56,7 @@ function DynamoFileManager({
                 deleteFile,
                 renameFile,
                 uploadFile,
-                getFiles,
+                fetchFiles,
                 pickUrl,
             }}
         >

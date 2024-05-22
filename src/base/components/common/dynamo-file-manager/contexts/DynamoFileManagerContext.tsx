@@ -11,8 +11,9 @@ export interface DynamoFileManagerContextProps {
     addDirectory?: (folder_path: string) => void;
     uploadFile?: (pathname: string, file: File) => void;
     renameFile?: (oldName: string, newName: string) => void;
-    deleteFile?: (fileName: string) => void;
-    getFiles: () => Promise<DynamoFileData[]>;
+    deleteFile?: (filename: string) => void;
+    fetchFiles: () => Promise<DynamoFileData[]>;
+    getFiles?: () => void;
     pickUrl?: (url: string) => void;
 }
 
@@ -28,8 +29,9 @@ interface DynamoFileManagerProviderProps {
         addDirectory?: (folder_path: string) => void;
         uploadFile?: (pathname: string, file: File) => void;
         renameFile?: (oldName: string, newName: string) => void;
-        deleteFile?: (fileName: string) => void;
-        getFiles: () => Promise<DynamoFileData[]>;
+        deleteFile?: (filename: string) => void;
+        fetchFiles: () => Promise<DynamoFileData[]>;
+        getFiles?: () => void;
         pickUrl?: (url: string) => void;
     };
 }
@@ -45,9 +47,13 @@ export const DynamoFileManagerProvider: React.FC<
     );
 
     React.useEffect(() => {
+        getFiles();
+    }, [values.fetchFiles]);
+
+    function getFiles(){
         setFilesFetchStatus(FetchStatus.LOADING);
         values
-            .getFiles()
+            .fetchFiles()
             .then((data) => {
                 setFilesFetchStatus(FetchStatus.SUCCEEDED);
                 setFiles(data);
@@ -56,7 +62,7 @@ export const DynamoFileManagerProvider: React.FC<
             .catch(() => {
                 setFilesFetchStatus(FetchStatus.FAILED);
             });
-    }, [values.getFiles]);
+    }
 
     const contextValues = React.useMemo(
         () => ({
@@ -68,7 +74,8 @@ export const DynamoFileManagerProvider: React.FC<
             uploadFile: values.uploadFile,
             renameFile: values.renameFile,
             deleteFile: values.deleteFile,
-            getFiles: values.getFiles,
+            fetchFiles: values.fetchFiles,
+            getFiles: getFiles,
             pickUrl: values.pickUrl,
         }),
         [
@@ -80,7 +87,6 @@ export const DynamoFileManagerProvider: React.FC<
             values.uploadFile,
             values.renameFile,
             values.deleteFile,
-            values.getFiles,
             values.pickUrl,
         ]
     );

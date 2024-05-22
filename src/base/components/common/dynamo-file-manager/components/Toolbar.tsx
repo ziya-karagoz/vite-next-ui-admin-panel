@@ -13,7 +13,7 @@ import {
 import { Icon } from "@iconify/react/dist/iconify.js";
 
 function Toolbar() {
-  const { addDirectory, uploadFile, getFiles, filesFetchStatus } = useFiles();
+  const { addDirectory, uploadFile,  getFiles  } = useFiles();
   const {
     isOpen: directoryModalOpen,
     onOpenChange: onDirectoryModalOpenChange,

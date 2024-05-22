@@ -16,7 +16,7 @@ import "devextreme/dist/css/dx.dark.css";
 import FileManagerLoader from "../components/Loader";
 import { FetchStatus } from "@base/enums/api.enum";
 import { AppDispatch, RootState } from "@app/store";
-import { createFolderThunk, deleteFilesThunk, getFilesThunk, renameFilesThunk, uploadFilesThunk } from "@app/store/file-browser/thunks";
+import { createFolderThunk, deleteFilesThunk, fetchFilesThunk, renameFilesThunk, uploadFilesThunk } from "@app/store/file-browser/thunks";
 import { Button } from "@nextui-org/react";
 
 type Props = {
@@ -67,7 +67,7 @@ function FileBrowser({ setSelectedFileUrl }: Props) {
   };
 
   useEffect(() => {
-    dispatch(getFilesThunk());
+    dispatch(fetchFilesThunk());
   }, [dispatch, refresh, onLoad]);
 
   return filesStatus !== FetchStatus.SUCCEEDED || onLoad ? (
