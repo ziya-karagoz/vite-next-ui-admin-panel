@@ -1,5 +1,3 @@
-
-
 export interface DynamoFileData {
     isDirectory: boolean;
     items?: DynamoFileData[];

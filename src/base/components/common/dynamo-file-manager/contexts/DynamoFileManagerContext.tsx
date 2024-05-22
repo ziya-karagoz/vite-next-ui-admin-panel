@@ -2,6 +2,7 @@
 import React, { createContext, useContext, ReactNode } from "react";
 import { DynamoFileData } from "../types/dynamo-file-manager.types";
 import { FetchStatus } from "@base/enums/api.enum";
+import { findDirectory } from "../helpers/methods";
 
 export interface DynamoFileManagerContextProps {
     selectedDirectory: DynamoFileData;
@@ -53,14 +54,19 @@ export const DynamoFileManagerProvider: React.FC<
         getFiles();
     }, [values.fetchFiles]);
 
-
+    React.useEffect(() => { }, [selectedDirectory]);
     function getFiles() {
         values
             .fetchFiles()
             .then((data) => {
                 setFilesFetchStatus(FetchStatus.SUCCEEDED);
                 setFiles(data);
-                setSelectedDirectory(data[0] || {} as DynamoFileData);
+                // Mevcut selectedDirectory'yi yeni data içinde bul
+                const currentSelectedDirectory =
+                    findDirectory(data, selectedDirectory) ||
+                    data[0] ||
+                    ({} as DynamoFileData);
+                setSelectedDirectory(currentSelectedDirectory);
             })
             .catch(() => {
                 setFilesFetchStatus(FetchStatus.FAILED);

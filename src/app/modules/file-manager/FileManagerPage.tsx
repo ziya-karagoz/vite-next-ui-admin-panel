@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom"; 
 import FileBrowser from "./file-manager/FileBrowser";
 
 const FileManagerPage = () => {

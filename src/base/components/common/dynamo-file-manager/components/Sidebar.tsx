@@ -1,5 +1,4 @@
 import React from "react";
-
 import { useFiles } from "../contexts/DynamoFileManagerContext";
 import { DynamoFileData } from "../types/dynamo-file-manager.types";
 import { Accordion, AccordionItem, Button } from "@nextui-org/react";
@@ -9,12 +8,37 @@ import clsx from "clsx";
 
 function Sidebar() {
   const { files, setSelectedDirectory, selectedDirectory } = useFiles();
+  const [selectedKeys, setSelectedKeys] = React.useState<Set<string>>(new Set());
+
+  React.useEffect(() => {
+    // Mevcut selectedKeys durumunu koruyarak güncelle
+    const newKeys = new Set(selectedKeys);
+    files.forEach((file) => {
+      if (file.isDirectory && !newKeys.has(file.name)) {
+        newKeys.add(file.name);
+      }
+    });
+    setSelectedKeys(newKeys);
+  }, [files]);
+
+  const handleDirectoryClick = (directory: DynamoFileData) => {
+    setSelectedDirectory(directory);
+  };
+
+  const handleIconClick = (directoryName: string) => {
+    const newSelectedKeys = new Set(selectedKeys);
+    if (newSelectedKeys.has(directoryName)) {
+      newSelectedKeys.delete(directoryName);
+    } else {
+      newSelectedKeys.add(directoryName);
+    }
+    setSelectedKeys(newSelectedKeys);
+  };
 
   const renderDirectories = (
     directories: DynamoFileData[],
     level: number = 0
   ) => {
-    const [selectedKeys, setSelectedKeys] = React.useState<Set<string>>(new Set(directories.map((directory) => directory.name)));
     return directories
       .filter((directory) => directory.isDirectory)
       .map((directory) => (
@@ -25,15 +49,16 @@ function Sidebar() {
         >
           {directory.items && hasDirectories(directory.items) ? (
             <Accordion
+              className="px-0 w-full"
               selectedKeys={selectedKeys}
               itemClasses={{
                 base: "py-0 w-full px-0",
-                title: "font-normal text-medium px-0",
-                trigger:clsx("px-0 py-0 hover:bg-default-200 rounded-lg h-14 flex items-center h-8",{
+                title: "font-normal text-medium px-0 w-full",
+                trigger: clsx("px-0 py-0 hover:bg-default-200 rounded-lg h-14 flex items-center h-8 w-full", {
                   "bg-default-200": selectedDirectory.name === directory.name,
                 }),
-                indicator: "text-medium px-0",
-                content: "text-small px-2",
+                indicator: "invisible",
+                content: "text-small px-0",
                 heading: "text-medium px-0",
                 startContent: "text-medium px-0",
                 subtitle: "text-small px-0",
@@ -43,30 +68,17 @@ function Sidebar() {
               <AccordionItem
                 key={directory.name}
                 title={directory.name}
-                indicator={<div className="hidden"></div>}
-                onPress={() => setSelectedDirectory(directory)}
+                onPress={() => handleDirectoryClick(directory)}
                 startContent={
                   <div className="flex justify-center items-center gap-4">
                     <Icon
                       icon="mingcute:down-fill"
                       width="1.2rem"
                       height="1.2rem"
-                      onClick={() => {
-                        setSelectedKeys(
-                          selectedKeys.has(directory.name)
-                            ? new Set(
-                                Array.from(selectedKeys).filter(
-                                  (key) => key !== directory.name
-                                )
-                              )
-                            : new Set([...Array.from(selectedKeys), directory.name])
-                        );
-                      }
-                      }
+                      onClick={() => handleIconClick(directory.name)}
                       className={clsx("transition-transform duration-300", {
                         "-rotate-90": !selectedKeys.has(directory.name),
                         "rotate-0": selectedKeys.has(directory.name),
-                      
                       })}
                     />
                     <Icon
@@ -83,28 +95,28 @@ function Sidebar() {
             </Accordion>
           ) : (
             <Button
-              className={clsx("px-1 mx-2 bg-default-50 hover:bg-default-200 rounded-lg  h-8 flex items-center w-full justify-start", {
+              className={clsx("px-0 bg-default-50 hover:bg-default-200 rounded-lg h-8 flex items-center w-full justify-start", {
                 "bg-default-200": selectedDirectory.name === directory.name,
-              
               })}
               key={directory.name}
-              onClick={() => setSelectedDirectory(directory)}
+              onClick={() => handleDirectoryClick(directory)}
             >
               <div className="flex justify-start gap-1">
-              <div className="flex justify-center items-center gap-4 ">
-                    <Icon
-                      icon="mingcute:down-fill"
-                      width="1.2rem"
-                      height="1.2rem"
-                      className={"invisible"}
-                    />
-                    <Icon
-                      icon="solar:folder-bold"
-                      width="1.2rem"
-                      height="1.2rem"
-                      className="text-yellow-500"
-                    />
-                  </div><span className="text-medium">{directory.name}</span>
+                <div className="flex justify-center items-center gap-4">
+                  <Icon
+                    icon="mingcute:down-fill"
+                    width="1.2rem"
+                    height="1.2rem"
+                    className={"invisible"}
+                  />
+                  <Icon
+                    icon="solar:folder-bold"
+                    width="1.2rem"
+                    height="1.2rem"
+                    className="text-yellow-500"
+                  />
+                </div>
+                <span className="text-medium">{directory.name}</span>
               </div>
             </Button>
           )}
@@ -114,7 +126,7 @@ function Sidebar() {
 
   return (
     <div className="min-w-72 bg-default-50 rounded-lg py-4 h-96 overflow-y-auto fancy-scrollbar">
-      <div>{renderDirectories(files)}</div>
+      <div className="px-2">{renderDirectories(files)}</div>
     </div>
   );
 }

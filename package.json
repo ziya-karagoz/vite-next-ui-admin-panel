@@ -21,8 +21,6 @@
     "axios": "^1.6.8",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
-    "devextreme": "^23.2.6",
-    "devextreme-react": "^23.2.6",
     "formik": "^2.4.6",
     "framer-motion": "^11.1.7",
     "google-map-react": "^2.2.1",

@@ -4,7 +4,25 @@ export const hasDirectories = (items: DynamoFileData[]) => {
   return items.some((item) => item.isDirectory);
 };
 
-
+export function findDirectory(
+  files: DynamoFileData[],
+  directory: DynamoFileData
+): DynamoFileData | null {
+  for (const file of files) {
+      if (file.isDirectory) {
+          if (file.name === directory.name) {
+              return file;
+          }
+          if (file.items) {
+              const found = findDirectory(file.items, directory);
+              if (found) {
+                  return found;
+              }
+          }
+      }
+  }
+  return null;
+}
 
 export function findParentDirectory(
   files: DynamoFileData[],

@@ -29,7 +29,7 @@ function WrappedDynamoFileManager() {
                 <Loader />
             ) : (
                 <React.Fragment>
-                    <CardHeader className="flex flex-col justify-start items-start gap-2">
+                    <CardHeader className="flex flex-col justify-start items-start gap-2 pb-2">
                         {title && <h2 className="text-xl font-bold px-1">{title}</h2>}
                         <Toolbar />
                     </CardHeader>

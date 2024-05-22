@@ -60,8 +60,11 @@ function Toolbar() {
                             getDirectoryPath(files, selectedDirectory) +
                             "/" +
                             directoryName
-                          );
-                          onClose();
+                          ).then(() => {
+                            toast.success("Directory created successfully");
+                            getFiles && getFiles();
+                            onClose();
+                          });
                         }}
                       >
                         Create
@@ -102,6 +105,7 @@ function Toolbar() {
                     getDirectoryPath(files, selectedDirectory),
                     file
                   ).then(() => {
+                    toast.success("File uploaded successfully");
                     getFiles && getFiles();
                   });
                 }

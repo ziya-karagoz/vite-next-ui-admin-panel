@@ -26,6 +26,8 @@ import {
 } from "../helpers/methods";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { DynamoFileData } from "../types/dynamo-file-manager.types";
+import { swal } from "../../swal/SwalAlert";
+import toast from "react-hot-toast";
 
 function MainContent() {
   const {
@@ -34,10 +36,16 @@ function MainContent() {
     setSelectedDirectory,
     pickUrl,
     uploadFile,
+    deleteFile,
+    getFiles,
   } = useFiles();
   const [selectedRow, setSelectedRow] = React.useState<DynamoFileData>();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const uploadInputRef = React.useRef<HTMLInputElement>(null);
+
+  React.useEffect(() => {
+    console.log(files);
+  }, [files]);
 
   return (
     <React.Fragment>
@@ -45,7 +53,8 @@ function MainContent() {
         aria-label="Example static collection table"
         classNames={{
           base: "h-96 ",
-          wrapper: "h-96 bg-default-50 border-0 shadow-none  rounded-lg overflow-y-auto fancy-scrollbar",
+          wrapper:
+            "h-96 bg-default-50 border-0 shadow-none  rounded-lg overflow-y-auto fancy-scrollbar",
         }}
         selectionMode="single"
         selectionBehavior="replace"
@@ -54,6 +63,7 @@ function MainContent() {
           <TableColumn>NAME</TableColumn>
           <TableColumn>FILE TYPE</TableColumn>
           <TableColumn>FILE SIZE</TableColumn>
+          <TableColumn> </TableColumn>
         </TableHeader>
 
         <TableBody
@@ -85,7 +95,10 @@ function MainContent() {
                     onChange={(e) => {
                       const file = e.target.files?.[0];
                       if (file) {
-                        uploadFile(getDirectoryPath(files, selectedDirectory), file);
+                        uploadFile(
+                          getDirectoryPath(files, selectedDirectory),
+                          file
+                        );
                       }
                     }}
                   />
@@ -146,6 +159,46 @@ function MainContent() {
               <TableCell>{getFileType(item.name)}</TableCell>
               <TableCell>
                 {item.isDirectory ? null : formatBytes(item.size)}
+              </TableCell>
+              <TableCell>
+                {deleteFile && (
+                  <Button
+                    color="danger"
+                    variant="light"
+                    isIconOnly
+                    className="group"
+                    onPress={() => {
+                      swal
+                        .fire({
+                          title: "Are you sure?",
+                          text: "You will not be able to recover this file!",
+                          icon: "warning",
+                          showCancelButton: true,
+                          confirmButtonText: "Yes, delete it!",
+                          cancelButtonText: "No, cancel!",
+                        })
+                        .then((result) => {
+                          if (result.isConfirmed) {
+                            deleteFile(
+                              getDirectoryPath(files, selectedDirectory) +
+                              "/" +
+                              item.name
+                            ).then(() => {
+                              toast.success("File deleted successfully");
+                              getFiles && getFiles();
+                            });
+                          }
+                        });
+                    }}
+                  >
+                    <Icon
+                      icon="octicon:trash-16"
+                      className="group-hover:animate-wiggle"
+                      width="1.2rem"
+                      height="1.2rem"
+                    />
+                  </Button>
+                )}
               </TableCell>
             </TableRow>
           )}

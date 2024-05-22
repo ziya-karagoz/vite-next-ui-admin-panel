@@ -139,24 +139,24 @@ a.active svg {
 }
 
 .swal2-actions .swal2-confirm {
-  @apply bg-primary-500;
-  @apply text-white;
-  @apply border-none;
-  @apply hover:bg-primary-600;
-  @apply rounded-lg;
-  @apply focus:outline-primary-100;
-  @apply focus:ring-2;
-  @apply focus:ring-primary-100;
-  @apply border-none;
+  @apply bg-primary-500 !important;
+  @apply text-white !important;
+  @apply border-none !important;
+  @apply hover:bg-primary-600 !important;
+  @apply rounded-lg !important;
+  @apply focus:outline-primary-100 !important;
+  @apply focus:ring-2 !important;
+  @apply focus:ring-primary-100 !important;
+  @apply border-none !important;
 }
 
 
 .swal2-actions .swal2-cancel {
-  @apply bg-default-200;
-  @apply text-default-700;
-  @apply rounded-lg;
-  @apply focus:outline-default-500;
-  @apply border-none;
+  @apply bg-default-200 !important;
+  @apply text-default-700 !important;
+  @apply rounded-lg !important;
+  @apply focus:outline-default-500 !important;
+  @apply border-none !important;
 }
 
 .st-container {
