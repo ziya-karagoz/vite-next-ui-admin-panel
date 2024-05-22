@@ -80,16 +80,16 @@ const defaultConfig: DynamoFileManagerConfig = {
     mainContent: {
         className: "w-full",
         wrapper: {
-            className: "flex justify-start items-center gap-1 pb-2",
+            className: "flex justify-start items-center gap-1 pb-2 h-12",
         },
         button: {
             icon: <Icon icon="mingcute:up-fill" width="1.2rem" height="1.2rem" />,
         },
         table: {
             classNames: {
-                base: "h-96 ",
+                base: "h-[calc(24rem-3rem)] ",
                 wrapper:
-                    "h-96 bg-default-50 border-0 shadow-none  rounded-lg overflow-y-auto fancy-scrollbar",
+                    "h-[calc(24rem-3rem)] bg-default-50 border-0 shadow-none  rounded-lg overflow-y-auto fancy-scrollbar",
             },
             colNames: {
                 name: "NAME",
