@@ -1,6 +1,7 @@
 import DynamoFileManager from '@base/components/common/dynamo-file-manager/DynamoFileManager';
 import { createFolder, deleteFile, fetchFiles, uploadFile } from '../core/api/file-manager.requests';
 import Loader from '@base/layout/components/loader/Loader';
+import { Icon } from '@iconify/react/dist/iconify.js';
 
 function FileBrowser() {
   return (

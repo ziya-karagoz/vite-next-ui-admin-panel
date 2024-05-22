@@ -36,12 +36,12 @@ function Toolbar() {
         {addDirectory && (
           <React.Fragment>
             <Button
-              isIconOnly={!!config?.newDirectoryButton?.icon}
-              className={config?.newDirectoryButton?.className}
+              isIconOnly={!!config?.toolbar?.newDirectoryButton?.icon && !config.toolbar.newDirectoryButton.title}
+              className={config?.toolbar?.newDirectoryButton?.className}
               onPress={onDirectoryModalOpen}
             >
-              {config?.newDirectoryButton?.icon}
-              {config?.newDirectoryButton?.title ?? "New Directory"}
+              {config?.toolbar?.newDirectoryButton?.icon}
+              {config?.toolbar?.newDirectoryButton?.title ?? "New Directory"}
             </Button>
             <Modal
               isOpen={directoryModalOpen}
@@ -91,15 +91,15 @@ function Toolbar() {
         {uploadFile && (
           <React.Fragment>
             <Button
-              className={config?.uploadfileButton?.className}
+              className={config?.toolbar?.uploadfileButton?.className}
               onPress={() => {
                 if (uploadInputRef.current) {
                   uploadInputRef.current.click();
                 }
               }}
             >
-              {config?.uploadfileButton?.icon}
-              {config?.uploadfileButton?.title ?? "Upload File"}
+              {config?.toolbar?.uploadfileButton?.icon}
+              {config?.toolbar?.uploadfileButton?.title ?? "Upload File"}
             </Button>
             <input
               type="file"
@@ -123,15 +123,15 @@ function Toolbar() {
       </div>
       {getFiles && (
         <Button
-          className={config?.refreshButton?.className}
-          isIconOnly={!!config?.refreshButton?.icon}
+          className={config?.toolbar?.refreshButton?.className}
+          isIconOnly={!!config?.toolbar?.refreshButton?.icon && !config.toolbar.refreshButton.title}
           onPress={() => {
             getFiles();
             toast.success("Files refreshed");
           }}
         >
-          {config?.refreshButton?.icon}
-          {config?.refreshButton?.title ?? "Refresh"}
+          {config?.toolbar?.refreshButton?.icon}
+          {config?.toolbar?.refreshButton?.title ?? "Refresh"}
         </Button>
       )}
     </div>

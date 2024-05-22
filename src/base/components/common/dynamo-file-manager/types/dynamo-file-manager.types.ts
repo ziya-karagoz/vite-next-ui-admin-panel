@@ -18,24 +18,25 @@ export interface DynamoFileManagerConfig {
         };
     };
     loader?: React.ReactNode;
-    newDirectoryButton?: {
-        className?: string;
-        title?: string;
-        icon?: React.ReactNode;
-    };
-    uploadfileButton?: {
-        className?: string;
-        title?: string;
-        icon?: React.ReactNode;
-    };
-    refreshButton?: {
-        className?: string;
-        title?: string;
-        icon?: React.ReactNode;
-    };
+    
     toolbar?: {
         className?: string;
         actionsClassName?: string;
+        newDirectoryButton?: {
+            className?: string;
+            title?: string;
+            icon?: React.ReactNode;
+        };
+        uploadfileButton?: {
+            className?: string;
+            title?: string;
+            icon?: React.ReactNode;
+        };
+        refreshButton?: {
+            className?: string;
+            title?: string;
+            icon?: React.ReactNode;
+        };
     };
     sidebar?: {
         wrapperClassName?: string;
