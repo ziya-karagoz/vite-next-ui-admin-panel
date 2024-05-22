@@ -20,6 +20,7 @@ import {
 import {
   findParentDirectory,
   formatBytes,
+  getDirectoryPath,
   getFileType,
   getIconForFile,
 } from "../helpers/methods";
@@ -84,7 +85,7 @@ function MainContent() {
                     onChange={(e) => {
                       const file = e.target.files?.[0];
                       if (file) {
-                        uploadFile(file.name, file);
+                        uploadFile(getDirectoryPath(files, selectedDirectory), file);
                       }
                     }}
                   />

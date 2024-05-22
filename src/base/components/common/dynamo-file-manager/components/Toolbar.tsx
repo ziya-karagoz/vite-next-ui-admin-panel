@@ -72,13 +72,14 @@ function Toolbar() {
         {uploadFile && (
           <React.Fragment>
             <Button
+            className="group"
               onPress={() => {
                 if (uploadInputRef.current) {
                   uploadInputRef.current.click();
                 }
               }}
             >
-              <Icon icon="tdesign:file-add" width="1.2rem" height="1.2rem" />
+              <Icon icon="tdesign:file-add" width="1.2rem" height="1.2rem" className="group-hover:animate-wiggle"/>
               Upload File
             </Button>
             <input
@@ -88,14 +89,16 @@ function Toolbar() {
               onChange={(e) => {
                 const file = e.target.files?.[0];
                 if (file) {
-                  uploadFile(file.name, file);
+                  uploadFile(getDirectoryPath(files, selectedDirectory), file).then(() => {
+                    getFiles && getFiles();
+                  });
                 }
               }}
             />
           </React.Fragment>
         )}
         </div>
-        {getFiles && <Button isIconOnly onPress={getFiles}><Icon icon="lucide:refresh-ccw" width="1.2rem" height="1.2rem" /></Button>}
+        {getFiles && <Button className="group" isIconOnly onPress={getFiles}><Icon icon="lucide:refresh-ccw" width="1.2rem" height="1.2rem" className="rotate-180 group-hover:animate-spin"/></Button>}
         </div>
       );
 }

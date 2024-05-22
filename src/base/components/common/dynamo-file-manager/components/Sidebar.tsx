@@ -14,7 +14,7 @@ function Sidebar() {
     directories: DynamoFileData[],
     level: number = 0
   ) => {
-    const [selectedKeys, setSelectedKeys] = React.useState<Set<string>>(new Set([]));
+    const [selectedKeys, setSelectedKeys] = React.useState<Set<string>>(new Set(directories.map((directory) => directory.name)));
     return directories
       .filter((directory) => directory.isDirectory)
       .map((directory) => (

@@ -2,16 +2,17 @@
 import React, { createContext, useContext, ReactNode } from "react";
 import { DynamoFileData } from "../types/dynamo-file-manager.types";
 import { FetchStatus } from "@base/enums/api.enum";
+import toast from "react-hot-toast";
 
 export interface DynamoFileManagerContextProps {
     selectedDirectory: DynamoFileData;
     files: DynamoFileData[];
     filesFetchStatus: FetchStatus;
     setSelectedDirectory: React.Dispatch<React.SetStateAction<DynamoFileData>>;
-    addDirectory?: (folder_path: string) => void;
-    uploadFile?: (pathname: string, file: File) => void;
-    renameFile?: (oldName: string, newName: string) => void;
-    deleteFile?: (filename: string) => void;
+    addDirectory?: (folder_path: string) => Promise<void>;
+    uploadFile?: (pathname: string, file: File) => Promise<void>;
+    renameFile?: (oldName: string, newName: string) => Promise<void>;
+    deleteFile?: (filename: string) => Promise<void>;
     fetchFiles: () => Promise<DynamoFileData[]>;
     getFiles?: () => void;
     pickUrl?: (url: string) => void;
@@ -26,10 +27,10 @@ interface DynamoFileManagerProviderProps {
     values: {
         selectedDirectory?: DynamoFileData;
         setSelectedDirectory?: React.Dispatch<React.SetStateAction<DynamoFileData>>;
-        addDirectory?: (folder_path: string) => void;
-        uploadFile?: (pathname: string, file: File) => void;
-        renameFile?: (oldName: string, newName: string) => void;
-        deleteFile?: (filename: string) => void;
+        addDirectory?: (folder_path: string) => Promise<void>;
+        uploadFile?: (pathname: string, file: File) => Promise<void>;
+        renameFile?: (oldName: string, newName: string) => Promise<void>;
+        deleteFile?: (filename: string) => Promise<void>;
         fetchFiles: () => Promise<DynamoFileData[]>;
         getFiles?: () => void;
         pickUrl?: (url: string) => void;
@@ -47,17 +48,18 @@ export const DynamoFileManagerProvider: React.FC<
     );
 
     React.useEffect(() => {
+        setFilesFetchStatus(FetchStatus.LOADING);
         getFiles();
     }, [values.fetchFiles]);
 
     function getFiles(){
-        setFilesFetchStatus(FetchStatus.LOADING);
         values
             .fetchFiles()
             .then((data) => {
                 setFilesFetchStatus(FetchStatus.SUCCEEDED);
                 setFiles(data);
-                setSelectedDirectory(data[0] || {});
+                if(Object.keys(selectedDirectory).length === 0) setSelectedDirectory(data[0] || {});
+                toast.success("Files fetched successfully");
             })
             .catch(() => {
                 setFilesFetchStatus(FetchStatus.FAILED);
