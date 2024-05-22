@@ -10,7 +10,7 @@ export const DarkModeSwitch = () => {
         toggleTheme(theme === "dark" ? "light" : "dark");
       }}
       thumbIcon={({ isSelected }) =>
-        isSelected ? <Icon icon="ph:sun-bold" /> : <Icon icon="ph:moon-bold" />
+        isSelected ? <Icon icon="ph:sun-bold" className="text-default-100"/> : <Icon icon="ph:moon-bold" className="text-default-900"/>
       }
     />
   );

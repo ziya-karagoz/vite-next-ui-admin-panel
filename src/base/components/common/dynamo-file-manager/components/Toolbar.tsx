@@ -22,7 +22,7 @@ function Toolbar() {
   const [directoryName, setDirectoryName] = React.useState<string>("");
   const uploadInputRef = React.useRef<HTMLInputElement>(null);
   return (
-    <React.Fragment>
+<div className="flex items-center justify-between gap-2 w-full bg-default-50 rounded-lgpy-1 px-2 ">
         <div className="flex items-center justify-start gap-2">
         {addDirectory && (
           <React.Fragment>
@@ -92,7 +92,7 @@ function Toolbar() {
         )}
         </div>
         {refreshFiles && <Button isIconOnly onPress={refreshFiles}><Icon icon="lucide:refresh-ccw" width="1.2rem" height="1.2rem" /></Button>}
-        </React.Fragment>
+        </div>
       );
 }
 

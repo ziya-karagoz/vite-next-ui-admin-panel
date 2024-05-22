@@ -3,6 +3,7 @@ import Sidebar from "./components/Sidebar";
 import Toolbar from "./components/Toolbar";
 import { DynamoFileManagerProvider } from "./contexts/DynamoFileManagerContext";
 import { DynamoFileData } from "./types/dynamo-file-manager.types";
+import MainContent from "./components/MainContent";
 
 type Props = {
     files: DynamoFileData[];
@@ -36,9 +37,9 @@ function DynamoFileManager({
                 <CardHeader className="flex justify-between gap-2">
                     <Toolbar />
                 </CardHeader>
-                <CardBody className="flex flex-row justify-between gap-2">
+                <CardBody className="flex flex-row justify-between gap-2 pt-0">
                     <Sidebar />
-                    <div>Asil content</div>
+                    <MainContent/>
                 </CardBody>
             </Card>
         </DynamoFileManagerProvider>
