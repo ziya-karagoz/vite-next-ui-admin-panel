@@ -1,61 +1,87 @@
 // DynamoFileManager.tsx
 import React, { createContext, useContext, ReactNode } from "react";
 import { DynamoFileData } from "../types/dynamo-file-manager.types";
+import { FetchStatus } from "@base/enums/api.enum";
 
-interface DynamoFileManagerProps {
+export interface DynamoFileManagerContextProps {
     selectedDirectory: DynamoFileData;
-        setSelectedDirectory: React.Dispatch<React.SetStateAction<DynamoFileData>>;
     files: DynamoFileData[];
+    filesFetchStatus: FetchStatus;
+    setSelectedDirectory: React.Dispatch<React.SetStateAction<DynamoFileData>>;
     addDirectory?: (folder_path: string) => void;
     uploadFile?: (pathname: string, file: File) => void;
     renameFile?: (oldName: string, newName: string) => void;
     deleteFile?: (fileName: string) => void;
-    refreshFiles?: () => void;
+    getFiles: () => Promise<DynamoFileData[]>;
+    pickUrl?: (url: string) => void;
 }
 
-const DynamoFileManager = createContext<DynamoFileManagerProps | undefined>(
-    undefined
-);
+const DynamoFileManager = createContext<
+    DynamoFileManagerContextProps | undefined
+>(undefined);
 
 interface DynamoFileManagerProviderProps {
     children: ReactNode;
     values: {
         selectedDirectory?: DynamoFileData;
         setSelectedDirectory?: React.Dispatch<React.SetStateAction<DynamoFileData>>;
-        files: DynamoFileData[];
         addDirectory?: (folder_path: string) => void;
         uploadFile?: (pathname: string, file: File) => void;
         renameFile?: (oldName: string, newName: string) => void;
         deleteFile?: (fileName: string) => void;
-        refreshFiles?: () => void;
+        getFiles: () => Promise<DynamoFileData[]>;
+        pickUrl?: (url: string) => void;
     };
 }
 
 export const DynamoFileManagerProvider: React.FC<
     DynamoFileManagerProviderProps
 > = ({ children, values }) => {
-    const [selectedDirectory, setSelectedDirectory] = React.useState<DynamoFileData>(values.files[0]);
+    const [files, setFiles] = React.useState<DynamoFileData[]>([]);
+    const [selectedDirectory, setSelectedDirectory] =
+        React.useState<DynamoFileData>(files[0] || {});
+    const [filesFetchStatus, setFilesFetchStatus] = React.useState<FetchStatus>(
+        FetchStatus.IDLE
+    );
+
+    React.useEffect(() => {
+        setFilesFetchStatus(FetchStatus.LOADING);
+        values
+            .getFiles()
+            .then((data) => {
+                setFilesFetchStatus(FetchStatus.SUCCEEDED);
+                setFiles(data);
+                setSelectedDirectory(data[0] || {});
+            })
+            .catch(() => {
+                setFilesFetchStatus(FetchStatus.FAILED);
+            });
+    }, [values.getFiles]);
 
     const contextValues = React.useMemo(
         () => ({
             selectedDirectory,
             setSelectedDirectory,
-            files: values.files,
+            files,
+            filesFetchStatus,
             addDirectory: values.addDirectory,
             uploadFile: values.uploadFile,
             renameFile: values.renameFile,
             deleteFile: values.deleteFile,
-            refreshFiles: values.refreshFiles,
+            getFiles: values.getFiles,
+            pickUrl: values.pickUrl,
         }),
         [
             selectedDirectory,
             setSelectedDirectory,
-            values.files,
+            files,
+            filesFetchStatus,
             values.addDirectory,
             values.uploadFile,
             values.renameFile,
             values.deleteFile,
-            values.refreshFiles,
+            values.getFiles,
+            values.pickUrl,
         ]
     );
     return (

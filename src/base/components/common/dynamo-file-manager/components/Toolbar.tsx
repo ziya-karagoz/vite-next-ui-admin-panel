@@ -13,7 +13,7 @@ import {
 import { Icon } from "@iconify/react/dist/iconify.js";
 
 function Toolbar() {
-  const { addDirectory, uploadFile, refreshFiles } = useFiles();
+  const { addDirectory, uploadFile, getFiles, filesFetchStatus } = useFiles();
   const {
     isOpen: directoryModalOpen,
     onOpenChange: onDirectoryModalOpenChange,
@@ -91,7 +91,7 @@ function Toolbar() {
           </React.Fragment>
         )}
         </div>
-        {refreshFiles && <Button isIconOnly onPress={refreshFiles}><Icon icon="lucide:refresh-ccw" width="1.2rem" height="1.2rem" /></Button>}
+        {getFiles && <Button isIconOnly onPress={getFiles}><Icon icon="lucide:refresh-ccw" width="1.2rem" height="1.2rem" /></Button>}
         </div>
       );
 }

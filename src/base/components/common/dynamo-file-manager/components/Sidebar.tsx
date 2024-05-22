@@ -8,7 +8,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import clsx from "clsx";
 
 function Sidebar() {
-  const { files, setSelectedDirectory } = useFiles();
+  const { files, setSelectedDirectory, selectedDirectory } = useFiles();
 
   const renderDirectories = (
     directories: DynamoFileData[],
@@ -29,8 +29,9 @@ function Sidebar() {
               itemClasses={{
                 base: "py-0 w-full px-0",
                 title: "font-normal text-medium px-0",
-                trigger:
-                  "px-0 py-0 hover:bg-default-200 rounded-lg h-14 flex items-center h-8",
+                trigger:clsx("px-0 py-0 hover:bg-default-200 rounded-lg h-14 flex items-center h-8",{
+                  "bg-default-200": selectedDirectory.name === directory.name,
+                }),
                 indicator: "text-medium px-0",
                 content: "text-small px-2",
                 heading: "text-medium px-0",
@@ -82,7 +83,10 @@ function Sidebar() {
             </Accordion>
           ) : (
             <Button
-              className="px-1 mx-2 bg-default-50 hover:bg-default-200 rounded-lg  h-8 flex items-center w-full justify-start"
+              className={clsx("px-1 mx-2 bg-default-50 hover:bg-default-200 rounded-lg  h-8 flex items-center w-full justify-start", {
+                "bg-default-200": selectedDirectory.name === directory.name,
+              
+              })}
               key={directory.name}
               onClick={() => setSelectedDirectory(directory)}
             >

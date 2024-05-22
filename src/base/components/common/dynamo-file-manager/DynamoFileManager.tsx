@@ -1,47 +1,67 @@
 import { Card, CardBody, CardHeader } from "@nextui-org/react";
 import Sidebar from "./components/Sidebar";
 import Toolbar from "./components/Toolbar";
-import { DynamoFileManagerProvider } from "./contexts/DynamoFileManagerContext";
+import {
+    DynamoFileManagerProvider,
+    useFiles,
+} from "./contexts/DynamoFileManagerContext";
 import { DynamoFileData } from "./types/dynamo-file-manager.types";
 import MainContent from "./components/MainContent";
+import { FetchStatus } from "@base/enums/api.enum";
+import Loader from "@base/layout/components/loader/Loader";
+import React from "react";
 
 type Props = {
-    files: DynamoFileData[];
     addDirectory?: (folder_path: string) => void;
     uploadFile?: (pathname: string, file: File) => void;
     renameFile?: (oldName: string, newName: string) => void;
     deleteFile?: (fileName: string) => void;
-    refreshFiles?: () => void;
+    getFiles: () => Promise<DynamoFileData[]>;
+    pickUrl?: (url: string) => void;
 };
 
+function WrappedDynamoFileManager() {
+    const { filesFetchStatus, files } = useFiles();
+    console.log(files);
+    return (
+        <Card>
+            {filesFetchStatus === FetchStatus.LOADING || !files.length ? (
+                <Loader />
+            ) : (
+                <React.Fragment>
+                    <CardHeader className="flex justify-between gap-2">
+                        <Toolbar />
+                    </CardHeader>
+                    <CardBody className="flex flex-row justify-between gap-2 pt-0">
+                        <Sidebar />
+                        <MainContent />
+                    </CardBody>
+                </React.Fragment>
+            )}
+        </Card>
+    );
+}
+
 function DynamoFileManager({
-    files,
     addDirectory,
     deleteFile,
     renameFile,
     uploadFile,
-    refreshFiles,
+    getFiles,
+    pickUrl,
 }: Readonly<Props>) {
     return (
         <DynamoFileManagerProvider
             values={{
-                files,
                 addDirectory,
                 deleteFile,
                 renameFile,
                 uploadFile,
-                refreshFiles,
+                getFiles,
+                pickUrl,
             }}
         >
-            <Card>
-                <CardHeader className="flex justify-between gap-2">
-                    <Toolbar />
-                </CardHeader>
-                <CardBody className="flex flex-row justify-between gap-2 pt-0">
-                    <Sidebar />
-                    <MainContent/>
-                </CardBody>
-            </Card>
+            <WrappedDynamoFileManager />
         </DynamoFileManagerProvider>
     );
 }
