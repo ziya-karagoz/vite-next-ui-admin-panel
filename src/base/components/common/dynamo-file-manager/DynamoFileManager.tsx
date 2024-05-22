@@ -18,20 +18,22 @@ type Props = {
     deleteFile?: (filename: string) => Promise<void>;
     fetchFiles: () => Promise<DynamoFileData[]>;
     pickUrl?: (url: string) => void;
+    title?: string;
 };
 
 function WrappedDynamoFileManager() {
-    const { filesFetchStatus } = useFiles();
+    const { filesFetchStatus, title, selectedDirectory } = useFiles();
     return (
         <Card>
-            {filesFetchStatus !== FetchStatus.SUCCEEDED  ? (
+            {filesFetchStatus !== FetchStatus.SUCCEEDED || !Object.keys(selectedDirectory).length  ? (
                 <Loader />
             ) : (
                 <React.Fragment>
-                    <CardHeader className="flex justify-between gap-2">
+                    <CardHeader className="flex flex-col justify-start items-start gap-2">
+                        {title && <h2 className="text-xl font-bold px-1">{title}</h2>}
                         <Toolbar />
                     </CardHeader>
-                    <CardBody className="flex flex-row justify-between gap-2 pt-0">
+                    <CardBody className="flex flex-col lg:flex-row justify-between gap-2 pt-0">
                         <Sidebar />
                         <MainContent />
                     </CardBody>
@@ -48,6 +50,7 @@ function DynamoFileManager({
     uploadFile,
     fetchFiles,
     pickUrl,
+    title,
 }: Readonly<Props>) {
     return (
         <DynamoFileManagerProvider
@@ -58,6 +61,7 @@ function DynamoFileManager({
                 uploadFile,
                 fetchFiles,
                 pickUrl,
+                title,
             }}
         >
             <WrappedDynamoFileManager />

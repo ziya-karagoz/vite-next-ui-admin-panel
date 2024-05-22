@@ -2,7 +2,6 @@
 import React, { createContext, useContext, ReactNode } from "react";
 import { DynamoFileData } from "../types/dynamo-file-manager.types";
 import { FetchStatus } from "@base/enums/api.enum";
-import toast from "react-hot-toast";
 
 export interface DynamoFileManagerContextProps {
     selectedDirectory: DynamoFileData;
@@ -16,6 +15,7 @@ export interface DynamoFileManagerContextProps {
     fetchFiles: () => Promise<DynamoFileData[]>;
     getFiles?: () => void;
     pickUrl?: (url: string) => void;
+    title?: string;
 }
 
 const DynamoFileManager = createContext<
@@ -34,6 +34,7 @@ interface DynamoFileManagerProviderProps {
         fetchFiles: () => Promise<DynamoFileData[]>;
         getFiles?: () => void;
         pickUrl?: (url: string) => void;
+        title?: string;
     };
 }
 
@@ -42,7 +43,7 @@ export const DynamoFileManagerProvider: React.FC<
 > = ({ children, values }) => {
     const [files, setFiles] = React.useState<DynamoFileData[]>([]);
     const [selectedDirectory, setSelectedDirectory] =
-        React.useState<DynamoFileData>(files[0] || {});
+        React.useState<DynamoFileData>({} as DynamoFileData);
     const [filesFetchStatus, setFilesFetchStatus] = React.useState<FetchStatus>(
         FetchStatus.IDLE
     );
@@ -52,14 +53,14 @@ export const DynamoFileManagerProvider: React.FC<
         getFiles();
     }, [values.fetchFiles]);
 
-    function getFiles(){
+
+    function getFiles() {
         values
             .fetchFiles()
             .then((data) => {
                 setFilesFetchStatus(FetchStatus.SUCCEEDED);
                 setFiles(data);
-                if(Object.keys(selectedDirectory).length === 0) setSelectedDirectory(data[0] || {});
-                toast.success("Files fetched successfully");
+                setSelectedDirectory(data[0] || {} as DynamoFileData);
             })
             .catch(() => {
                 setFilesFetchStatus(FetchStatus.FAILED);
@@ -79,6 +80,7 @@ export const DynamoFileManagerProvider: React.FC<
             fetchFiles: values.fetchFiles,
             getFiles: getFiles,
             pickUrl: values.pickUrl,
+            title: values.title,
         }),
         [
             selectedDirectory,
@@ -90,6 +92,7 @@ export const DynamoFileManagerProvider: React.FC<
             values.renameFile,
             values.deleteFile,
             values.pickUrl,
+            values.title,
         ]
     );
     return (

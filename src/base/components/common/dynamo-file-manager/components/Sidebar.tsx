@@ -20,7 +20,7 @@ function Sidebar() {
       .map((directory) => (
         <div
           key={directory.name}
-          style={{ marginLeft: level * 10 }}
+          style={{ marginLeft: level + 10 }}
           className="flex justify-start gap-2"
         >
           {directory.items && hasDirectories(directory.items) ? (

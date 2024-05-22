@@ -12,9 +12,11 @@ import {
 } from "@nextui-org/react";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { getDirectoryPath } from "../helpers/methods";
+import toast from "react-hot-toast";
 
 function Toolbar() {
-  const { addDirectory, uploadFile,  getFiles, files, selectedDirectory  } = useFiles();
+  const { addDirectory, uploadFile, getFiles, files, selectedDirectory } =
+    useFiles();
   const {
     isOpen: directoryModalOpen,
     onOpenChange: onDirectoryModalOpenChange,
@@ -23,11 +25,9 @@ function Toolbar() {
   const [directoryName, setDirectoryName] = React.useState<string>("");
   const uploadInputRef = React.useRef<HTMLInputElement>(null);
 
-
-
   return (
-<div className="flex items-center justify-between gap-2 w-full bg-default-50 rounded-lg py-1 px-2 ">
-        <div className="flex items-center justify-start gap-2">
+    <div className="flex items-center justify-between gap-2 w-full bg-default-50 rounded-lg py-1 px-2 ">
+      <div className="flex items-center justify-start gap-2">
         {addDirectory && (
           <React.Fragment>
             <Button onPress={onDirectoryModalOpen}>New Directory</Button>
@@ -56,7 +56,11 @@ function Toolbar() {
                       <Button
                         color="primary"
                         onPress={() => {
-                          addDirectory(getDirectoryPath(files, selectedDirectory) + "/" + directoryName);
+                          addDirectory(
+                            getDirectoryPath(files, selectedDirectory) +
+                            "/" +
+                            directoryName
+                          );
                           onClose();
                         }}
                       >
@@ -72,14 +76,19 @@ function Toolbar() {
         {uploadFile && (
           <React.Fragment>
             <Button
-            className="group"
+              className="group"
               onPress={() => {
                 if (uploadInputRef.current) {
                   uploadInputRef.current.click();
                 }
               }}
             >
-              <Icon icon="tdesign:file-add" width="1.2rem" height="1.2rem" className="group-hover:animate-wiggle"/>
+              <Icon
+                icon="tdesign:file-add"
+                width="1.2rem"
+                height="1.2rem"
+                className="group-hover:animate-wiggle"
+              />
               Upload File
             </Button>
             <input
@@ -89,7 +98,10 @@ function Toolbar() {
               onChange={(e) => {
                 const file = e.target.files?.[0];
                 if (file) {
-                  uploadFile(getDirectoryPath(files, selectedDirectory), file).then(() => {
+                  uploadFile(
+                    getDirectoryPath(files, selectedDirectory),
+                    file
+                  ).then(() => {
                     getFiles && getFiles();
                   });
                 }
@@ -97,10 +109,26 @@ function Toolbar() {
             />
           </React.Fragment>
         )}
-        </div>
-        {getFiles && <Button className="group" isIconOnly onPress={getFiles}><Icon icon="lucide:refresh-ccw" width="1.2rem" height="1.2rem" className="rotate-180 group-hover:animate-spin"/></Button>}
-        </div>
-      );
+      </div>
+      {getFiles && (
+        <Button
+          className="group"
+          isIconOnly
+          onPress={() => {
+            getFiles();
+            toast.success("Files refreshed");
+          }}
+        >
+          <Icon
+            icon="lucide:refresh-ccw"
+            width="1.2rem"
+            height="1.2rem"
+            className="rotate-180 group-hover:animate-spin"
+          />
+        </Button>
+      )}
+    </div>
+  );
 }
 
 export default Toolbar;
