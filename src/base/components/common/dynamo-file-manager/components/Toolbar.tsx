@@ -11,9 +11,10 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { getDirectoryPath } from "../helpers/methods";
 
 function Toolbar() {
-  const { addDirectory, uploadFile,  getFiles  } = useFiles();
+  const { addDirectory, uploadFile,  getFiles, files, selectedDirectory  } = useFiles();
   const {
     isOpen: directoryModalOpen,
     onOpenChange: onDirectoryModalOpenChange,
@@ -21,6 +22,9 @@ function Toolbar() {
   } = useDisclosure();
   const [directoryName, setDirectoryName] = React.useState<string>("");
   const uploadInputRef = React.useRef<HTMLInputElement>(null);
+
+
+
   return (
 <div className="flex items-center justify-between gap-2 w-full bg-default-50 rounded-lgpy-1 px-2 ">
         <div className="flex items-center justify-start gap-2">
@@ -52,7 +56,7 @@ function Toolbar() {
                       <Button
                         color="primary"
                         onPress={() => {
-                          addDirectory(directoryName);
+                          addDirectory(getDirectoryPath(files, selectedDirectory) + "/" + directoryName);
                           onClose();
                         }}
                       >

@@ -4,6 +4,8 @@ export const hasDirectories = (items: DynamoFileData[]) => {
   return items.some((item) => item.isDirectory);
 };
 
+
+
 export function findParentDirectory(
   files: DynamoFileData[],
   directory: DynamoFileData
@@ -28,6 +30,14 @@ export function findParentDirectory(
   }
 
   return search(files, directory);
+}
+
+// For example, konutkonfor/users/assets
+export function getDirectoryPath(files: DynamoFileData[], directory: DynamoFileData): string {
+  
+  const parent = findParentDirectory(files, directory);
+  if(!parent) return directory.name;
+  return `${getDirectoryPath(files, parent)}/${directory.name}`;
 }
 
 export function getFileType(filename: string | undefined): string {
