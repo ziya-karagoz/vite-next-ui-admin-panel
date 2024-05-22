@@ -10,13 +10,18 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react";
-import { Icon } from "@iconify/react/dist/iconify.js";
 import { getDirectoryPath } from "../helpers/methods";
 import toast from "react-hot-toast";
 
 function Toolbar() {
-  const { addDirectory, uploadFile, getFiles, files, selectedDirectory } =
-    useFiles();
+  const {
+    addDirectory,
+    uploadFile,
+    getFiles,
+    files,
+    selectedDirectory,
+    config,
+  } = useFiles();
   const {
     isOpen: directoryModalOpen,
     onOpenChange: onDirectoryModalOpenChange,
@@ -26,11 +31,18 @@ function Toolbar() {
   const uploadInputRef = React.useRef<HTMLInputElement>(null);
 
   return (
-    <div className="flex items-center justify-between gap-2 w-full bg-default-50 rounded-lg py-1 px-2 ">
-      <div className="flex items-center justify-start gap-2">
+    <div className={config?.toolbar?.className}>
+      <div className={config?.toolbar?.actionsClassName}>
         {addDirectory && (
           <React.Fragment>
-            <Button onPress={onDirectoryModalOpen}>New Directory</Button>
+            <Button
+              isIconOnly={!!config?.newDirectoryButton?.icon}
+              className={config?.newDirectoryButton?.className}
+              onPress={onDirectoryModalOpen}
+            >
+              {config?.newDirectoryButton?.icon}
+              {config?.newDirectoryButton?.title ?? "New Directory"}
+            </Button>
             <Modal
               isOpen={directoryModalOpen}
               onOpenChange={onDirectoryModalOpenChange}
@@ -79,20 +91,15 @@ function Toolbar() {
         {uploadFile && (
           <React.Fragment>
             <Button
-              className="group"
+              className={config?.uploadfileButton?.className}
               onPress={() => {
                 if (uploadInputRef.current) {
                   uploadInputRef.current.click();
                 }
               }}
             >
-              <Icon
-                icon="tdesign:file-add"
-                width="1.2rem"
-                height="1.2rem"
-                className="group-hover:animate-wiggle"
-              />
-              Upload File
+              {config?.uploadfileButton?.icon}
+              {config?.uploadfileButton?.title ?? "Upload File"}
             </Button>
             <input
               type="file"
@@ -116,19 +123,15 @@ function Toolbar() {
       </div>
       {getFiles && (
         <Button
-          className="group"
-          isIconOnly
+          className={config?.refreshButton?.className}
+          isIconOnly={!!config?.refreshButton?.icon}
           onPress={() => {
             getFiles();
             toast.success("Files refreshed");
           }}
         >
-          <Icon
-            icon="lucide:refresh-ccw"
-            width="1.2rem"
-            height="1.2rem"
-            className="rotate-180 group-hover:animate-spin"
-          />
+          {config?.refreshButton?.icon}
+          {config?.refreshButton?.title ?? "Refresh"}
         </Button>
       )}
     </div>

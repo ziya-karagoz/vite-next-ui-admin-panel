@@ -1,5 +1,6 @@
 import DynamoFileManager from '@base/components/common/dynamo-file-manager/DynamoFileManager';
 import { createFolder, deleteFile, fetchFiles, uploadFile } from '../core/api/file-manager.requests';
+import Loader from '@base/layout/components/loader/Loader';
 
 function FileBrowser() {
   return (
@@ -17,6 +18,9 @@ function FileBrowser() {
             }}
             pickUrl={(url: string) => {
               console.log("pickUrl:", url);
+            }}
+            config={{
+              loader: <Loader />,
             }}
           />
   )

@@ -7,8 +7,10 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import clsx from "clsx";
 
 function Sidebar() {
-  const { files, setSelectedDirectory, selectedDirectory } = useFiles();
-  const [selectedKeys, setSelectedKeys] = React.useState<Set<string>>(new Set());
+  const { files, setSelectedDirectory, selectedDirectory, config } = useFiles();
+  const [selectedKeys, setSelectedKeys] = React.useState<Set<string>>(
+    new Set()
+  );
 
   React.useEffect(() => {
     // Mevcut selectedKeys durumunu koruyarak güncelle
@@ -49,20 +51,15 @@ function Sidebar() {
         >
           {directory.items && hasDirectories(directory.items) ? (
             <Accordion
-              className="px-0 w-full"
+              className={config?.sidebar?.accordion?.className}
               selectedKeys={selectedKeys}
               itemClasses={{
-                base: "py-0 w-full px-0",
-                title: "font-normal text-medium px-0 w-full",
-                trigger: clsx("px-0 py-0 hover:bg-default-200 rounded-lg h-14 flex items-center h-8 w-full", {
-                  "bg-default-200": selectedDirectory.name === directory.name,
-                }),
-                indicator: "invisible",
-                content: "text-small px-0",
-                heading: "text-medium px-0",
-                startContent: "text-medium px-0",
-                subtitle: "text-small px-0",
-                titleWrapper: "px-0",
+                ...config?.sidebar?.accordion?.itemClasses,
+                trigger: `${config?.sidebar?.accordion?.itemClasses?.trigger
+                  } ${clsx({
+                    [config?.sidebar?.activeDirectoryClassName ?? ""]:
+                      selectedDirectory.name === directory.name,
+                  })}`,
               }}
             >
               <AccordionItem
@@ -95,9 +92,10 @@ function Sidebar() {
             </Accordion>
           ) : (
             <Button
-              className={clsx("px-0 bg-default-50 hover:bg-default-200 rounded-lg h-8 flex items-center w-full justify-start", {
-                "bg-default-200": selectedDirectory.name === directory.name,
-              })}
+              className={`${config?.sidebar?.button?.className} ${clsx({
+                [config?.sidebar?.activeDirectoryClassName ?? ""]:
+                  selectedDirectory.name === directory.name,
+              })}`}
               key={directory.name}
               onClick={() => handleDirectoryClick(directory)}
             >
@@ -125,8 +123,8 @@ function Sidebar() {
   };
 
   return (
-    <div className="min-w-72 bg-default-50 rounded-lg py-4 h-96 overflow-y-auto fancy-scrollbar">
-      <div className="px-2">{renderDirectories(files)}</div>
+    <div className={config?.sidebar?.wrapperClassName}>
+      {renderDirectories(files)}
     </div>
   );
 }

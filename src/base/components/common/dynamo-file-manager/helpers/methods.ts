@@ -139,3 +139,15 @@ export function formatBytes(bytes: number): string {
 
   return `${bytes.toFixed(2)} ${units[unitIndex]}`;
 }
+
+export function deepMerge<T extends object>(target: T, source: Partial<T>): T {
+  const output = { ...target };
+  for (const key in source) {
+    if (source[key] instanceof Object && key in target) {
+      output[key] = deepMerge((target as any)[key], (source as any)[key]);
+    } else {
+      (output as any)[key] = source[key];
+    }
+  }
+  return output;
+}

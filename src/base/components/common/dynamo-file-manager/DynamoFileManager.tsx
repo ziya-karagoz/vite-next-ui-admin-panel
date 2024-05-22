@@ -5,10 +5,9 @@ import {
     DynamoFileManagerProvider,
     useFiles,
 } from "./contexts/DynamoFileManagerContext";
-import { DynamoFileData } from "./types/dynamo-file-manager.types";
+import { DynamoFileData, DynamoFileManagerConfig } from "./types/dynamo-file-manager.types";
 import MainContent from "./components/MainContent";
 import { FetchStatus } from "@base/enums/api.enum";
-import Loader from "@base/layout/components/loader/Loader";
 import React from "react";
 
 type Props = {
@@ -19,14 +18,15 @@ type Props = {
     fetchFiles: () => Promise<DynamoFileData[]>;
     pickUrl?: (url: string) => void;
     title?: string;
+    config?: DynamoFileManagerConfig;
 };
 
 function WrappedDynamoFileManager() {
-    const { filesFetchStatus, title, selectedDirectory } = useFiles();
+    const { filesFetchStatus, title, selectedDirectory, config } = useFiles();
     return (
-        <Card>
+        <Card classNames={config?.card?.itemClasses}>
             {filesFetchStatus !== FetchStatus.SUCCEEDED || !Object.keys(selectedDirectory).length  ? (
-                <Loader />
+                config?.loader
             ) : (
                 <React.Fragment>
                     <CardHeader className="flex flex-col justify-start items-start gap-2 pb-2">
@@ -51,6 +51,7 @@ function DynamoFileManager({
     fetchFiles,
     pickUrl,
     title,
+    config,
 }: Readonly<Props>) {
     return (
         <DynamoFileManagerProvider
@@ -62,6 +63,7 @@ function DynamoFileManager({
                 fetchFiles,
                 pickUrl,
                 title,
+                config,
             }}
         >
             <WrappedDynamoFileManager />

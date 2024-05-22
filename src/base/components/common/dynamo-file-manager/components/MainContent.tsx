@@ -6,7 +6,6 @@ import {
   Button,
   Divider,
   Image,
-  Kbd,
   Modal,
   ModalBody,
   ModalContent,
@@ -42,27 +41,28 @@ function MainContent() {
     uploadFile,
     deleteFile,
     getFiles,
+    config,
   } = useFiles();
   const [selectedRow, setSelectedRow] = React.useState<DynamoFileData>();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const uploadInputRef = React.useRef<HTMLInputElement>(null);
 
-  React.useEffect(() => {
-    console.log(files);
-  }, [files]);
-
   return (
-    <div className="w-full">
-      <div className="flex justify-start items-center gap-1 pb-2">
+    <div className={config?.mainContent?.className}>
+      <div className={config?.mainContent?.wrapper?.className}>
         <Button
           variant="light"
-          isIconOnly
+          isIconOnly={
+            !!config?.mainContent?.button?.icon &&
+            !config.mainContent.button.title
+          }
           onPress={() => {
             let parent = findParentDirectory(files, selectedDirectory);
             if (parent) setSelectedDirectory(parent);
           }}
         >
-          <Icon icon="mingcute:up-fill" width="1.2rem" height="1.2rem" />
+          {config?.mainContent?.button?.icon}
+          {config?.mainContent?.button?.title}
         </Button>
         <Breadcrumbs variant="solid">
           {getDirectoryPath(files, selectedDirectory)
@@ -86,76 +86,85 @@ function MainContent() {
       </div>
       <Table
         aria-label="Example static collection table"
-        classNames={{
-          base: "h-96 ",
-          wrapper:
-            "h-96 bg-default-50 border-0 shadow-none  rounded-lg overflow-y-auto fancy-scrollbar",
-        }}
+        classNames={config?.mainContent?.table?.classNames}
         selectionMode="single"
         selectionBehavior="replace"
       >
         <TableHeader>
-          <TableColumn>NAME</TableColumn>
-          <TableColumn>FILE TYPE</TableColumn>
-          <TableColumn>FILE SIZE</TableColumn>
-          <TableColumn> </TableColumn>
+          <TableColumn>
+            {config?.mainContent?.table?.colNames?.name}
+          </TableColumn>
+          <TableColumn>
+            {config?.mainContent?.table?.colNames?.type}
+          </TableColumn>
+          <TableColumn>
+            {config?.mainContent?.table?.colNames?.size}
+          </TableColumn>
+          <TableColumn>
+            {config?.mainContent?.table?.colNames?.actions}
+          </TableColumn>
         </TableHeader>
 
         <TableBody
           items={selectedDirectory.items}
           emptyContent={
-            <div className="flex flex-col justify-center items-center gap-4">
-              <span className="text-lg text-default-800">No files found</span>
-              {uploadFile && (
-                <React.Fragment>
-                  <Button
-                    variant="light"
-                    onPress={() => {
-                      if (uploadInputRef.current) {
-                        uploadInputRef.current.click();
-                      }
-                    }}
-                  >
-                    <Icon
-                      icon="tdesign:file-add"
-                      width="1.2rem"
-                      height="1.2rem"
+            config?.mainContent?.table?.emptyContent ?? (
+              <div className="flex flex-col justify-center items-center gap-4">
+                <span className="text-lg text-default-800">No files found</span>
+                {uploadFile && (
+                  <React.Fragment>
+                    <Button
+                      variant="light"
+                      onPress={() => {
+                        if (uploadInputRef.current) {
+                          uploadInputRef.current.click();
+                        }
+                      }}
+                    >
+                      <Icon
+                        icon="tdesign:file-add"
+                        width="1.2rem"
+                        height="1.2rem"
+                      />
+                      Upload File
+                    </Button>
+                    <input
+                      type="file"
+                      className="hidden"
+                      ref={uploadInputRef}
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          uploadFile(
+                            getDirectoryPath(files, selectedDirectory),
+                            file
+                          );
+                        }
+                      }}
                     />
-                    Upload File
-                  </Button>
-                  <input
-                    type="file"
-                    className="hidden"
-                    ref={uploadInputRef}
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) {
-                        uploadFile(
-                          getDirectoryPath(files, selectedDirectory),
-                          file
-                        );
-                      }
-                    }}
-                  />
-                </React.Fragment>
-              )}
-              <div className="flex justify-center items-center gap-2">
-                <Divider />
-                <span>or</span>
-                <Divider />
+                  </React.Fragment>
+                )}
+                <div className="flex justify-center items-center gap-2">
+                  <Divider />
+                  <span>or</span>
+                  <Divider />
+                </div>
+                <Button
+                  variant="light"
+                  color="warning"
+                  onPress={() => {
+                    const parent = findParentDirectory(
+                      files,
+                      selectedDirectory
+                    );
+                    if (parent) setSelectedDirectory(parent);
+                  }}
+                >
+                  <Icon icon="lets-icons:up" width="1.2rem" height="1.2rem" />{" "}
+                  View Parent Directory
+                </Button>
               </div>
-              <Button
-                variant="light"
-                color="warning"
-                onPress={() => {
-                  const parent = findParentDirectory(files, selectedDirectory);
-                  if (parent) setSelectedDirectory(parent);
-                }}
-              >
-                <Icon icon="lets-icons:up" width="1.2rem" height="1.2rem" /> Go
-                Back
-              </Button>
-            </div>
+            )
           }
         >
           {(item) => (
@@ -171,7 +180,6 @@ function MainContent() {
               }}
             >
               <TableCell>
-                {" "}
                 <div className="flex justify-start items-center gap-1">
                   {item.isDirectory ? (
                     <Icon
@@ -239,39 +247,68 @@ function MainContent() {
           )}
         </TableBody>
       </Table>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="full">
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        size={config?.mainContent?.table?.modal?.size}
+        classNames={config?.mainContent?.table?.modal?.classNames}
+      >
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-row items-center gap-1">
+              <ModalHeader>
                 {selectedRow?.name}{" "}
                 <Icon icon={getIconForFile(selectedRow?.name)} width="1.2rem" />
               </ModalHeader>
               <ModalBody>
                 <Image
-                  isBlurred
-                  width={450}
+                  isBlurred={
+                    config?.mainContent?.table?.modal?.image?.isBlurred
+                  }
+                  width={config?.mainContent?.table?.modal?.image?.width}
                   src={selectedRow?.url}
                   alt={selectedRow?.name}
-                  className="m-5 w-full"
                 />
                 <span className="text-medium">
                   {formatBytes(selectedRow?.size ?? 0)}
                 </span>
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                  Close
-                </Button>
-                <Button
-                  color="primary"
-                  onPress={() => {
-                    if (pickUrl && selectedRow?.url) pickUrl(selectedRow?.url);
-                    onClose();
-                  }}
-                >
-                  Action
-                </Button>
+                {config?.mainContent?.table?.modal?.actionButtons?.cancel && (
+                  <Button
+                    className={
+                      config?.mainContent?.table?.modal?.actionButtons?.cancel
+                        ?.className
+                    }
+                    color="danger"
+                    variant="light"
+                    onPress={onClose}
+                  >
+                    {
+                      config?.mainContent?.table?.modal?.actionButtons?.cancel
+                        ?.title
+                    }
+                  </Button>
+                )}
+                {config?.mainContent?.table?.modal?.actionButtons?.pick && (
+                  <Button
+                    className={
+                      config?.mainContent?.table?.modal?.actionButtons?.pick
+                        ?.className
+                    }
+                    color="primary"
+                    onPress={() => {
+                      if (pickUrl && selectedRow?.url)
+                        pickUrl(selectedRow?.url);
+                      onClose();
+                    }}
+                  >
+                    {
+                      config?.mainContent?.table?.modal?.actionButtons?.pick
+                        ?.title
+                    }
+                  </Button>
+                )}
               </ModalFooter>
             </>
           )}
