@@ -9,15 +9,15 @@ const FileManagerPage = () => {
         path="/"
         element={
           <DynamoFileManager
-            addDirectory={(folder_path)=>{
-              createFolder({folder_path});
+            addDirectory={async (folder_path)=>{
+              await createFolder({folder_path});
             }}
-            uploadFile={(pathname: string, file: File) => {
-              uploadFile({pathname, file});
+            uploadFile={async (pathname: string, file: File) => {
+              await uploadFile({pathname, file});
             }}
             fetchFiles={fetchFiles}
-            deleteFile={(filename: string) => {
-              deleteFile({filename})
+            deleteFile={async (filename: string) => {
+              await deleteFile({filename})
             }}
             pickUrl={(url: string) => {
               console.log("pickUrl:", url);

@@ -12,10 +12,10 @@ import Loader from "@base/layout/components/loader/Loader";
 import React from "react";
 
 type Props = {
-    addDirectory?: (folder_path: string) => void;
-    uploadFile?: (pathname: string, file: File) => void;
-    renameFile?: (oldName: string, newName: string) => void;
-    deleteFile?: (filename: string) => void;
+    addDirectory?: (folder_path: string) => Promise<void>;
+    uploadFile?: (pathname: string, file: File) => Promise<void>;
+    renameFile?: (oldName: string, newName: string) => Promise<void>;
+    deleteFile?: (filename: string) => Promise<void>;
     fetchFiles: () => Promise<DynamoFileData[]>;
     pickUrl?: (url: string) => void;
 };
