@@ -113,7 +113,7 @@ function Sidebar() {
   };
 
   return (
-    <div className="min-w-72 bg-default-50 rounded-lg py-4 min-h-80">
+    <div className="min-w-72 bg-default-50 rounded-lg py-4 h-96 overflow-y-auto fancy-scrollbar">
       <div>{renderDirectories(files)}</div>
     </div>
   );

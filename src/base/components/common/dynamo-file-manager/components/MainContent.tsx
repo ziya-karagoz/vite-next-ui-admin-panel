@@ -44,8 +44,8 @@ function MainContent() {
       <Table
         aria-label="Example static collection table"
         classNames={{
-          base: "min-h-80 pt-1",
-          wrapper: "min-h-80",
+          base: "h-96 ",
+          wrapper: "h-96 bg-default-50 border-0 shadow-none  rounded-lg overflow-y-auto fancy-scrollbar",
         }}
         selectionMode="single"
         selectionBehavior="replace"

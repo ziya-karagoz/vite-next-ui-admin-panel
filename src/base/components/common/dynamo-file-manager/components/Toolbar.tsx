@@ -26,7 +26,7 @@ function Toolbar() {
 
 
   return (
-<div className="flex items-center justify-between gap-2 w-full bg-default-50 rounded-lgpy-1 px-2 ">
+<div className="flex items-center justify-between gap-2 w-full bg-default-50 rounded-lg py-1 px-2 ">
         <div className="flex items-center justify-start gap-2">
         {addDirectory && (
           <React.Fragment>

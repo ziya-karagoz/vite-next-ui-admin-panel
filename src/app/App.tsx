@@ -11,8 +11,8 @@ function App() {
     const { theme } = useTheme();
 
     const style = {
-        backgroundColor: theme === "dark" ? "#1f1f1f" : "#ffffff",
-        color: theme === "dark" ? "#dfdfdf" : "#1f1f1f",
+        backgroundColor: theme === "dark" ? "#18181b" : "#ffffff",
+        color: theme === "dark" ? "#dfdfdf" : "#18181b",
     };
 
     return (
