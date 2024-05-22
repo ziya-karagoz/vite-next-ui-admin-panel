@@ -76,6 +76,7 @@ function Toolbar() {
                             toast.success("Directory created successfully");
                             getFiles && getFiles();
                             onClose();
+                            setDirectoryName("");
                           });
                         }}
                       >

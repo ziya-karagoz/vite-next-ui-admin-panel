@@ -1,7 +1,7 @@
 import { tv } from "@nextui-org/react";
 
 export const SidebarWrapper = tv({
-  base: "bg-background transition-transform h-full fixed -translate-x-full w-64 shrink-0 z-[202] overflow-y-auto border-r border-divider flex-col py-6 px-3 md:ml-0 md:flex md:static md:h-screen md:translate-x-0 ",
+  base: "bg-background transition-transform h-full fixed -translate-x-full w-64 shrink-0 z-[202] overflow-y-auto border-r border-default-100 flex-col py-6 px-0 md:ml-0 md:flex md:static md:h-screen md:translate-x-0 ",
 
   variants: {
     collapsed: {
@@ -18,12 +18,13 @@ export const Header = tv({
 });
 
 export const Body = tv({
-  base: "flex flex-col gap-6 mt-9 px-2",
+  base: "flex flex-col gap-6 mt-9 px-3",
 });
 
 export const Footer = tv({
-  base: "flex items-center justify-center gap-6 pt-16 pb-8 px-8 md:pt-10 md:pb-0",
+  base: "hidden md:block sticky bottom-0 w-full z-[202]  bg-white dark:bg-black px-3 pt-2 border-r border-default-100",
 });
+
 
 export const Sidebar = Object.assign(SidebarWrapper, {
   Header,
