@@ -24,6 +24,25 @@ export function findDirectory(
   return null;
 }
 
+export function findDirectoryByFileName(
+  files: DynamoFileData[],
+  filename: string
+): DynamoFileData | null {
+  for (const file of files) {
+      if (file.name === filename) {
+          return file;
+      }
+      if (file.isDirectory && file.items) {
+          const found = findDirectoryByFileName(file.items, filename);
+          if (found) {
+              return found;
+          }
+      }
+  }
+  return null;
+}
+
+
 export function findParentDirectory(
   files: DynamoFileData[],
   directory: DynamoFileData

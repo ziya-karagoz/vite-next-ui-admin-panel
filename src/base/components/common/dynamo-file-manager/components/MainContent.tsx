@@ -1,9 +1,12 @@
 import React from "react";
 import { useFiles } from "../contexts/DynamoFileManagerContext";
 import {
+  BreadcrumbItem,
+  Breadcrumbs,
   Button,
   Divider,
   Image,
+  Kbd,
   Modal,
   ModalBody,
   ModalContent,
@@ -18,6 +21,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import {
+  findDirectoryByFileName,
   findParentDirectory,
   formatBytes,
   getDirectoryPath,
@@ -48,7 +52,38 @@ function MainContent() {
   }, [files]);
 
   return (
-    <React.Fragment>
+    <div className="w-full">
+      <div className="flex justify-start items-center gap-1 pb-2">
+        <Button
+          variant="light"
+          isIconOnly
+          onPress={() => {
+            let parent = findParentDirectory(files, selectedDirectory);
+            if (parent) setSelectedDirectory(parent);
+          }}
+        >
+          <Icon icon="mingcute:up-fill" width="1.2rem" height="1.2rem" />
+        </Button>
+        <Breadcrumbs variant="solid">
+          {getDirectoryPath(files, selectedDirectory)
+            .split("/")
+            .map((path) => {
+              let directory = findDirectoryByFileName(files, path);
+              return (
+                <BreadcrumbItem
+                  key={path}
+                  onPress={() => {
+                    if (directory) {
+                      setSelectedDirectory(directory);
+                    }
+                  }}
+                >
+                  {path}
+                </BreadcrumbItem>
+              );
+            })}
+        </Breadcrumbs>
+      </div>
       <Table
         aria-label="Example static collection table"
         classNames={{
@@ -242,7 +277,7 @@ function MainContent() {
           )}
         </ModalContent>
       </Modal>
-    </React.Fragment>
+    </div>
   );
 }
 
