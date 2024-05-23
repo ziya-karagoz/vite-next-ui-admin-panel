@@ -10,7 +10,7 @@ import { useAuth } from "@app/modules/auth/core/contexts/AuthContext";
 
 export const SidebarWrapper = () => {
   const { collapsed, setCollapsed } = useSidebarContext();
-  const {currentUser} = useAuth();
+  const { currentUser } = useAuth();
 
   return (
     <aside className="h-screen z-50 sticky top-0 ">
@@ -80,18 +80,17 @@ export const SidebarWrapper = () => {
               }
             })}
           </div>
-          
         </div>
       </div>
       <div className={Sidebar.Footer()}>
-            <User
-              name={currentUser?.first_name + " " + currentUser?.last_name}
-              description={currentUser?.email}
-              avatarProps={{
-                src: currentUser?.image
-              }}
-            />
-          </div>
+        <User
+          name={currentUser?.first_name + " " + currentUser?.last_name}
+          description={currentUser?.email}
+          avatarProps={{
+            src: currentUser?.image,
+          }}
+        />
+      </div>
     </aside>
   );
 };
