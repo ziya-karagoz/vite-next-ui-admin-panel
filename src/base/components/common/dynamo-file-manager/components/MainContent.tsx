@@ -40,6 +40,7 @@ function MainContent() {
     pickUrl,
     uploadFile,
     deleteFile,
+    renameFile,
     getFiles,
     config,
   } = useFiles();
@@ -237,6 +238,23 @@ function MainContent() {
                     <Icon
                       icon="octicon:trash-16"
                       className="group-hover:animate-wiggle"
+                      width="1.2rem"
+                      height="1.2rem"
+                    />
+                  </Button>
+                )}
+                {renameFile && (
+                  <Button
+                    color="warning"
+                    variant="light"
+                    isIconOnly
+                    className="group"
+                    onPress={() => {
+                      alert("Rename file logic goes here");
+                    }}
+                  >
+                    <Icon
+                      icon="octicon:pencil-16"
                       width="1.2rem"
                       height="1.2rem"
                     />

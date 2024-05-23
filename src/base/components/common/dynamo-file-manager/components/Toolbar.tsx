@@ -10,7 +10,7 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react";
-import { getDirectoryPath } from "../helpers/methods";
+import { findParentDirectory, getDirectoryPath } from "../helpers/methods";
 import toast from "react-hot-toast";
 
 function Toolbar() {
@@ -18,6 +18,7 @@ function Toolbar() {
     addDirectory,
     uploadFile,
     getFiles,
+    renameFile,
     files,
     selectedDirectory,
     config,
@@ -120,6 +121,27 @@ function Toolbar() {
               }}
             />
           </React.Fragment>
+        )}
+        {renameFile && (
+          <Button
+            className={config?.toolbar?.renameButton?.className}
+            isIconOnly={!!config?.toolbar?.renameButton?.icon && !config.toolbar.renameButton.title}
+            onPress={() => {
+              const newName = prompt("Enter new name");
+              if (newName) {
+                let parentDirectory = findParentDirectory(files, selectedDirectory);
+                if(parentDirectory === null) return;
+                let parentDirectoryPath = getDirectoryPath(files, parentDirectory);
+                renameFile(`${parentDirectoryPath}/${selectedDirectory.name}`, `${parentDirectoryPath}/${newName}`).then(() => {
+                  toast.success("File renamed successfully");
+                  getFiles && getFiles();
+                });
+              }
+            }}
+          >
+            {config?.toolbar?.renameButton?.icon}
+            {config?.toolbar?.renameButton?.title ?? "Rename"}
+          </Button>
         )}
       </div>
       {getFiles && (

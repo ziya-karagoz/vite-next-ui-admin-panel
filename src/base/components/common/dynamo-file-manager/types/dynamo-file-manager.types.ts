@@ -37,6 +37,11 @@ export interface DynamoFileManagerConfig {
             title?: string;
             icon?: React.ReactNode;
         };
+        renameButton?: {
+            className?: string;
+            title?: string;
+            icon?: React.ReactNode;
+        };
     };
     sidebar?: {
         wrapperClassName?: string;
