@@ -5,10 +5,9 @@ import {
   DropdownMenu,
   DropdownTrigger,
   NavbarItem,
-} from "@nextui-org/react"
+} from "@nextui-org/react";
 import { useAuth } from "@app/modules/auth/core/contexts/AuthContext";
 import { DarkModeSwitch } from "./DarkModeSwitch";
-
 export const UserDropdown = () => {
   const { currentUser, logout } = useAuth();
   return (
