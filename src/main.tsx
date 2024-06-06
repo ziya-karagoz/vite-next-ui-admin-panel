@@ -12,7 +12,7 @@ import { ThemeProvider } from "@base/layout/contexts/ThemeContext";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
-    <NextUIProvider>
+    <NextUIProvider locale="fr-FR">
     <ThemeProvider>
       <HelmetProvider>
         <Base18nProvider>

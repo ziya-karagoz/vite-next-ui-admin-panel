@@ -135,38 +135,38 @@ const AdminList = () => {
       },
       filterType: EFilterType.STATIC_SELECT,
     },
-    {
-      key: "type",
-      label: "TYPE",
-      type: EColumnType.CHIP,
-      filterOptions: [
-        {
-          value: "individual",
-          name: "individual",
-          label: "Individual",
-        },
-        {
-          value: "corporate",
-          name: "corporate",
-          label: "Corporate",
-        },
-      ],
-      config: {
-        chip: {
-          variant: "solid",
-          size: "sm",
-          color: {
-            individual: "warning",
-            corporate: "primary",
-          },
-          text: {
-            individual: "Individual",
-            corporate: "Corporate",
-          },
-        },
-      },
-      filterType: EFilterType.STATIC_SELECT,
-    },
+    // {
+    //   key: "type",
+    //   label: "TYPE",
+    //   type: EColumnType.CHIP,
+    //   filterOptions: [
+    //     {
+    //       value: "individual",
+    //       name: "individual",
+    //       label: "Individual",
+    //     },
+    //     {
+    //       value: "corporate",
+    //       name: "corporate",
+    //       label: "Corporate",
+    //     },
+    //   ],
+    //   config: {
+    //     chip: {
+    //       variant: "solid",
+    //       size: "sm",
+    //       color: {
+    //         individual: "warning",
+    //         corporate: "primary",
+    //       },
+    //       text: {
+    //         individual: "Individual",
+    //         corporate: "Corporate",
+    //       },
+    //     },
+    //   },
+    //   filterType: EFilterType.STATIC_SELECT,
+    // },
 
     {
       key: "created_at",

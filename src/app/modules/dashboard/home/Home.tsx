@@ -1,48 +1,93 @@
-import { CardBalance1 } from "./partials/card-balance1";
-import { CardBalance2 } from "./partials/card-balance2";
-import { CardBalance3 } from "./partials/card-balance3";
-import { CardAgents } from "./partials/card-agents";
-import { CardTransactions } from "./partials/card-transactions";
-import BlockNoteEditor from "@base/components/common/block-note/BlockNoteEditor";
-import { Block } from "@blocknote/core";
 import React from "react";
+import {DatePicker, RadioGroup, Radio, ButtonGroup, Button, cn} from "@nextui-org/react";
+import {DateValue, startOfWeek, startOfMonth, getLocalTimeZone, today} from "@internationalized/date";
+import {useLocale, useDateFormatter} from "@react-aria/i18n";
 
 export const Home = () => {
-  const [blocks, setBlocks] = React.useState<Block[]>([]);
+  let defaultDate = today(getLocalTimeZone());
+
+  const [value, setValue] = React.useState<DateValue>(defaultDate);
+
+  let {locale} = useLocale();
+  let formatter = useDateFormatter({dateStyle: "full"});
+
+  let now = today(getLocalTimeZone());
+  let nextWeek = startOfWeek(now.add({weeks: 1}), locale);
+  let nextMonth = startOfMonth(now.add({months: 1}));
+
+  const CustomRadio = (props) => {
+    const {children, ...otherProps} = props;
+
+    return (
+      <Radio
+        {...otherProps}
+        classNames={{
+          base: cn(
+            "flex-none m-0 h-8 bg-content1 hover:bg-content2 items-center justify-between",
+            "cursor-pointer rounded-full border-2 border-default-200/60",
+            "data-[selected=true]:border-primary",
+          ),
+          label: "text-tiny text-default-500",
+          labelWrapper: "px-1 m-0",
+          wrapper: "hidden",
+        }}
+      >
+        {children}
+      </Radio>
+    );
+  };
 
   return (
-    <div className="h-full lg:px-6">
-      <BlockNoteEditor blocks={blocks} setBlocks={setBlocks} imageUploadEnabled/>
-      <div className="flex justify-center gap-4 xl:gap-6 pt-3 px-4 lg:px-0  flex-wrap xl:flex-nowrap sm:pt-10 max-w-[90rem] mx-auto w-full">
-        <div className="mt-6 gap-6 flex flex-col w-full">
-          {/* Card Section Top */}
-          <div className="flex flex-col gap-2">
-            <h3 className="text-xl font-semibold">Available Balance</h3>
-            <div className="grid md:grid-cols-2 grid-cols-1 2xl:grid-cols-3 gap-5  justify-center w-full">
-              <CardBalance1 />
-              <CardBalance2 />
-              <CardBalance3 />
-            </div>
-          </div>
-
-          {/* Chart */}
-          {/* <div className="h-full flex flex-col gap-2">
-          <h3 className="text-xl font-semibold">Statistics</h3>
-          <div className="w-full bg-default-50 shadow-lg rounded-2xl p-6 ">
-          <ExampleChart />
-          </div>
-        </div>*/}
-        </div>
-
-        {/* Left Section */}
-        <div className="mt-4 gap-2 flex flex-col xl:max-w-md w-full">
-          <h3 className="text-xl font-semibold">Section</h3>
-          <div className="flex flex-col justify-center gap-4 flex-wrap md:flex-nowrap md:flex-col">
-            <CardAgents />
-            <CardTransactions />
-          </div>
-        </div>
-      </div>
+    <div className="flex flex-col gap-4 w-full max-w-sm">
+      <DatePicker
+        CalendarBottomContent={
+          <RadioGroup
+            aria-label="Date precision"
+            classNames={{
+              base: "w-full pb-2",
+              wrapper: "-my-2.5 py-2.5 px-3 gap-1 flex-nowrap max-w-[380px] overflow-x-scroll",
+            }}
+            defaultValue="exact_dates"
+            orientation="horizontal"
+          >
+            <CustomRadio value="exact_dates">Exact dates</CustomRadio>
+            <CustomRadio value="1_day">1 day</CustomRadio>
+            <CustomRadio value="2_days">2 days</CustomRadio>
+            <CustomRadio value="3_days">3 days</CustomRadio>
+            <CustomRadio value="7_days">7 days</CustomRadio>
+            <CustomRadio value="14_days">14 days</CustomRadio>
+          </RadioGroup>
+        }
+        CalendarTopContent={
+          <ButtonGroup
+            fullWidth
+            className="px-3 pb-2 pt-3 bg-content1 [&>button]:text-default-500 [&>button]:border-default-200/60"
+            radius="full"
+            size="sm"
+            variant="bordered"
+          >
+            <Button onPress={() => setValue(now)}>Today</Button>
+            <Button onPress={() => setValue(nextWeek)}>Next week</Button>
+            <Button onPress={() => setValue(nextMonth)}>Next month</Button>
+          </ButtonGroup>
+        }
+        calendarProps={{
+          focusedValue: value,
+          onFocusChange: setValue,
+          nextButtonProps: {
+            variant: "bordered",
+          },
+          prevButtonProps: {
+            variant: "bordered",
+          },
+        }}
+        value={value}
+        onChange={setValue}
+        label="Event date"
+      />
+      <p className="text-default-500 text-sm">
+        Selected date: {value ? formatter.format(value.toDate(getLocalTimeZone())) : "--"}
+      </p>
     </div>
   );
 };
